@@ -1,21 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider
-} from 'react-router-dom';
+import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { ThemeProvider } from './components/theme-provider';
+import { Home } from './pages';
 import './index.css';
-
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path='/'></Route>
-  )
-);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>,
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Home />}></Route>
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
+  </React.StrictMode >
 );
