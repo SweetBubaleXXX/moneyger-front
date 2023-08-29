@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { CssVarsProvider } from '@mui/joy/styles';
+import { Provider } from 'react-redux';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Home from './pages/Home';
-import { CssVarsProvider } from '@mui/joy/styles';
+import Login from './pages/Login';
+import store from './store';
 
 
 const root = ReactDOM.createRoot(
@@ -12,13 +15,16 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <CssVarsProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-        </Routes>
-      </BrowserRouter>
-    </CssVarsProvider>
+    <Provider store={store}>
+      <CssVarsProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+          </Routes>
+        </BrowserRouter>
+      </CssVarsProvider>
+    </Provider>
   </React.StrictMode>
 );
 
