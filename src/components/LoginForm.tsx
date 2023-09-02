@@ -1,10 +1,31 @@
 import React from 'react';
-import { LoginRequest, useLoginMutation } from '../features/api';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
-import { Button, FormLabel, Input, FormControl, Stack } from '@mui/joy';
+import { 
+  Button,
+  FormLabel,
+  Input,
+  FormControl,
+  Stack,
+  FormHelperText, 
+} from '@mui/joy';
+import { LoginRequest, useLoginMutation } from '../features/api';
+
+const LoginSchema = z.object({
+  username: z.string()
+    .nonempty('Username is required')
+    .regex(/^[\w.@+-]+$/, 'Letters, digits and @/./+/-/_ only')
+    .max(150),
+  password: z.string()
+    .min(8, {message: 'Password must contain at least 8 characters'}),
+});
 
 export default () => {
-  const { control, handleSubmit, formState: {errors}} = useForm<LoginRequest>();
+  const { control, handleSubmit, formState: {errors}} = useForm<LoginRequest>({
+    resolver: zodResolver(LoginSchema),
+  }
+  );
   const [login, {isLoading, isError}] = useLoginMutation();
 
   return (
@@ -14,20 +35,28 @@ export default () => {
         <Controller
           name="username"
           control={control}
+          defaultValue=""
           render={({field}) => (
-            <FormControl required>
+            <FormControl error={!!errors.username}>
               <FormLabel>Username</FormLabel>
               <Input {...field}/>
+              <FormHelperText>
+                {errors.username?.message}
+              </FormHelperText>
             </FormControl>
           )}
         />
         <Controller
           name="password"
           control={control}
+          defaultValue=""
           render={({field}) => (
-            <FormControl required>
+            <FormControl error={!!errors.password}>
               <FormLabel>Password</FormLabel>
               <Input type="password" {...field}/>
+              <FormHelperText>
+                {errors.password?.message}
+              </FormHelperText>
             </FormControl>
           )}
         />
