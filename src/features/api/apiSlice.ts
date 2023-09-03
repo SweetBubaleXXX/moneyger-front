@@ -1,13 +1,26 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import { LoginResponse, LoginRequest } from './types';
+import { JwtToken, LoginRequest } from './types';
+import { REHYDRATE } from 'redux-persist';
+import { RootState } from '../../store';
 
 export const api = createApi({
-  baseQuery: fetchBaseQuery(),
+  baseQuery: fetchBaseQuery({
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as RootState).jwt.access;
+      token && headers.set('authorization', `Bearer ${token}`);
+      return headers;
+    },
+  }),
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (action.type === REHYDRATE) {
+      return action.payload[reducerPath];
+    }
+  },
   endpoints: builder => ({
     getCategories: builder.query({
       query: () => '/categories',
     }),
-    login: builder.mutation<LoginResponse, LoginRequest>({
+    login: builder.mutation<JwtToken, LoginRequest>({
       query: credentials => ({
         url: 'accounts/auth/jwt/create',
         method: 'POST',

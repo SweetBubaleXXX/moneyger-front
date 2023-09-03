@@ -3,7 +3,14 @@ export interface LoginRequest {
   password: string;
 }
 
-export interface LoginResponse {
-  expiry: Date;
-  token: string;
+export type JwtToken = {
+  access: string;
+  refresh: string;
+}
+
+export type Account = {
+  id: number,
+  username: string,
+  email: string,
+  default_currency: string,
 }

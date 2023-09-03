@@ -1,15 +1,41 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { api } from './features/api/apiSlice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import storage from 'redux-persist/lib/storage';
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import { api } from './features/api/apiSlice';
+import { jwtSlice } from './features/api/auth';
+
+const persistConfig = {
+  key: 'root',
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, api.reducer);
 
 export const store = configureStore({
-  devTools: process.env.NODE_ENV === 'development',
+  devTools: process.env.NODE_ENV !== 'production',
   reducer: {
-    [api.reducerPath]: api.reducer,
+    [api.reducerPath]: persistedReducer,
+    jwt: jwtSlice.reducer,
   },
   middleware: getDefaultMiddleware => 
-    getDefaultMiddleware().concat(api.middleware),
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(api.middleware),
 });
+
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

@@ -2,10 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { CssVarsProvider } from '@mui/joy/styles';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import store from './store';
+import { persistor, store } from './store';
 import Router from './pages/Router';
+import { Skeleton } from '@mui/joy';
 
 
 const root = ReactDOM.createRoot(
@@ -14,9 +16,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <CssVarsProvider>
-        <Router />
-      </CssVarsProvider>
+      <PersistGate loading={<Skeleton/>} persistor={persistor}>
+        <CssVarsProvider>
+          <Router />
+        </CssVarsProvider>
+      </PersistGate>
     </Provider>
   </React.StrictMode>
 );
