@@ -1,14 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-
-export interface LoginRequest {
-  username: string,
-  password: string,
-}
-
-export interface LoginResponse {
-  expiry: Date,
-  token: string,
-}
+import { LoginResponse, LoginRequest } from './types';
 
 export const api = createApi({
   baseQuery: fetchBaseQuery(),
@@ -18,7 +9,7 @@ export const api = createApi({
     }),
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: credentials => ({
-        url: 'accounts/login',
+        url: 'accounts/auth/jwt/create',
         method: 'POST',
         body: credentials,
       }),

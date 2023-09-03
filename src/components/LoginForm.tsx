@@ -10,7 +10,8 @@ import {
   Stack,
   FormHelperText, 
 } from '@mui/joy';
-import { LoginRequest, useLoginMutation } from '../features/api';
+import { useLoginMutation } from '../features/api/apiSlice';
+import { LoginRequest } from '../features/api/types';
 
 const LoginSchema = z.object({
   username: z.string()
