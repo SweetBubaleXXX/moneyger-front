@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
@@ -8,7 +8,8 @@ import {
   Input,
   FormControl,
   Stack,
-  FormHelperText, 
+  FormHelperText,
+  CircularProgress,
 } from '@mui/joy';
 import { useLoginMutation } from '../features/api/apiSlice';
 import { LoginRequest } from '../features/api/types';
@@ -27,11 +28,10 @@ export default () => {
     resolver: zodResolver(LoginSchema),
   }
   );
-  const [login, {isLoading, isError}] = useLoginMutation();
+  const [login, {isSuccess, isLoading, isError, error }] = useLoginMutation();
 
   return (
-    // <form onSubmit={handleSubmit(login)}>
-    <form onSubmit={handleSubmit(console.log)}>
+    <form onSubmit={handleSubmit(login)}>
       <Stack spacing={1}>
         <Controller
           name="username"
@@ -61,7 +61,11 @@ export default () => {
             </FormControl>
           )}
         />
-        <Button type="submit">Login</Button>
+        <Button type="submit" startDecorator={
+          isLoading && <CircularProgress variant="plain" />
+        }>{
+            isLoading ? 'Loading...' : 'Login'
+          }</Button>
       </Stack>
     </form>
   );

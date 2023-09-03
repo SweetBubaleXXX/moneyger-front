@@ -25,7 +25,7 @@ export const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
   reducer: {
     [api.reducerPath]: persistedReducer,
-    jwt: jwtSlice.reducer,
+    [jwtSlice.name]: jwtSlice.reducer,
   },
   middleware: getDefaultMiddleware => 
     getDefaultMiddleware({
