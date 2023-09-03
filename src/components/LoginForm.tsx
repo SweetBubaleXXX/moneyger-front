@@ -30,6 +30,10 @@ export default () => {
   );
   const [login, {isSuccess, isLoading, isError, error }] = useLoginMutation();
 
+  useEffect(() => {
+    isError && 'data' in error! && alert(JSON.stringify(error.data));
+  }, [isError]);
+
   return (
     <form onSubmit={handleSubmit(login)}>
       <Stack spacing={1}>
