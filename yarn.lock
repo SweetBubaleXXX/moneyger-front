@@ -8791,6 +8791,11 @@ sockjs@^0.3.24:
     uuid "^8.3.2"
     websocket-driver "^0.7.4"
 
+sonner@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/sonner/-/sonner-0.7.0.tgz#1b63765b4d14721cb93f0aa921da09bcb2e7a1d9"
+  integrity sha512-vAlXCrE6/183yt64ktIUnPv85RmAPYiicl5z35fDDFhWRIUpg7N62TsiIbHjwGuxbVJu/5hYlh92HHImsS27dA==
+
 source-list-map@^2.0.0, source-list-map@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/source-list-map/-/source-list-map-2.0.1.tgz#3993bd873bfc48479cca9ea3a547835c7c154b34"
