@@ -3,18 +3,13 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
 import { 
-  Button,
   FormLabel,
   Input,
   FormControl,
   Stack,
   FormHelperText,
-  CircularProgress,
-  Alert,
-  Typography,
 } from '@mui/joy';
 import { toast } from 'sonner';
-import { Toaster } from '../Toast';
 import { useRegisterMutation } from '../../features/api/apiSlice';
 import { RegistrationRequest } from '../../features/api/types';
 import { LoginSchema } from './LoginForm';
@@ -32,6 +27,7 @@ export default () => {
   const { 
     control,
     handleSubmit,
+    reset: resetForm,
     formState: {errors},
   } = useForm<RegistrationRequest & { confirmPassword: string }>({
     resolver: zodResolver(RegistrationSchema),
@@ -44,9 +40,16 @@ export default () => {
 
   useEffect(() => {
     isError && 'data' in registrationError! &&
-      Object.entries(registrationError.data as Map<string, string[]>)
-        .map(([field, messages]) => { messages.map(toast.error); });
+      Object.values(registrationError.data as Map<string, string[]>)
+        .map(messages => { messages.map(toast.error); });
   }, [isError]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('Your account has been successfully registered');
+      resetForm();
+    }
+  }, [isSuccess]);
 
   return (
     <form onSubmit={handleSubmit(register)}>
