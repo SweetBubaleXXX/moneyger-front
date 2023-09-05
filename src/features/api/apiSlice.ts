@@ -23,7 +23,7 @@ export const api = createApi({
     }),
     login: builder.mutation<JwtToken, LoginRequest>({
       query: credentials => ({
-        url: 'accounts/auth/jwt/create',
+        url: 'accounts/auth/jwt/create/',
         method: 'POST',
         body: credentials,
       }),

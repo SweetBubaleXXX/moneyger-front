@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
@@ -10,6 +10,8 @@ import {
   Stack,
   FormHelperText,
   CircularProgress,
+  Alert,
+  Typography,
 } from '@mui/joy';
 import { useLoginMutation } from '../features/api/apiSlice';
 import { LoginRequest } from '../features/api/types';
@@ -29,10 +31,6 @@ export default () => {
   }
   );
   const [login, {isSuccess, isLoading, isError, error }] = useLoginMutation();
-
-  useEffect(() => {
-    isError && 'data' in error! && alert(JSON.stringify(error.data));
-  }, [isError]);
 
   return (
     <form onSubmit={handleSubmit(login)}>
@@ -65,6 +63,14 @@ export default () => {
             </FormControl>
           )}
         />
+        {
+          isError && 'data' in error! &&
+            <Alert color="danger" variant="soft">
+              <Typography level="body-xs">
+                {(error.data as { detail?: string }).detail || 'Error'}
+              </Typography>
+            </Alert>
+        }
         <Button type="submit" startDecorator={
           isLoading && <CircularProgress variant="plain" />
         }>{
