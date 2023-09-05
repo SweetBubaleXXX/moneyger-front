@@ -30,7 +30,10 @@ export default () => {
     resolver: zodResolver(LoginSchema),
   }
   );
-  const [login, {isSuccess, isLoading, isError, error }] = useLoginMutation();
+  const [
+    login,
+    { isSuccess, isLoading, isError, error: loginError },
+  ] = useLoginMutation();
 
   return (
     <form onSubmit={handleSubmit(login)}>
@@ -64,18 +67,18 @@ export default () => {
           )}
         />
         {
-          isError && 'data' in error! &&
+          isError && 'data' in loginError! &&
             <Alert color="danger" variant="soft">
               <Typography level="body-xs">
-                {(error.data as { detail?: string }).detail || 'Error'}
+                {(loginError.data as { detail?: string }).detail || 'Error'}
               </Typography>
             </Alert>
         }
         <Button type="submit" startDecorator={
           isLoading && <CircularProgress variant="plain" />
-        }>{
-            isLoading ? 'Loading...' : 'Login'
-          }</Button>
+        }>
+          {isLoading ? 'Loading...' : 'Login'}
+        </Button>
       </Stack>
     </form>
   );

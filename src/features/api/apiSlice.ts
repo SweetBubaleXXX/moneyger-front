@@ -19,7 +19,7 @@ export const api = createApi({
   },
   endpoints: builder => ({
     getCategories: builder.query({
-      query: () => '/categories',
+      query: () => '/categories/',
     }),
     login: builder.mutation<JwtToken, LoginRequest>({
       query: credentials => ({
