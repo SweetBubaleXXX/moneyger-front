@@ -10,9 +10,11 @@ import {
   FormHelperText,
 } from '@mui/joy';
 import { toast } from 'sonner';
+import { useDispatch } from 'react-redux';
 import { useLoginMutation } from '../../features/api/apiSlice';
 import { LoginRequest } from '../../features/api/types';
 import FormButton from './FormButton';
+import { setToken } from '../../features/api/auth';
 
 export const LoginSchema = z.object({
   username: z.string()
@@ -24,13 +26,19 @@ export const LoginSchema = z.object({
 });
 
 export default () => {
-  const { control, handleSubmit, formState: {errors}} = useForm<LoginRequest>({
-    resolver: zodResolver(LoginSchema),
-  }
+  const dispatch = useDispatch();
+  const { control, handleSubmit, formState: {errors}} = useForm<LoginRequest>(
+    { resolver: zodResolver(LoginSchema) }
   );
   const [
     login,
-    { isSuccess, isLoading, isError, error: loginError },
+    { 
+      isSuccess,
+      isLoading,
+      isError,
+      data: loginResponse,
+      error: loginError,
+    },
   ] = useLoginMutation();
 
   useEffect(() => {
@@ -39,6 +47,12 @@ export default () => {
         (loginError.data as { detail?: string }).detail || loginError.status
       );
   }, [isError]);
+
+  useEffect(() => {
+    if (isSuccess && loginResponse) {
+      dispatch(setToken(loginResponse.access));
+    }
+  }, [isSuccess]);
 
   return (
     <form onSubmit={handleSubmit(login)}>

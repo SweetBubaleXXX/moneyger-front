@@ -12,7 +12,7 @@ import {
   REGISTER,
 } from 'redux-persist';
 import { api } from './features/api/apiSlice';
-import { jwtSlice } from './features/api/auth';
+import { tokenSlice } from './features/api/auth';
 
 const persistConfig = {
   key: 'root',
@@ -25,7 +25,7 @@ export const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
   reducer: {
     [api.reducerPath]: persistedReducer,
-    [jwtSlice.name]: jwtSlice.reducer,
+    [tokenSlice.name]: tokenSlice.reducer,
   },
   middleware: getDefaultMiddleware => 
     getDefaultMiddleware({

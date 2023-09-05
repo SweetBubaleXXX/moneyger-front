@@ -12,7 +12,7 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:80/',
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).jwtToken.access;
+      const token = (getState() as RootState).token;
       token && headers.set('authorization', `Bearer ${token}`);
       return headers;
     },

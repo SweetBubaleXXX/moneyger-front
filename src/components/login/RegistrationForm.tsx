@@ -29,9 +29,8 @@ export default () => {
     handleSubmit,
     reset: resetForm,
     formState: {errors},
-  } = useForm<RegistrationRequest & { confirmPassword: string }>({
-    resolver: zodResolver(RegistrationSchema),
-  }
+  } = useForm<RegistrationRequest & { confirmPassword: string }>(
+    { resolver: zodResolver(RegistrationSchema) }
   );
   const [
     register,

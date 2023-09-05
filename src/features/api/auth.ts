@@ -1,16 +1,13 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { JwtToken } from './types';
 
-type JwtTokenState = Partial<JwtToken>;
-
-export const jwtSlice = createSlice({
-  name: 'jwtToken',
-  initialState: {} as JwtTokenState,
+export const tokenSlice = createSlice({
+  name: 'token',
+  initialState: null as string | null,
   reducers: {
-    setToken: (state, { payload } : PayloadAction<JwtToken>) => {
+    setToken: (state, { payload } : PayloadAction<string>) => {
       state = payload;
     },
   },
 });
 
-export const { setToken: setJwtToken } = jwtSlice.actions;
+export const { setToken } = tokenSlice.actions;
