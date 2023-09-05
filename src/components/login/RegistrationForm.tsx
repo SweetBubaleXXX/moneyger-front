@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
@@ -13,9 +13,12 @@ import {
   Alert,
   Typography,
 } from '@mui/joy';
-import { useRegisterMutation } from '../features/api/apiSlice';
-import { RegistrationRequest } from '../features/api/types';
+import { toast } from 'sonner';
+import { Toaster } from '../Toast';
+import { useRegisterMutation } from '../../features/api/apiSlice';
+import { RegistrationRequest } from '../../features/api/types';
 import { LoginSchema } from './LoginForm';
+import FormButton from './FormButton';
 
 export const RegistrationSchema = LoginSchema.extend({
   email: z.string().email(),
@@ -38,6 +41,12 @@ export default () => {
     register,
     { isSuccess, isLoading, isError, error: registrationError },
   ] = useRegisterMutation();
+
+  useEffect(() => {
+    isError && 'data' in registrationError! &&
+      Object.entries(registrationError.data as Map<string, string[]>)
+        .map(([field, messages]) => { messages.map(toast.error); });
+  }, [isError]);
 
   return (
     <form onSubmit={handleSubmit(register)}>
@@ -98,21 +107,7 @@ export default () => {
             </FormControl>
           )}
         />
-        {
-          isError && 'data' in registrationError! &&
-          Object.entries(registrationError.data as Map<string, string[]>)
-            .map(([field, messages]) => 
-              <Alert key={field} color="danger" variant="soft">
-                <Typography level="body-xs">
-                  {messages.join('\n')}
-                </Typography>
-              </Alert>)
-        }
-        <Button type="submit" startDecorator={
-          isLoading && <CircularProgress variant="plain" />
-        }>
-          {isLoading ? 'Loading...' : 'Register'}
-        </Button>
+        <FormButton buttonText="Register" isLoading={isLoading}/>
       </Stack>
     </form>
   );

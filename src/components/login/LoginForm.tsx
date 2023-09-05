@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
@@ -13,8 +13,10 @@ import {
   Alert,
   Typography,
 } from '@mui/joy';
-import { useLoginMutation } from '../features/api/apiSlice';
-import { LoginRequest } from '../features/api/types';
+import { toast } from 'sonner';
+import { useLoginMutation } from '../../features/api/apiSlice';
+import { LoginRequest } from '../../features/api/types';
+import FormButton from './FormButton';
 
 export const LoginSchema = z.object({
   username: z.string()
@@ -34,6 +36,13 @@ export default () => {
     login,
     { isSuccess, isLoading, isError, error: loginError },
   ] = useLoginMutation();
+
+  useEffect(() => {
+    isError && 'data' in loginError! &&
+      toast.error(
+        (loginError.data as { detail?: string }).detail || loginError.status
+      );
+  }, [isError]);
 
   return (
     <form onSubmit={handleSubmit(login)}>
@@ -66,19 +75,7 @@ export default () => {
             </FormControl>
           )}
         />
-        {
-          isError && 'data' in loginError! &&
-            <Alert color="danger" variant="soft">
-              <Typography level="body-xs">
-                {(loginError.data as { detail?: string }).detail || 'Error'}
-              </Typography>
-            </Alert>
-        }
-        <Button type="submit" startDecorator={
-          isLoading && <CircularProgress variant="plain" />
-        }>
-          {isLoading ? 'Loading...' : 'Login'}
-        </Button>
+        <FormButton buttonText="Login" isLoading={isLoading}/>
       </Stack>
     </form>
   );

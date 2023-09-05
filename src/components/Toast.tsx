@@ -1,9 +1,10 @@
 import React from 'react';
-import { Toaster as SonnerToaster, toast as sonnerToast } from "sonner";
+import { Toaster as SonnerToaster } from 'sonner';
 import { Global, css } from '@emotion/react';
 import { useTheme } from '@mui/joy';
 
-export const Toaster () => {
+
+export const Toaster: typeof SonnerToaster = (props) => {
   const theme = useTheme();
 
   return (
@@ -32,8 +33,10 @@ export const Toaster () => {
         `}
       />
       <SonnerToaster
+        position="top-center"
         richColors
         closeButton
+        {...props}
         toastOptions={{
           className: 'sonner-toast',
         }}
@@ -41,12 +44,3 @@ export const Toaster () => {
     </>
   );
 };
-
-type Toast = typeof sonnerToast & {
-  warn: typeof sonnerToast.error;
-};
-
-const toast: Toast = sonnerToast as Toast;
-
-export { toast };
-
