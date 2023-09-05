@@ -16,7 +16,7 @@ import {
 import { useLoginMutation } from '../features/api/apiSlice';
 import { LoginRequest } from '../features/api/types';
 
-const LoginSchema = z.object({
+export const LoginSchema = z.object({
   username: z.string()
     .nonempty('Username is required')
     .regex(/^[\w.@+-]+$/, 'Letters, digits and @/./+/-/_ only')

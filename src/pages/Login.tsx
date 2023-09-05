@@ -1,5 +1,6 @@
 import React from 'react';
 import LoginForm from '../components/LoginForm';
+import RegistrationForm from '../components/RegistrationForm';
 import { Card, Sheet, Tab, TabList, TabPanel, Tabs } from '@mui/joy';
 
 export default () => {
@@ -20,7 +21,7 @@ export default () => {
             <LoginForm/>
           </TabPanel>
           <TabPanel value={1}>
-            Registration form
+            <RegistrationForm />
           </TabPanel>
         </Tabs>
       </Card>

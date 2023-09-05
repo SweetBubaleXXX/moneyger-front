@@ -1,5 +1,10 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import { JwtToken, LoginRequest } from './types';
+import {
+  JwtToken,
+  LoginRequest,
+  RegistrationRequest,
+  RegistrationResponse, 
+} from './types';
 import { REHYDRATE } from 'redux-persist';
 import { RootState } from '../../store';
 
@@ -28,9 +33,17 @@ export const api = createApi({
         body: credentials,
       }),
     }),
+    register: builder.mutation<RegistrationResponse, RegistrationRequest>({
+      query: body => ({
+        url: 'accounts/auth/users/',
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
 export const {
   useLoginMutation,
+  useRegisterMutation,
 } = api;
