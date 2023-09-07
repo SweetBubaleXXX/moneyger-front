@@ -20,7 +20,7 @@ import { setToken } from './auth';
 const reauthMutex = new Mutex();
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:80/',
+  baseUrl: process.env.REACT_APP_API_URL,
   prepareHeaders: (headers, { getState }) => {
     const csrfToken = Cookies.get('csrftoken');
     csrfToken && headers.set('x-csrftoken', csrfToken);
@@ -44,7 +44,7 @@ string | FetchArgs, unknown, FetchBaseQueryError
       try {
         const refreshResult = await baseQuery(
           {
-            url:'/accounts/auth/jwt/refresh/',
+            url:'accounts/auth/jwt/refresh/',
             method: 'POST',
           }, api, extraOptions
         );
@@ -75,7 +75,7 @@ export const api = createApi({
   },
   endpoints: builder => ({
     getCategories: builder.query({
-      query: () => '/categories/',
+      query: () => 'categories/',
     }),
     login: builder.mutation<JwtToken, LoginRequest>({
       query: credentials => ({
