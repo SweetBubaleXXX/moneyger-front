@@ -40,7 +40,7 @@ export type TransactionType = 'IN' | 'OUT';
 
 export type Category = {
   id: number,
-  parent_category: number,
+  parent_category: number | null,
   transaction_type: TransactionType,
   name: string,
   display_order: number,
