@@ -36,7 +36,9 @@ string | FetchArgs, unknown, FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   await reauthMutex.waitForUnlock();
   let result = await baseQuery(args, api, extraOptions);
-  if (result.error && result.error.status === 401) {
+  const url = typeof args === 'string' ? args : args.url;
+  const excludeFromReauth = ['accounts/auth/jwt/create/'];
+  if (!excludeFromReauth.includes(url) && result.error?.status === 401) {
     if (!reauthMutex.isLocked()) {
       const release = await reauthMutex.acquire();
       try {
