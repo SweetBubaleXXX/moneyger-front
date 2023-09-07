@@ -58,6 +58,9 @@ string | FetchArgs, unknown, FetchBaseQueryError
       } finally {
         release();
       }
+    } else {
+      await reauthMutex.waitForUnlock();
+      result = await baseQuery(args, api, extraOptions);
     }
   }
   return result;
