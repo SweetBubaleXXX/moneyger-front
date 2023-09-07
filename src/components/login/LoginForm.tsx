@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../features/api/apiSlice';
 import { LoginRequest } from '../../features/api/types';
 import FormButton from './FormButton';
-import { setToken } from '../../features/api/auth';
+import { setAccessToken } from '../../features/api/auth';
 
 export const LoginSchema = z.object({
   username: z.string()
@@ -52,7 +52,7 @@ export default () => {
 
   useEffect(() => {
     if (isSuccess && loginResponse) {
-      dispatch(setToken(loginResponse.access));
+      dispatch(setAccessToken(loginResponse.access));
       navigate('/');
     }
   }, [isSuccess]);

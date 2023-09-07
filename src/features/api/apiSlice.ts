@@ -7,15 +7,18 @@ import {
 } from '@reduxjs/toolkit/query/react';
 import Cookies from 'js-cookie';
 import { Mutex } from 'async-mutex';
-import { REHYDRATE } from 'redux-persist';
 import {
+  PaginatedResponse,
+  Transaction,
   JwtToken,
   LoginRequest,
   RegistrationRequest,
-  RegistrationResponse, 
+  RegistrationResponse,
+  Category, 
 } from './types';
 import { RootState } from '../../store';
-import { setToken } from './auth';
+import { setAccessToken } from './auth';
+import { PAGE_SIZE } from '../../constants';
 
 const reauthMutex = new Mutex();
 
@@ -24,7 +27,7 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders: (headers, { getState }) => {
     const csrfToken = Cookies.get('csrftoken');
     csrfToken && headers.set('x-csrftoken', csrfToken);
-    const token = (getState() as RootState).token;
+    const token = (getState() as RootState).auth.accessToken;
     token && headers.set('authorization', `Bearer ${token}`);
     return headers;
   },
@@ -52,7 +55,7 @@ string | FetchArgs, unknown, FetchBaseQueryError
           const {
             access: accessToken,
           } = refreshResult.data as { access: string };
-          api.dispatch(setToken(accessToken));
+          api.dispatch(setAccessToken(accessToken));
           result = await baseQuery(args, api, extraOptions);
         }
       } finally {
@@ -68,14 +71,16 @@ string | FetchArgs, unknown, FetchBaseQueryError
 
 export const api = createApi({
   baseQuery: baseQueryWithReauth,
-  extractRehydrationInfo(action, { reducerPath }) {
-    if (action.type === REHYDRATE) {
-      return action.payload[reducerPath];
-    }
-  },
   endpoints: builder => ({
-    getCategories: builder.query({
+    getCategories: builder.query<PaginatedResponse<Category>, void>({
       query: () => 'categories/',
+    }),
+    getCategoryById: builder.query<Category, number>({
+      query: categoryId => `categories/${categoryId}/`,
+    }),
+    getTransactions: builder.query<PaginatedResponse<Transaction>, number>({
+      query: (pageNumber = 1) => 
+        `transactions/?limit=${PAGE_SIZE}&offset=${PAGE_SIZE * (pageNumber - 1)}`,
     }),
     login: builder.mutation<JwtToken, LoginRequest>({
       query: credentials => ({
@@ -95,6 +100,9 @@ export const api = createApi({
 });
 
 export const {
+  useGetCategoriesQuery,
+  useGetCategoryByIdQuery,
+  useGetTransactionsQuery,
   useLoginMutation,
   useRegisterMutation,
 } = api;

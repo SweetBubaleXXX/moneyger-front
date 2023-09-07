@@ -12,20 +12,20 @@ import {
   REGISTER,
 } from 'redux-persist';
 import { api } from './features/api/apiSlice';
-import { tokenSlice } from './features/api/auth';
+import { authSlice } from './features/api/auth';
 
 const persistConfig = {
   key: 'root',
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, api.reducer);
+const persistedAuthReducer = persistReducer(persistConfig, authSlice.reducer);
 
 export const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
   reducer: {
-    [api.reducerPath]: persistedReducer,
-    [tokenSlice.name]: tokenSlice.reducer,
+    [api.reducerPath]: api.reducer,
+    [authSlice.name]: persistedAuthReducer,
   },
   middleware: getDefaultMiddleware => 
     getDefaultMiddleware({
