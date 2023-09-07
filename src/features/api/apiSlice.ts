@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import Cookies from 'js-cookie';
 import {
   JwtToken,
   LoginRequest,
@@ -12,10 +13,13 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:80/',
     prepareHeaders: (headers, { getState }) => {
+      const csrfToken = Cookies.get('csrftoken');
+      csrfToken && headers.set('x-csrftoken', csrfToken);
       const token = (getState() as RootState).token;
       token && headers.set('authorization', `Bearer ${token}`);
       return headers;
     },
+    credentials: 'include',
   }),
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === REHYDRATE) {

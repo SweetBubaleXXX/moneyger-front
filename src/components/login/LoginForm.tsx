@@ -11,6 +11,7 @@ import {
 } from '@mui/joy';
 import { toast } from 'sonner';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../features/api/apiSlice';
 import { LoginRequest } from '../../features/api/types';
 import FormButton from './FormButton';
@@ -26,6 +27,7 @@ export const LoginSchema = z.object({
 });
 
 export default () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { control, handleSubmit, formState: {errors}} = useForm<LoginRequest>(
     { resolver: zodResolver(LoginSchema) }
@@ -51,6 +53,7 @@ export default () => {
   useEffect(() => {
     if (isSuccess && loginResponse) {
       dispatch(setToken(loginResponse.access));
+      navigate('/');
     }
   }, [isSuccess]);
 
