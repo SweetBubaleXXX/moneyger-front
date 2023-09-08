@@ -8,14 +8,19 @@ import {
 } from '@mui/joy';
 import { Stack } from '@mui/system';
 import { Transaction } from '../../features/api/types';
-import { useGetCategoryByIdQuery } from '../../features/api/apiSlice';
+import {
+  useGetAllCategoriesQuery, 
+} from '../../features/api/apiSlice';
 import { OVERFLOW_ELLIPSIS } from '../../constants';
 
 export default (transaction: Transaction) => {
-  const { 
-    data: category,
-    isLoading,
-  } = useGetCategoryByIdQuery(transaction.category);
+  const { category } = useGetAllCategoriesQuery(undefined, {
+    selectFromResult: result => ({
+      category: result.data?.find(
+        category => category.id === transaction.category
+      ),
+    }),
+  });
   const transactionDate = new Date(transaction.transaction_time);
 
   return (

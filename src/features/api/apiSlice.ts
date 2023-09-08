@@ -5,6 +5,7 @@ import {
   createApi,
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react';
+import { createSelector } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import { Mutex } from 'async-mutex';
 import {
@@ -19,7 +20,7 @@ import {
 } from './types';
 import { RootState } from '../../store';
 import { setAccessToken } from './auth';
-import { PAGE_SIZE } from '../../constants';
+import { getPaginationQuery } from '../../helpers/pagination';
 
 const reauthMutex = new Mutex();
 
@@ -80,12 +81,13 @@ export const api = createApi({
     }),
     getAllCategories: builder.query<Category[], void>({
       query: () => 'categories/?limit=99999',
-      providesTags: ['Account'],
+      providesTags: ['Category'],
       transformResponse: (response: PaginatedResponse<Category>) => 
         response.results,
     }),
-    getCategories: builder.query<PaginatedResponse<Category>, void>({
-      query: () => 'categories/',
+    getCategories: builder.query<PaginatedResponse<Category>, number>({
+      query: (pageNumber = 1) =>
+        `categories/?${getPaginationQuery(pageNumber)}`,
       providesTags: ['Category'],
     }),
     getCategoryById: builder.query<Category, number>({
@@ -94,7 +96,7 @@ export const api = createApi({
     }),
     getTransactions: builder.query<PaginatedResponse<Transaction>, number>({
       query: (pageNumber = 1) => 
-        `transactions/?limit=${PAGE_SIZE}&offset=${PAGE_SIZE * (pageNumber - 1)}`,
+        `transactions/?${getPaginationQuery(pageNumber)}`,
       providesTags: ['Transaction'],
     }),
     login: builder.mutation<JwtToken, LoginRequest>({
@@ -117,7 +119,7 @@ export const api = createApi({
 
 export const {
   useGetAccountQuery,
-  useLazyGetAccountQuery,
+  useGetAllCategoriesQuery,
   useGetCategoriesQuery,
   useGetCategoryByIdQuery,
   useGetTransactionsQuery,
