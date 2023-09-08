@@ -27,16 +27,16 @@ export type JwtToken = {
   refresh: string,
 }
 
+export type CurrencyCode = 'USD' | 'EUR' | 'RUB' | 'BYN';
+
+export type TransactionType = 'IN' | 'OUT';
+
 export type Account = {
   id: number,
   username: string,
   email: string,
-  default_currency: string,
+  default_currency: CurrencyCode,
 }
-
-export type CurrencyCode = 'USD' | 'EUR' | 'RUB' | 'BYN';
-
-export type TransactionType = 'IN' | 'OUT';
 
 export type Category = {
   id: number,
