@@ -7,6 +7,7 @@ import {
 } from '@reduxjs/toolkit/query/react';
 import Cookies from 'js-cookie';
 import { Mutex } from 'async-mutex';
+import camelcaseKeys from 'camelcase-keys';
 import {
   PaginatedResponse,
   Transaction,
@@ -77,12 +78,13 @@ export const api = createApi({
     getAccount: builder.query<Account, void>({
       query: () => 'accounts/auth/users/me/',
       providesTags: ['Account'],
+      transformResponse: (response: Account) => camelcaseKeys(response),
     }),
     getAllCategories: builder.query<Category[], void>({
       query: () => 'categories/?limit=99999',
       providesTags: ['Category'],
       transformResponse: (response: PaginatedResponse<Category>) => 
-        response.results,
+        camelcaseKeys(response.results),
     }),
     getCategories: builder.query<PaginatedResponse<Category>, number>({
       query: (pageNumber = 1) =>
@@ -97,6 +99,10 @@ export const api = createApi({
       query: (pageNumber = 1) => 
         `transactions/?${getPaginationQuery(pageNumber)}`,
       providesTags: ['Transaction'],
+      transformResponse: (response: PaginatedResponse<Transaction>) => {
+        response.results = camelcaseKeys(response.results);
+        return response;
+      },
     }),
     login: builder.mutation<JwtToken, LoginRequest>({
       query: credentials => ({

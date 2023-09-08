@@ -1,3 +1,5 @@
+import { CURRENCY_CODES } from '../../constants';
+
 export type AuthState = {
   accessToken?: string,
 }
@@ -27,7 +29,7 @@ export type JwtToken = {
   refresh: string,
 }
 
-export type CurrencyCode = 'USD' | 'EUR' | 'RUB' | 'BYN';
+export type CurrencyCode =  typeof CURRENCY_CODES[number]
 
 export type TransactionType = 'IN' | 'OUT';
 
@@ -35,15 +37,15 @@ export type Account = {
   id: number,
   username: string,
   email: string,
-  default_currency: CurrencyCode,
+  defaultCurrency: CurrencyCode,
 }
 
 export type Category = {
   id: number,
-  parent_category: number | null,
-  transaction_type: TransactionType,
+  parentCategory: number | null,
+  transactionType: TransactionType,
   name: string,
-  display_order: number,
+  displayOrder: number,
   icon: string,
   color: string,
 }
@@ -51,9 +53,11 @@ export type Category = {
 export type Transaction = {
   id: number,
   category: number,
-  transaction_type: TransactionType,
+  transactionType: TransactionType,
   amount: string,
   currency: CurrencyCode,
   comment: string,
-  transaction_time: string,
+  transactionTime: string,
 }
+
+export type TransactionCreateRequest = Omit<Transaction, 'id' | 'transactionType'>

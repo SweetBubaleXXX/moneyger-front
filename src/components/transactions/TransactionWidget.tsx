@@ -21,7 +21,7 @@ export default (transaction: Transaction) => {
       ),
     }),
   });
-  const transactionDate = new Date(transaction.transaction_time);
+  const transactionDate = new Date(transaction.transactionTime);
 
   return (
     <Card variant="outlined" sx={{'--Card-padding': '8px'}}>
@@ -47,7 +47,7 @@ export default (transaction: Transaction) => {
           <Typography
             level="body-md"
             textAlign="right"
-            color={transaction.transaction_type === 'IN' ? 'success' : 'danger'}
+            color={transaction.transactionType === 'IN' ? 'success' : 'danger'}
           >
             {transaction.amount} {transaction.currency}
           </Typography>
