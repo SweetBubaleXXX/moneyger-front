@@ -12,7 +12,10 @@ import {
 import { toast } from 'sonner';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useLoginMutation } from '../../features/api/apiSlice';
+import {
+  useLoginMutation,
+  useLazyGetAccountQuery,
+} from '../../features/api/apiSlice';
 import { LoginRequest } from '../../features/api/types';
 import FormButton from './FormButton';
 import { setAccessToken } from '../../features/api/auth';
@@ -42,6 +45,7 @@ export default () => {
       error: loginError,
     },
   ] = useLoginMutation();
+  const [getAccount] = useLazyGetAccountQuery();
 
   useEffect(() => {
     isError && 'data' in loginError! &&
@@ -53,7 +57,9 @@ export default () => {
   useEffect(() => {
     if (isSuccess && loginResponse) {
       dispatch(setAccessToken(loginResponse.access));
-      navigate('/');
+      getAccount().then(() => {
+        navigate('/');
+      });
     }
   }, [isSuccess]);
 

@@ -14,7 +14,8 @@ import {
   LoginRequest,
   RegistrationRequest,
   RegistrationResponse,
-  Category, 
+  Category,
+  Account, 
 } from './types';
 import { RootState } from '../../store';
 import { setAccessToken } from './auth';
@@ -71,16 +72,30 @@ string | FetchArgs, unknown, FetchBaseQueryError
 
 export const api = createApi({
   baseQuery: baseQueryWithReauth,
+  tagTypes: ['Account', 'Category', 'Transaction'],
   endpoints: builder => ({
+    getAccount: builder.query<Account, void>({
+      query: () => 'accounts/auth/users/me/',
+      providesTags: ['Account'],
+    }),
+    getAllCategories: builder.query<Category[], void>({
+      query: () => 'categories/?limit=99999',
+      providesTags: ['Account'],
+      transformResponse: (response: PaginatedResponse<Category>) => 
+        response.results,
+    }),
     getCategories: builder.query<PaginatedResponse<Category>, void>({
       query: () => 'categories/',
+      providesTags: ['Category'],
     }),
     getCategoryById: builder.query<Category, number>({
       query: categoryId => `categories/${categoryId}/`,
+      providesTags: ['Category'],
     }),
     getTransactions: builder.query<PaginatedResponse<Transaction>, number>({
       query: (pageNumber = 1) => 
         `transactions/?limit=${PAGE_SIZE}&offset=${PAGE_SIZE * (pageNumber - 1)}`,
+      providesTags: ['Transaction'],
     }),
     login: builder.mutation<JwtToken, LoginRequest>({
       query: credentials => ({
@@ -88,6 +103,7 @@ export const api = createApi({
         method: 'POST',
         body: credentials,
       }),
+      invalidatesTags: ['Account', 'Category', 'Transaction'],
     }),
     register: builder.mutation<RegistrationResponse, RegistrationRequest>({
       query: body => ({
@@ -100,6 +116,8 @@ export const api = createApi({
 });
 
 export const {
+  useGetAccountQuery,
+  useLazyGetAccountQuery,
   useGetCategoriesQuery,
   useGetCategoryByIdQuery,
   useGetTransactionsQuery,
