@@ -5,7 +5,6 @@ import {
   createApi,
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react';
-import { createSelector } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import { Mutex } from 'async-mutex';
 import {

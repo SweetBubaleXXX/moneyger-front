@@ -34,7 +34,9 @@ export default (transaction: Transaction) => {
         >
           <Avatar>{category?.icon}</Avatar>
           <Sheet sx={{flexGrow: 1, overflow: 'hidden'}}>
-            <Typography level="title-lg">{category?.name}</Typography>
+            <Typography level="title-lg"  sx={OVERFLOW_ELLIPSIS}>
+              {category?.name}
+            </Typography>
             <Typography level="body-sm" sx={OVERFLOW_ELLIPSIS}>
               {transaction.comment}
             </Typography>

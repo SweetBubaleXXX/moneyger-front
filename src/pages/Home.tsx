@@ -8,7 +8,11 @@ export default () => {
   const { data: transactions } = useGetTransactionsQuery(page);
   
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} padding={2} marginX="auto" sx={{
+      maxWidth: {
+        sm: 'sm',
+      },
+    }}>
       {
         transactions?.results.map(
           transaction =>
