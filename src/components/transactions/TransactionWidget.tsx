@@ -13,7 +13,7 @@ import {
 } from '../../features/api/apiSlice';
 import { OVERFLOW_ELLIPSIS } from '../../constants';
 
-export default (transaction: Transaction) => {
+export const TransactionWidget = (transaction: Transaction) => {
   const { category } = useGetAllCategoriesQuery(undefined, {
     selectFromResult: result => ({
       category: result.data?.find(

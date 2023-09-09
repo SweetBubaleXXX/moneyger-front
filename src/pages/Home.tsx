@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Stack } from '@mui/joy';
 import { useGetTransactionsQuery } from '../features/api/apiSlice';
-import TransactionWidget from '../components/transactions/TransactionWidget';
+import { 
+  TransactionWidget, 
+} from '../components/transactions/TransactionWidget';
 
 export default () => {
   const [page, setPage] = useState<number>(1);

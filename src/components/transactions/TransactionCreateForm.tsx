@@ -25,7 +25,7 @@ export const TransactionSchema = z.object({
   transaction_time: z.date(),
 });
 
-export default () => {
+export const TransactionCreateForm = () => {
   const [currency, setCurrency] = useState<CurrencyCode>(CURRENCY_CODES[0]);
   const { 
     control, handleSubmit, formState: {errors},
