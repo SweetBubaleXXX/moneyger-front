@@ -60,4 +60,6 @@ export type Transaction = {
   transactionTime: string,
 }
 
-export type TransactionCreateRequest = Omit<Transaction, 'id' | 'transactionType'>
+export type TransactionCreateRequest = Omit<
+  Transaction, 'id' | 'transactionType'
+>

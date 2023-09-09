@@ -20,7 +20,7 @@ import {
 } from './types';
 import { RootState } from '../../store';
 import { setAccessToken } from './auth';
-import { getPaginationQuery } from '../../helpers/pagination';
+import { API_PATHS, EXCLUDE_FROM_REAUTH } from './constants';
 
 const reauthMutex = new Mutex();
 
@@ -42,31 +42,31 @@ string | FetchArgs, unknown, FetchBaseQueryError
   await reauthMutex.waitForUnlock();
   let result = await baseQuery(args, api, extraOptions);
   const url = typeof args === 'string' ? args : args.url;
-  const excludeFromReauth = ['accounts/auth/jwt/create/'];
-  if (!excludeFromReauth.includes(url) && result.error?.status === 401) {
-    if (!reauthMutex.isLocked()) {
-      const release = await reauthMutex.acquire();
-      try {
-        const refreshResult = await baseQuery(
-          {
-            url:'accounts/auth/jwt/refresh/',
-            method: 'POST',
-          }, api, extraOptions
-        );
-        if (refreshResult.data) {
-          const {
-            access: accessToken,
-          } = refreshResult.data as { access: string };
-          api.dispatch(setAccessToken(accessToken));
-          result = await baseQuery(args, api, extraOptions);
-        }
-      } finally {
-        release();
+  if (EXCLUDE_FROM_REAUTH.includes(url) || result.error?.status !== 401) {
+    return result;
+  }
+  if (!reauthMutex.isLocked()) {
+    const release = await reauthMutex.acquire();
+    try {
+      const refreshResult = await baseQuery(
+        {
+          url: API_PATHS.refreshToken,
+          method: 'POST',
+        }, api, extraOptions
+      );
+      if (refreshResult.data) {
+        const {
+          access: accessToken,
+        } = refreshResult.data as { access: string };
+        api.dispatch(setAccessToken(accessToken));
+        result = await baseQuery(args, api, extraOptions);
       }
-    } else {
-      await reauthMutex.waitForUnlock();
-      result = await baseQuery(args, api, extraOptions);
+    } finally {
+      release();
     }
+  } else {
+    await reauthMutex.waitForUnlock();
+    result = await baseQuery(args, api, extraOptions);
   }
   return result;
 };
@@ -76,28 +76,26 @@ export const api = createApi({
   tagTypes: ['Account', 'Category', 'Transaction'],
   endpoints: builder => ({
     getAccount: builder.query<Account, void>({
-      query: () => 'accounts/auth/users/me/',
+      query: () => API_PATHS.getAccount,
       providesTags: ['Account'],
       transformResponse: (response: Account) => camelcaseKeys(response),
     }),
     getAllCategories: builder.query<Category[], void>({
-      query: () => 'categories/?limit=99999',
+      query: () => API_PATHS.getAllCategories,
       providesTags: ['Category'],
       transformResponse: (response: PaginatedResponse<Category>) => 
         camelcaseKeys(response.results),
     }),
     getCategories: builder.query<PaginatedResponse<Category>, number>({
-      query: (pageNumber = 1) =>
-        `categories/?${getPaginationQuery(pageNumber)}`,
+      query: API_PATHS.getCategories,
       providesTags: ['Category'],
     }),
     getCategoryById: builder.query<Category, number>({
-      query: categoryId => `categories/${categoryId}/`,
+      query: API_PATHS.getCategoryById,
       providesTags: ['Category'],
     }),
     getTransactions: builder.query<PaginatedResponse<Transaction>, number>({
-      query: (pageNumber = 1) => 
-        `transactions/?${getPaginationQuery(pageNumber)}`,
+      query: API_PATHS.getTransactions,
       providesTags: ['Transaction'],
       transformResponse: (response: PaginatedResponse<Transaction>) => {
         response.results = camelcaseKeys(response.results);
@@ -106,7 +104,7 @@ export const api = createApi({
     }),
     login: builder.mutation<JwtToken, LoginRequest>({
       query: credentials => ({
-        url: 'accounts/auth/jwt/create/',
+        url: API_PATHS.createToken,
         method: 'POST',
         body: credentials,
       }),
@@ -114,7 +112,7 @@ export const api = createApi({
     }),
     register: builder.mutation<RegistrationResponse, RegistrationRequest>({
       query: body => ({
-        url: 'accounts/auth/users/',
+        url: API_PATHS.registerAccount,
         method: 'POST',
         body,
       }),

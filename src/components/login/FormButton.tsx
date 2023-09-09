@@ -6,7 +6,7 @@ type ButtonProps = {
   isLoading?: boolean,
 };
 
-export default ({buttonText, isLoading}: ButtonProps) => {
+export const FormButton = ({buttonText, isLoading}: ButtonProps) => {
   return (
     <Button type="submit" disabled={isLoading} startDecorator={
       isLoading && <CircularProgress variant="plain" />

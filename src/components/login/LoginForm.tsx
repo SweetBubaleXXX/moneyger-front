@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../features/api/apiSlice';
 import { LoginRequest } from '../../features/api/types';
-import FormButton from './FormButton';
+import { FormButton } from './FormButton';
 import { setAccessToken } from '../../features/api/auth';
 
 export const LoginSchema = z.object({
@@ -26,7 +26,7 @@ export const LoginSchema = z.object({
     .min(8, {message: 'Password must contain at least 8 characters'}),
 });
 
-export default () => {
+export const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { control, handleSubmit, formState: {errors}} = useForm<LoginRequest>(
@@ -44,18 +44,20 @@ export default () => {
   ] = useLoginMutation();
 
   useEffect(() => {
-    isError && 'data' in loginError! &&
-      toast.error(
-        (loginError.data as { detail?: string }).detail || loginError.status
-      );
-  }, [isError]);
+    const loginFailed = isError && 'data' in loginError!;
+    if (loginFailed) {
+      const errorDetail = (loginError.data as { detail?: string }).detail;
+      const toastMessage = errorDetail || loginError.status;
+      toast.error(toastMessage);
+    }
+  }, [isError, loginError]);
 
   useEffect(() => {
     if (isSuccess && loginResponse) {
       dispatch(setAccessToken(loginResponse.access));
       navigate('/');
     }
-  }, [isSuccess]);
+  }, [isSuccess, loginResponse, navigate, dispatch]);
 
   return (
     <form onSubmit={handleSubmit(login)}>
