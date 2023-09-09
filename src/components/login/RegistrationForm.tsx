@@ -38,8 +38,8 @@ export const RegistrationForm = () => {
   ] = useRegisterMutation();
 
   useEffect(() => {
-    const isErrorWithData = isError && 'data' in registrationError!;
-    if (isErrorWithData) {
+    const registrationFailed = isError && 'data' in registrationError!;
+    if (registrationFailed) {
       Object.values(registrationError.data as Map<string, string[]>)
         .forEach(messages => { messages.map(toast.error); });
     }
