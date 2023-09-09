@@ -13,4 +13,6 @@ export const API_PATHS = {
     `transactions/?${getPaginationQuery(pageNumber)}`,
 } as const;
 
-export const EXCLUDE_FROM_REAUTH: string[] = [API_PATHS.createToken] as const;
+export const EXCLUDE_FROM_REAUTH: readonly string[] = [
+  API_PATHS.createToken,
+] as const;
