@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { CssVarsProvider } from '@mui/joy/styles';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import Home from './pages/Home';
-import { CssVarsProvider } from '@mui/joy/styles';
+import { persistor, store } from './store';
+import Router from './pages/Router';
+import { Skeleton } from '@mui/joy';
 
 
 const root = ReactDOM.createRoot(
@@ -12,13 +15,13 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <CssVarsProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-        </Routes>
-      </BrowserRouter>
-    </CssVarsProvider>
+    <Provider store={store}>
+      <PersistGate loading={<Skeleton/>} persistor={persistor}>
+        <CssVarsProvider>
+          <Router />
+        </CssVarsProvider>
+      </PersistGate>
+    </Provider>
   </React.StrictMode>
 );
 
