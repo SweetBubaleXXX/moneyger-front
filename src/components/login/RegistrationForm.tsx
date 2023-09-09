@@ -13,7 +13,7 @@ import { toast } from 'sonner';
 import { useRegisterMutation } from '../../features/api/apiSlice';
 import { RegistrationRequest } from '../../features/api/types';
 import { LoginSchema } from './LoginForm';
-import FormButton from './FormButton';
+import { FormButton } from './FormButton';
 
 export const RegistrationSchema = LoginSchema.extend({
   email: z.string().email(),
@@ -23,7 +23,7 @@ export const RegistrationSchema = LoginSchema.extend({
   path: ['confirmPassword'],
 });
 
-export default () => {
+export const RegistrationForm = () => {
   const { 
     control,
     handleSubmit,
@@ -38,17 +38,19 @@ export default () => {
   ] = useRegisterMutation();
 
   useEffect(() => {
-    isError && 'data' in registrationError! &&
+    const isErrorWithData = isError && 'data' in registrationError!;
+    if (isErrorWithData) {
       Object.values(registrationError.data as Map<string, string[]>)
-        .map(messages => { messages.map(toast.error); });
-  }, [isError]);
+        .forEach(messages => { messages.map(toast.error); });
+    }
+  }, [isError, registrationError]);
 
   useEffect(() => {
     if (isSuccess) {
       toast.success('Your account has been successfully registered');
       resetForm();
     }
-  }, [isSuccess]);
+  }, [isSuccess, resetForm]);
 
   return (
     <form onSubmit={handleSubmit(register)}>

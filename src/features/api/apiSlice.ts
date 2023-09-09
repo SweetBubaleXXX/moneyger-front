@@ -16,6 +16,7 @@ import {
 } from './types';
 import { RootState } from '../../store';
 import { setToken } from './auth';
+import { API_PATHS } from './constants';
 
 const reauthMutex = new Mutex();
 
@@ -38,30 +39,31 @@ string | FetchArgs, unknown, FetchBaseQueryError
   let result = await baseQuery(args, api, extraOptions);
   const url = typeof args === 'string' ? args : args.url;
   const excludeFromReauth = ['accounts/auth/jwt/create/'];
-  if (!excludeFromReauth.includes(url) && result.error?.status === 401) {
-    if (!reauthMutex.isLocked()) {
-      const release = await reauthMutex.acquire();
-      try {
-        const refreshResult = await baseQuery(
-          {
-            url:'accounts/auth/jwt/refresh/',
-            method: 'POST',
-          }, api, extraOptions
-        );
-        if (refreshResult.data) {
-          const {
-            access: accessToken,
-          } = refreshResult.data as { access: string };
-          api.dispatch(setToken(accessToken));
-          result = await baseQuery(args, api, extraOptions);
-        }
-      } finally {
-        release();
+  if (excludeFromReauth.includes(url) || result.error?.status !== 401) {
+    return result;
+  }
+  if (!reauthMutex.isLocked()) {
+    const release = await reauthMutex.acquire();
+    try {
+      const refreshResult = await baseQuery(
+        {
+          url: API_PATHS.refreshToken,
+          method: 'POST',
+        }, api, extraOptions
+      );
+      if (refreshResult.data) {
+        const {
+          access: accessToken,
+        } = refreshResult.data as { access: string };
+        api.dispatch(setToken(accessToken));
+        result = await baseQuery(args, api, extraOptions);
       }
-    } else {
-      await reauthMutex.waitForUnlock();
-      result = await baseQuery(args, api, extraOptions);
+    } finally {
+      release();
     }
+  } else {
+    await reauthMutex.waitForUnlock();
+    result = await baseQuery(args, api, extraOptions);
   }
   return result;
 };
@@ -75,18 +77,18 @@ export const api = createApi({
   },
   endpoints: builder => ({
     getCategories: builder.query({
-      query: () => 'categories/',
+      query: () => API_PATHS.getCategories,
     }),
     login: builder.mutation<JwtToken, LoginRequest>({
       query: credentials => ({
-        url: 'accounts/auth/jwt/create/',
+        url: API_PATHS.createToken,
         method: 'POST',
         body: credentials,
       }),
     }),
     register: builder.mutation<RegistrationResponse, RegistrationRequest>({
       query: body => ({
-        url: 'accounts/auth/users/',
+        url: API_PATHS.registerAccount,
         method: 'POST',
         body,
       }),

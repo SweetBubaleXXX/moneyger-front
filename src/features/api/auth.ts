@@ -1,8 +1,10 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
+const tokenSliceInitialState = '';
+
 export const tokenSlice = createSlice({
   name: 'token',
-  initialState: null as string | null,
+  initialState: tokenSliceInitialState,
   reducers: {
     setToken: (state, { payload } : PayloadAction<string>) => {
       return payload;

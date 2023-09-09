@@ -1,13 +1,13 @@
 import React from 'react';
 import { Card, Sheet, Tab, TabList, TabPanel, Tabs } from '@mui/joy';
-import LoginForm from '../components/login/LoginForm';
-import RegistrationForm from '../components/login/RegistrationForm';
-import { Toaster } from '../components/Toast';
+import { LoginForm } from '../components/login/LoginForm';
+import { RegistrationForm } from '../components/login/RegistrationForm';
+import { DefaultToaster } from '../components/Toast';
 
 export default () => {
   return (
     <>
-      <Toaster />
+      {DefaultToaster}
       <Sheet sx={{
         display:'flex',
         justifyContent:'center',
