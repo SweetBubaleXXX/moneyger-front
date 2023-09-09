@@ -5,4 +5,6 @@ export const API_PATHS = {
   registerAccount: 'accounts/auth/users/',
 } as const;
 
-export const EXCLUDE_FROM_REAUTH: string[] = [API_PATHS.createToken] as const;
+export const EXCLUDE_FROM_REAUTH: readonly string[] = [
+  API_PATHS.createToken,
+] as const;
