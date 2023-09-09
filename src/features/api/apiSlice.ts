@@ -16,7 +16,7 @@ import {
 } from './types';
 import { RootState } from '../../store';
 import { setToken } from './auth';
-import { API_PATHS } from './constants';
+import { API_PATHS, EXCLUDE_FROM_REAUTH } from './constants';
 
 const reauthMutex = new Mutex();
 
@@ -38,8 +38,7 @@ string | FetchArgs, unknown, FetchBaseQueryError
   await reauthMutex.waitForUnlock();
   let result = await baseQuery(args, api, extraOptions);
   const url = typeof args === 'string' ? args : args.url;
-  const excludeFromReauth = ['accounts/auth/jwt/create/'];
-  if (excludeFromReauth.includes(url) || result.error?.status !== 401) {
+  if (EXCLUDE_FROM_REAUTH.includes(url) || result.error?.status !== 401) {
     return result;
   }
   if (!reauthMutex.isLocked()) {

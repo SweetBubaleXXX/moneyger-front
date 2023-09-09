@@ -4,3 +4,5 @@ export const API_PATHS = {
   createToken: 'accounts/auth/jwt/create/',
   registerAccount: 'accounts/auth/users/',
 } as const;
+
+export const EXCLUDE_FROM_REAUTH: string[] = [API_PATHS.createToken] as const;
