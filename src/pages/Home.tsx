@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Stack } from '@mui/joy';
+import { Box, Stack } from '@mui/joy';
 import { useGetTransactionsQuery } from '../features/api/apiSlice';
 import {
   TransactionWidget,
@@ -17,7 +17,9 @@ export default () => {
 
   return (
     <>
-      <PeriodSelector value={period} onChange={setPeriod} />
+      <Box display="flex" justifyContent="center" padding={2}>
+        <PeriodSelector onChange={setPeriod}/>
+      </Box>
       <Stack spacing={2} padding={2} marginX="auto" sx={{
         maxWidth: {
           sm: 'sm',
