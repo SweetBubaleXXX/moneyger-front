@@ -8,7 +8,7 @@ import {
   PeriodSelector, 
   Period,
   DEFAULT_PERIOD,
-} from '../components/PeriodSelector';
+} from '../components/period/PeriodSelector';
 
 export default () => {
   const [page, setPage] = useState<number>(1);
