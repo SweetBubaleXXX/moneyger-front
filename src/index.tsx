@@ -2,22 +2,24 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { CssVarsProvider } from '@mui/joy/styles';
 import { Provider } from 'react-redux';
+import { ErrorBoundary } from 'react-error-boundary';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { store } from './store';
 import Router from './pages/Router';
-
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <CssVarsProvider>
-        <Router />
-      </CssVarsProvider>
-    </Provider>
+    <ErrorBoundary fallback={<div>Something went wrong</div>}>
+      <Provider store={store}>
+        <CssVarsProvider>
+          <Router />
+        </CssVarsProvider>
+      </Provider>
+    </ErrorBoundary>
   </React.StrictMode>
 );
 
