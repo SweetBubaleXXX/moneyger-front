@@ -7,6 +7,7 @@ import {
   Avatar,
 } from '@mui/joy';
 import { Stack } from '@mui/system';
+import moment from 'moment';
 import { Transaction } from '../../features/api/types';
 import {
   useGetAllCategoriesQuery, 
@@ -21,7 +22,6 @@ export const TransactionWidget = (transaction: Transaction) => {
       ),
     }),
   });
-  const transactionDate = new Date(transaction.transactionTime);
 
   return (
     <Card variant="outlined" sx={{'--Card-padding': '8px'}}>
@@ -41,7 +41,7 @@ export const TransactionWidget = (transaction: Transaction) => {
               {transaction.comment}
             </Typography>
             <Typography level="body-xs" sx={OVERFLOW_ELLIPSIS}>
-              {transactionDate.toLocaleTimeString()}, {transactionDate.toDateString()}
+              {moment(transaction.transactionTime).format('llll')}
             </Typography>
           </Sheet>
           <Typography
