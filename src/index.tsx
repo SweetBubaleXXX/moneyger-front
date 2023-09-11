@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { GlobalStyles } from '@mui/joy';
 import { CssVarsProvider } from '@mui/joy/styles';
 import { Provider } from 'react-redux';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -16,6 +17,17 @@ root.render(
     <ErrorBoundary fallback={<div>Something went wrong</div>}>
       <Provider store={store}>
         <CssVarsProvider>
+          <GlobalStyles
+            styles={{
+              '& .lucide': {
+                color: 'var(--Icon-color)',
+                margin: 'var(--Icon-margin)',
+                fontSize: 'var(--Icon-fontSize, 20px)',
+                width: '1em',
+                height: '1em',
+              },
+            }}
+          />
           <Router />
         </CssVarsProvider>
       </Provider>

@@ -8,8 +8,10 @@ import {
   Sheet,
   Typography,
   FormLabel,
+  Button,
 } from '@mui/joy';
 import { SxProps } from '@mui/system';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import moment from 'moment';
 import { Period, PeriodLabel } from './types';
 import { DateInput } from './DateInput';
@@ -28,40 +30,58 @@ export const DEFAULT_PERIOD: Period = createPeriodFromLabel(
 
 export const PeriodSelector = (props: PeriodSelectorProps) => {
   const [
-    dateRangePickerOpen, setDateRangePickerOpen,
-  ] = useState<boolean>(false);
-  const [
     selectedPeriod, setSelectedPeriod,
   ] = useState<PeriodLabel>(DEFAULT_PERIOD_LABEL);
-  
+  const [
+    dateRangePickerOpen, setDateRangePickerOpen,
+  ] = useState<boolean>(false);
+
   return (
     <>
       <Stack direction="column" spacing={1} alignItems="center">
-        <Select
-          defaultValue={DEFAULT_PERIOD_LABEL}
-          onChange={
-            (event, newValue: PeriodLabel | null) => {
-              if (newValue) {
-                setSelectedPeriod(newValue);
+        <Stack direction="row" spacing={2} justifyContent="space-between">
+          <Button 
+            variant="plain"
+            disabled={selectedPeriod === 'custom'}
+            onClick={
+              () => props.onChange(addToPeriod(props.value, selectedPeriod, -1))
+            }>
+            <ChevronLeft />
+          </Button>
+          <Select
+            defaultValue={DEFAULT_PERIOD_LABEL}
+            onChange={
+              (event, newValue: PeriodLabel | null) => {
+                if (newValue) {
+                  setSelectedPeriod(newValue);
+                }
+                if (newValue !== 'custom') {
+                  props.onChange(
+                    createPeriodFromLabel(newValue || DEFAULT_PERIOD_LABEL)
+                  );
+                }
               }
-              if (newValue !== 'custom') {
-                props.onChange(
-                  createPeriodFromLabel(newValue || DEFAULT_PERIOD_LABEL)
-                );
-              }
-            }
-          }>
-          <Option value="day">Day</Option>
-          <Option value="week">Week</Option>
-          <Option value="month">Month</Option>
-          <Option value="year">Year</Option>
-          <Divider />
-          <Option value="custom" onClick={() => setDateRangePickerOpen(true)}>
+            }>
+            <Option value="day">Day</Option>
+            <Option value="week">Week</Option>
+            <Option value="month">Month</Option>
+            <Option value="year">Year</Option>
+            <Divider />
+            <Option value="custom" onClick={() => setDateRangePickerOpen(true)}>
             Custom
-          </Option>
-        </Select>
+            </Option>
+          </Select>
+          <Button 
+            variant="plain"
+            disabled={!canIncrementPeriod(props.value, selectedPeriod)}
+            onClick={
+              () => props.onChange(addToPeriod(props.value, selectedPeriod, 1))
+            }>
+            <ChevronRight />
+          </Button>
+        </Stack>
         <Typography level="body-sm">
-          {renderPeriodHint(selectedPeriod, props.value)}
+          {renderPeriodHint(props.value, selectedPeriod)}
         </Typography>
       </Stack>
       <Modal
@@ -110,7 +130,7 @@ function createPeriodFromLabel(label: Exclude<PeriodLabel, 'custom'>): Period {
   };
 }
 
-function renderPeriodHint(label: PeriodLabel, period: Period): string {
+function renderPeriodHint(period: Period, label: PeriodLabel): string {
   switch (label) {
     case 'day':
       return moment(period.from).format('LL');
@@ -125,4 +145,24 @@ function renderPeriodHint(label: PeriodLabel, period: Period): string {
         .map(date => moment(date)
           .format('ll')).join(' - ');
   }
+}
+
+function canIncrementPeriod(period: Period, label: PeriodLabel): boolean {
+  return label !== 'custom' && moment(period.from)
+    .add(1, label)
+    .isBefore(moment());
+}
+
+function addToPeriod(
+  period: Period,
+  label: PeriodLabel,
+  value: number,
+): Period {
+  if (label === 'custom') {
+    return period;
+  }
+  return {
+    from: moment(period.from).add(value, label).toDate(),
+    to: moment(period.to).add(value, label).toDate(),
+  };
 }
