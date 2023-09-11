@@ -31,7 +31,7 @@ export type JwtToken = {
 
 export type CurrencyCode =  typeof CURRENCY_CODES[number]
 
-export type TransactionType = 'IN' | 'OUT';
+export type TransactionType = 'IN' | 'OUT'
 
 export type Account = {
   id: number,
@@ -58,6 +58,18 @@ export type Transaction = {
   currency: CurrencyCode,
   comment: string,
   transactionTime: string,
+}
+
+export type TransactionRequestParams = {
+  currency?: CurrencyCode,
+  transactionType?: TransactionType,
+  transactionTimeAfter?: string,
+  transactionTimeBefore?: string,
+}
+
+export type Summary = {
+  total: number,
+  currency: CurrencyCode,
 }
 
 export type TransactionCreateRequest = Omit<

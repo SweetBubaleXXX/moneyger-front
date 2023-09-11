@@ -25,6 +25,7 @@
     "@types/redux-thunk": "^2.1.0",
     "async-mutex": "^0.4.0",
     "camelcase-keys": "^9.0.0",
+    "decamelize-keys": "^2.0.1",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.276.0",
     "moment": "^2.29.4",

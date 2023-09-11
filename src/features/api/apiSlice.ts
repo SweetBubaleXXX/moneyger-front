@@ -8,6 +8,7 @@ import {
 import Cookies from 'js-cookie';
 import { Mutex } from 'async-mutex';
 import camelcaseKeys from 'camelcase-keys';
+import decamelizeKeys from 'decamelize-keys';
 import {
   PaginatedResponse,
   Transaction,
@@ -16,7 +17,9 @@ import {
   RegistrationRequest,
   RegistrationResponse,
   Category,
-  Account, 
+  Account,
+  Summary,
+  TransactionRequestParams, 
 } from './types';
 import { RootState } from '../../store';
 import { setAccessToken } from './auth';
@@ -102,6 +105,13 @@ export const api = createApi({
         return response;
       },
     }),
+    getTransactionsSummary: builder.query<Summary, TransactionRequestParams>({
+      query: request => ({
+        url: API_PATHS.getTransactionsSummary,
+        params: decamelizeKeys(request),
+      }),
+      providesTags: ['Transaction'],
+    }),
     login: builder.mutation<JwtToken, LoginRequest>({
       query: credentials => ({
         url: API_PATHS.createToken,
@@ -126,6 +136,7 @@ export const {
   useGetCategoriesQuery,
   useGetCategoryByIdQuery,
   useGetTransactionsQuery,
+  useGetTransactionsSummaryQuery,
   useLoginMutation,
   useRegisterMutation,
 } = api;
