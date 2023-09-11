@@ -30,19 +30,27 @@ export const PeriodSelector = (props: PeriodSelectorProps) => {
   const [
     dateRangePickerOpen, setDateRangePickerOpen,
   ] = useState<boolean>(false);
+  const [
+    selectedPeriod, setSelectedPeriod,
+  ] = useState<PeriodLabel>(DEFAULT_PERIOD_LABEL);
   
   return (
     <>
-      <Stack direction="row" spacing={2}>
-        <Select defaultValue={DEFAULT_PERIOD_LABEL} onChange={
-          (event, newValue: PeriodLabel | null) => {
-            if (newValue !== 'custom') {
-              props.onChange(
-                createPeriodFromLabel(newValue || DEFAULT_PERIOD_LABEL)
-              );
+      <Stack direction="column" spacing={1} alignItems="center">
+        <Select
+          defaultValue={DEFAULT_PERIOD_LABEL}
+          onChange={
+            (event, newValue: PeriodLabel | null) => {
+              if (newValue) {
+                setSelectedPeriod(newValue);
+              }
+              if (newValue !== 'custom') {
+                props.onChange(
+                  createPeriodFromLabel(newValue || DEFAULT_PERIOD_LABEL)
+                );
+              }
             }
-          }
-        }>
+          }>
           <Option value="day">Day</Option>
           <Option value="week">Week</Option>
           <Option value="month">Month</Option>
@@ -52,6 +60,9 @@ export const PeriodSelector = (props: PeriodSelectorProps) => {
             Custom
           </Option>
         </Select>
+        <Typography level="body-sm">
+          {renderPeriodHint(selectedPeriod, props.value)}
+        </Typography>
       </Stack>
       <Modal
         open={dateRangePickerOpen}
@@ -97,4 +108,21 @@ function createPeriodFromLabel(label: Exclude<PeriodLabel, 'custom'>): Period {
     from: moment().startOf(label).toDate(),
     to: moment().endOf(label).toDate(),
   };
+}
+
+function renderPeriodHint(label: PeriodLabel, period: Period): string {
+  switch (label) {
+    case 'day':
+      return moment(period.from).format('LL');
+    case 'month':
+      return moment(period.from).format('MMMM YYYY');
+    case 'year':
+      return moment(period.from).format('YYYY');
+    case 'custom':
+    case 'week':
+    default:
+      return [period.from, period.to]
+        .map(date => moment(date)
+          .format('ll')).join(' - ');
+  }
 }
