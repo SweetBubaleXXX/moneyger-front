@@ -6,9 +6,9 @@ import {
 } from '../components/transactions/TransactionWidget';
 import {
   PeriodSelector, 
-  Period,
   DEFAULT_PERIOD,
 } from '../components/period/PeriodSelector';
+import { Period } from '../components/period/types';
 
 export default () => {
   const [page, setPage] = useState<number>(1);
@@ -18,7 +18,7 @@ export default () => {
   return (
     <>
       <Box display="flex" justifyContent="center" padding={2}>
-        <PeriodSelector onChange={setPeriod}/>
+        <PeriodSelector value={period} onChange={setPeriod}/>
       </Box>
       <Stack spacing={2} padding={2} marginX="auto" sx={{
         maxWidth: {
