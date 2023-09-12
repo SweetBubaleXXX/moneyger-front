@@ -90,7 +90,7 @@ export const api = createApi({
       transformResponse: (response: PaginatedResponse<Category>) => 
         camelcaseKeys(response.results),
     }),
-    getCategories: builder.query<PaginatedResponse<Category>, number>({
+    getCategories: builder.query<PaginatedResponse<Category>, number | void>({
       query: API_PATHS.getCategories,
       providesTags: ['Category'],
     }),

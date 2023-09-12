@@ -68,7 +68,7 @@ export type TransactionRequestParams = {
 }
 
 export type PaginatedTransactionRequest = {
-  page: number,
+  page?: number,
   params: TransactionRequestParams,
 }
 
