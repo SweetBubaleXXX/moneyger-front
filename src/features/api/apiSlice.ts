@@ -19,7 +19,8 @@ import {
   Category,
   Account,
   Summary,
-  TransactionRequestParams, 
+  TransactionRequestParams,
+  PaginatedTransactionRequest, 
 } from './types';
 import { RootState } from '../../store';
 import { setAccessToken } from './auth';
@@ -97,8 +98,13 @@ export const api = createApi({
       query: API_PATHS.getCategoryById,
       providesTags: ['Category'],
     }),
-    getTransactions: builder.query<PaginatedResponse<Transaction>, number>({
-      query: API_PATHS.getTransactions,
+    getTransactions: builder.query<
+      PaginatedResponse<Transaction>, PaginatedTransactionRequest
+    >({
+      query: request => ({
+        url: API_PATHS.getTransactions(request.page),
+        params: decamelizeKeys(request.params),
+      }),
       providesTags: ['Transaction'],
       transformResponse: (response: PaginatedResponse<Transaction>) => {
         response.results = camelcaseKeys(response.results);

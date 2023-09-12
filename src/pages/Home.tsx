@@ -20,18 +20,21 @@ import { SummaryWidget } from '../components/summary/SummaryWidget';
 export default () => {
   const [page, setPage] = useState<number>(1);
   const [period, setPeriod] = useState<Period>(DEFAULT_PERIOD);
-  const { data: transactions } = useGetTransactionsQuery(page);
-  const summaryRequestFilters = {
+  const periodFilters = {
     transactionTimeAfter: period.from.toISOString(),
     transactionTimeBefore: period.to.toISOString(),
   };
+  const { data: transactions } = useGetTransactionsQuery({
+    page,
+    params: periodFilters,
+  });
   const incomeSummary = useGetTransactionsSummaryQuery({
     transactionType: 'IN',
-    ...summaryRequestFilters,
+    ...periodFilters,
   });
   const outcomeSummary = useGetTransactionsSummaryQuery({
     transactionType: 'OUT',
-    ...summaryRequestFilters,
+    ...periodFilters,
   });
 
   return (

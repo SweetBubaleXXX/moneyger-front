@@ -67,6 +67,11 @@ export type TransactionRequestParams = {
   transactionTimeBefore?: string,
 }
 
+export type PaginatedTransactionRequest = {
+  page: number,
+  params: TransactionRequestParams,
+}
+
 export type Summary = {
   total: number,
   currency: CurrencyCode,
