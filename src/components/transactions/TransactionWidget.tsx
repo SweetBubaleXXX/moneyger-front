@@ -5,6 +5,7 @@ import {
   Sheet,
   Typography,
   Avatar,
+  Skeleton,
 } from '@mui/joy';
 import { Stack } from '@mui/system';
 import moment from 'moment';
@@ -14,17 +15,25 @@ import {
 } from '../../features/api/apiSlice';
 import { OVERFLOW_ELLIPSIS } from '../../constants';
 
-export const TransactionWidget = (transaction: Transaction) => {
+export type TransactionWidgetProps = {
+  transaction: Transaction,
+  loading?: boolean,
+}
+
+export const TransactionWidget = (props: TransactionWidgetProps) => {
   const { category } = useGetAllCategoriesQuery(undefined, {
     selectFromResult: result => ({
       category: result.data?.find(
-        category => category.id === transaction.category
+        category => category.id === props.transaction.category
       ),
     }),
   });
+  const isLoading = props.loading ?? false;
 
   return (
-    <Card variant="outlined" sx={{'--Card-padding': '8px'}}>
+    <Card 
+      variant="outlined"
+      sx={{'--Card-padding': '8px'}}>
       <CardContent>
         <Stack 
           direction="row" 
@@ -32,24 +41,38 @@ export const TransactionWidget = (transaction: Transaction) => {
           justifyContent="stretch"
           sx={{gap: 1}}
         >
-          <Avatar>{category?.icon}</Avatar>
+          <Avatar>
+            <Skeleton loading={isLoading}>
+              {category?.icon}
+            </Skeleton>
+          </Avatar>
           <Sheet sx={{flexGrow: 1, overflow: 'hidden'}}>
             <Typography level="title-lg"  sx={OVERFLOW_ELLIPSIS}>
-              {category?.name}
+              <Skeleton loading={isLoading}>
+                {category?.name}
+              </Skeleton>
             </Typography>
             <Typography level="body-sm" sx={OVERFLOW_ELLIPSIS}>
-              {transaction.comment}
+              <Skeleton loading={isLoading}>
+                {props.transaction.comment}
+              </Skeleton>
             </Typography>
             <Typography level="body-xs" sx={OVERFLOW_ELLIPSIS}>
-              {moment(transaction.transactionTime).format('llll')}
+              <Skeleton loading={isLoading}>
+                {moment(props.transaction.transactionTime).format('llll')}
+              </Skeleton>
             </Typography>
           </Sheet>
           <Typography
             level="body-md"
             textAlign="right"
-            color={transaction.transactionType === 'IN' ? 'success' : 'danger'}
+            color={
+              props.transaction.transactionType === 'IN' ? 'success' : 'danger'
+            }
           >
-            {transaction.amount} {transaction.currency}
+            <Skeleton loading={isLoading}>
+              {props.transaction.amount} {props.transaction.currency}
+            </Skeleton>
           </Typography>
         </Stack>
       </CardContent>

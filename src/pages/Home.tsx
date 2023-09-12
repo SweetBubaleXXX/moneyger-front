@@ -24,7 +24,7 @@ export default () => {
     transactionTimeAfter: period.from.toISOString(),
     transactionTimeBefore: period.to.toISOString(),
   };
-  const { data: transactions } = useGetTransactionsQuery({
+  const transactions = useGetTransactionsQuery({
     page,
     params: periodFilters,
   });
@@ -55,9 +55,12 @@ export default () => {
         },
       }}>
         {
-          transactions?.results.map(
+          transactions.data?.results.map(
             transaction =>
-              <TransactionWidget key={transaction.id} {...transaction} />
+              <TransactionWidget
+                key={transaction.id} 
+                transaction={transaction}
+                loading={transactions.isFetching}/>
           )
         }
       </Stack>
