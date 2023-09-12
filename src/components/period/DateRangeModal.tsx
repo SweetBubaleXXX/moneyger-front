@@ -36,7 +36,7 @@ export const DateRangeModal = (props: DateRangeModalProps) => {
           <FormLabel>From</FormLabel>
           <DateInput 
             defaultValue={props.initialValue.from}
-            max={period.to}
+            max={moment.min(moment(), moment(period.to)).toDate()}
             onChange={value => setPeriod({
               from: moment(value).toDate(),
               to: period.to,
