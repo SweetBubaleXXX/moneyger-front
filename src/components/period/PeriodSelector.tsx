@@ -4,17 +4,14 @@ import {
   Select,
   Option,
   Stack,
-  Modal,
-  Sheet,
   Typography,
-  FormLabel,
   Button,
 } from '@mui/joy';
 import { SxProps } from '@mui/system';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import moment from 'moment';
 import { Period, PeriodLabel } from './types';
-import { DateInput } from './DateInput';
+import { DateRangeModal } from './DateRangeModal';
 
 export type PeriodSelectorProps = {
   value: Period,
@@ -84,41 +81,13 @@ export const PeriodSelector = (props: PeriodSelectorProps) => {
           {renderPeriodHint(props.value, selectedPeriod)}
         </Typography>
       </Stack>
-      <Modal
+      <DateRangeModal 
         open={dateRangePickerOpen}
-        onClose={() => setDateRangePickerOpen(false)}
-        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-      >
-        <Sheet sx={{
-          borderRadius: 'md',
-          py: 2,
-          px: 3,
-          boxShadow: 'lg',
-        }}>
-          <Typography level="h4">Custom date range</Typography>
-          <Stack direction="column" spacing={1} paddingY={1}>
-            <FormLabel>From</FormLabel>
-            <DateInput 
-              defaultValue={props.value.from}
-              max={props.value.to}
-              onChange={value => props.onChange({
-                from: moment(value).toDate(),
-                to: props.value.to,
-              })}
-            />
-            <FormLabel>To</FormLabel>
-            <DateInput 
-              defaultValue={props.value.to}
-              min={props.value.from}
-              max={moment().toDate()}
-              onChange={value => props.onChange({
-                from: props.value.from,
-                to: moment(value).toDate(),
-              })}
-            />
-          </Stack>
-        </Sheet>
-      </Modal>
+        initialValue={props.value}
+        onClose={value => {
+          setDateRangePickerOpen(false);
+          props.onChange(value);
+        }}/>
     </>
   );
 };
