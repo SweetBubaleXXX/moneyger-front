@@ -51,7 +51,10 @@ export default () => {
         isError={incomeSummary.isError || outcomeSummary.isError}
       />
       <Box display="flex" justifyContent="center" padding={2}>
-        <PeriodSelector value={period} onChange={setPeriod}/>
+        <PeriodSelector value={period} onChange={value => {
+          setPeriod(value);
+          setPage(1);
+        }}/>
       </Box>
       <Stack spacing={2} padding={2} marginX="auto" sx={{
         maxWidth: { sm: 'sm' },
