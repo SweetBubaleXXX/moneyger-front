@@ -105,11 +105,19 @@ export const api = createApi({
         url: API_PATHS.getTransactions(request.page),
         params: decamelizeKeys(request.params),
       }),
-      providesTags: ['Transaction'],
+      serializeQueryArgs: ({queryArgs}) => queryArgs.params,
       transformResponse: (response: PaginatedResponse<Transaction>) => {
         response.results = camelcaseKeys(response.results);
         return response;
       },
+      merge: (currentCache: PaginatedResponse<Transaction>,
+        newItems: PaginatedResponse<Transaction>) => {
+        currentCache.results.push(...newItems.results);
+      },
+      forceRefetch({currentArg, previousArg}) {
+        return currentArg?.page !== previousArg?.page;
+      },
+      providesTags: ['Transaction'],
     }),
     getTransactionsSummary: builder.query<Summary, TransactionRequestParams>({
       query: request => ({

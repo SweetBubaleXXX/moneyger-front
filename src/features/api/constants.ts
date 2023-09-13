@@ -17,3 +17,5 @@ export const API_PATHS = {
 export const EXCLUDE_FROM_REAUTH: readonly string[] = [
   API_PATHS.createToken,
 ] as const;
+
+export const PAGE_SIZE = 100;
