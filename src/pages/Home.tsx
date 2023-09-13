@@ -58,9 +58,9 @@ export default () => {
       }}>
         {
           transactions.data?.results.map(
-            transaction =>
+            (transaction, index) =>
               <TransactionWidget
-                key={transaction.id} 
+                key={index}
                 transaction={transaction}
                 loading={transactions.isFetching}/>
           )
