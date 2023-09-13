@@ -20,7 +20,8 @@ import {
   Account,
   Summary,
   TransactionRequestParams,
-  PaginatedTransactionRequest, 
+  PaginatedTransactionRequest,
+  PaginatedCategoryRequest,
 } from './types';
 import { RootState } from '../../store';
 import { setAccessToken } from './auth';
@@ -90,35 +91,38 @@ export const api = createApi({
       transformResponse: (response: PaginatedResponse<Category>) => 
         camelcaseKeys(response.results),
     }),
-    getCategories: builder.query<PaginatedResponse<Category>, number | void>({
-      query: API_PATHS.getCategories,
-      providesTags: ['Category'],
-    }),
+    getCategories: builder
+      .query<PaginatedResponse<Category>, PaginatedCategoryRequest>({
+        query: request => ({
+          url: API_PATHS.getCategories(request.page),
+          params: request.params,
+        }),
+        providesTags: ['Category'],
+      }),
     getCategoryById: builder.query<Category, number>({
       query: API_PATHS.getCategoryById,
       providesTags: ['Category'],
     }),
-    getTransactions: builder.query<
-      PaginatedResponse<Transaction>, PaginatedTransactionRequest
-    >({
-      query: request => ({
-        url: API_PATHS.getTransactions(request.page),
-        params: decamelizeKeys(request.params),
+    getTransactions: builder
+      .query<PaginatedResponse<Transaction>, PaginatedTransactionRequest>({
+        query: request => ({
+          url: API_PATHS.getTransactions(request.page),
+          params: decamelizeKeys(request.params),
+        }),
+        serializeQueryArgs: ({queryArgs}) => queryArgs.params,
+        transformResponse: (response: PaginatedResponse<Transaction>) => {
+          response.results = camelcaseKeys(response.results);
+          return response;
+        },
+        merge: (currentCache: PaginatedResponse<Transaction>,
+          newItems: PaginatedResponse<Transaction>) => {
+          currentCache.results.push(...newItems.results);
+        },
+        forceRefetch({currentArg, previousArg}) {
+          return currentArg?.page !== previousArg?.page;
+        },
+        providesTags: ['Transaction'],
       }),
-      serializeQueryArgs: ({queryArgs}) => queryArgs.params,
-      transformResponse: (response: PaginatedResponse<Transaction>) => {
-        response.results = camelcaseKeys(response.results);
-        return response;
-      },
-      merge: (currentCache: PaginatedResponse<Transaction>,
-        newItems: PaginatedResponse<Transaction>) => {
-        currentCache.results.push(...newItems.results);
-      },
-      forceRefetch({currentArg, previousArg}) {
-        return currentArg?.page !== previousArg?.page;
-      },
-      providesTags: ['Transaction'],
-    }),
     getTransactionsSummary: builder.query<Summary, TransactionRequestParams>({
       query: request => ({
         url: API_PATHS.getTransactionsSummary,

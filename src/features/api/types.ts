@@ -4,9 +4,14 @@ export type AuthState = {
   accessToken?: string,
 }
 
-export interface PaginatedResponse<T> {
+export type PaginatedResponse<T> = {
   count: number,
   results: T[],
+}
+
+export type PaginatedParamsRequest<T> = {
+  page?: number,
+  params: T,
 }
 
 export interface LoginRequest {
@@ -50,6 +55,16 @@ export type Category = {
   color: string,
 }
 
+export type CategoryRequestParams = {
+  transactionType?: TransactionType,
+  notSubcategory?: boolean,
+  ordering?: string,
+  search?: string,
+}
+
+export type PaginatedCategoryRequest =
+  PaginatedParamsRequest<CategoryRequestParams>
+
 export type Transaction = {
   id: number,
   category: number,
@@ -61,16 +76,17 @@ export type Transaction = {
 }
 
 export type TransactionRequestParams = {
+  category?: number,
   currency?: CurrencyCode,
   transactionType?: TransactionType,
   transactionTimeAfter?: string,
   transactionTimeBefore?: string,
+  ordering?: string,
+  search?: string,
 }
 
-export type PaginatedTransactionRequest = {
-  page?: number,
-  params: TransactionRequestParams,
-}
+export type PaginatedTransactionRequest =
+  PaginatedParamsRequest<TransactionRequestParams>
 
 export type Summary = {
   total: number,
