@@ -86,7 +86,8 @@ export default () => {
       <Box
         zIndex={1250}
         position="fixed"
-        bottom={10}
+        bottom={0}
+        paddingBottom={1.5}
         width="100%"
         display="flex"
         justifyContent="center"

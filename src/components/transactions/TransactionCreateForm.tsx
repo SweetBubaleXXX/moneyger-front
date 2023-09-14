@@ -13,8 +13,16 @@ import {
   Option,
   Textarea,
   Box,
+  Button,
+  Drawer,
+  Avatar,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanel,
 } from '@mui/joy';
 import { 
+  Category,
   CurrencyCode,
   TransactionCreateRequest, 
 } from '../../features/api/types';
@@ -29,6 +37,10 @@ export const TransactionSchema = z.object({
 });
 
 export const TransactionCreateForm = () => {
+  const [
+    categorySelectorOpen, setCategorySelectorOpen,
+  ] = useState<boolean>(false);
+  const [category, setCategory] = useState<Category | undefined>();
   const [currency, setCurrency] = useState<CurrencyCode>(CURRENCY_CODES[0]);
   const { 
     control, handleSubmit, formState: {errors},
@@ -38,7 +50,7 @@ export const TransactionCreateForm = () => {
   
   return (
     <form>
-      <Stack spacing={2} padding={3}>
+      <Stack spacing={4} padding={3}>
         <Controller
           name="amount"
           control={control}
@@ -91,6 +103,34 @@ export const TransactionCreateForm = () => {
             </Box>
           )}
         />
+        <Button
+          variant="soft"
+          startDecorator={category && <Avatar>{category.icon}</Avatar>}
+          onClick={() => setCategorySelectorOpen(true)}
+          sx={{
+            alignSelf: 'center',
+          }}
+        >
+          {category?.name || 'Choose category'}
+        </Button>
+        <Drawer
+          open={categorySelectorOpen}
+          anchor="bottom"
+          size="md"
+          onClose={() => setCategorySelectorOpen(false)}>
+          <Tabs defaultValue="OUT">
+            <TabList tabFlex={1}>
+              <Tab value="OUT">Outcome</Tab>
+              <Tab value="IN">Income</Tab>
+            </TabList>
+            <TabPanel value="OUT">
+
+            </TabPanel>
+            <TabPanel value="IN">
+
+            </TabPanel>
+          </Tabs>
+        </Drawer>
         <Controller
           name="transactionTime"
           control={control}
@@ -113,7 +153,10 @@ export const TransactionCreateForm = () => {
           control={control}
           defaultValue=""
           render={({field}) =>
-            <Textarea placeholder="Comment..." {...field}/>} />
+            <Textarea variant="plain" placeholder="Comment..." {...field}/>} />
+        <Button type="submit">
+          Add
+        </Button>
       </Stack>
     </form>
   );
