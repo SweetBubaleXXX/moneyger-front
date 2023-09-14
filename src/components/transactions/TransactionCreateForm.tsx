@@ -27,6 +27,7 @@ import {
   TransactionCreateRequest, 
 } from '../../features/api/types';
 import { CURRENCY_CODES } from '../../constants';
+import { CategorySelector } from '../categories/CategorySelector';
 
 export const TransactionSchema = z.object({
   amount: z.number().positive().finite(),
@@ -123,12 +124,20 @@ export const TransactionCreateForm = () => {
               <Tab value="OUT">Outcome</Tab>
               <Tab value="IN">Income</Tab>
             </TabList>
-            <TabPanel value="OUT">
-
-            </TabPanel>
-            <TabPanel value="IN">
-
-            </TabPanel>
+            {
+              ['OUT', 'IN'].map(value =>
+                <TabPanel value={value}>
+                  <CategorySelector 
+                    selected={category}
+                    onChange={setCategory}
+                    filter={
+                      category =>
+                        !category.parentCategory
+                        && category.transactionType === value
+                    }/>
+                </TabPanel>
+              )
+            }
           </Tabs>
         </Drawer>
         <Controller
