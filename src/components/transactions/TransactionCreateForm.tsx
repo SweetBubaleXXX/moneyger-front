@@ -20,7 +20,9 @@ import {
   TabList,
   Tab,
   TabPanel,
+  useTheme,
 } from '@mui/joy';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { 
   Category,
   CurrencyCode,
@@ -38,6 +40,8 @@ export const TransactionSchema = z.object({
 });
 
 export const TransactionCreateForm = () => {
+  const theme = useTheme();
+  const greaterThanMd = useMediaQuery(theme.breakpoints.up('md'));
   const [
     categorySelectorOpen, setCategorySelectorOpen,
   ] = useState<boolean>(false);
@@ -116,9 +120,10 @@ export const TransactionCreateForm = () => {
         </Button>
         <Drawer
           open={categorySelectorOpen}
-          anchor="bottom"
-          size="md"
-          onClose={() => setCategorySelectorOpen(false)}>
+          anchor={greaterThanMd ? 'left' : 'bottom'}
+          size={greaterThanMd ? 'sm' : 'lg'}
+          onClose={() => setCategorySelectorOpen(false)}
+        >
           <Tabs defaultValue="OUT">
             <TabList tabFlex={1}>
               <Tab value="OUT">Outcome</Tab>
