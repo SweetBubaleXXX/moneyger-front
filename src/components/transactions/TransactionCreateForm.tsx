@@ -126,7 +126,7 @@ export const TransactionCreateForm = () => {
             </TabList>
             {
               ['OUT', 'IN'].map(value =>
-                <TabPanel value={value}>
+                <TabPanel key={value} value={value}>
                   <CategorySelector 
                     selected={category}
                     onChange={setCategory}
