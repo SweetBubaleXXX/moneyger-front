@@ -1,13 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import './index.css';
+
 import { GlobalStyles } from '@mui/joy';
 import { CssVarsProvider } from '@mui/joy/styles';
-import { Provider } from 'react-redux';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { ErrorBoundary } from 'react-error-boundary';
-import './index.css';
+import { Provider } from 'react-redux';
+
+import Router from './pages/Router';
 import reportWebVitals from './reportWebVitals';
 import { store } from './store';
-import Router from './pages/Router';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

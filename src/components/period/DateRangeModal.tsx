@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
 import {
-  Stack,
+  FormLabel,
   Modal,
   Sheet,
+  Stack,
   Typography,
-  FormLabel,
 } from '@mui/joy';
 import moment from 'moment';
-import { Period } from './types';
+import React, { useState } from 'react';
+
 import { DateInput } from './DateInput';
+import { Period } from './types';
 
 export type DateRangeModalProps = {
   open: boolean,

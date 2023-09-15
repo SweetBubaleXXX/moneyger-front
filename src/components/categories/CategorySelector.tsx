@@ -1,7 +1,8 @@
-import React from 'react';
 import {
   AccordionGroup,
 } from '@mui/joy';
+import React from 'react';
+
 import { useGetAllCategoriesQuery } from '../../features/api/apiSlice';
 import { CategoryAccordion, CategoryAccordionProps } from './CategoryAccordion';
 

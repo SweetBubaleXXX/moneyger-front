@@ -1,31 +1,32 @@
 import {
   BaseQueryFn,
-  FetchArgs,
-  FetchBaseQueryError,
   createApi,
+  FetchArgs,
   fetchBaseQuery,
+  FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
-import Cookies from 'js-cookie';
 import { Mutex } from 'async-mutex';
 import camelcaseKeys from 'camelcase-keys';
 import decamelizeKeys from 'decamelize-keys';
-import {
-  PaginatedResponse,
-  Transaction,
-  JwtToken,
-  LoginRequest,
-  RegistrationRequest,
-  RegistrationResponse,
-  Category,
-  Account,
-  Summary,
-  TransactionRequestParams,
-  PaginatedTransactionRequest,
-  PaginatedCategoryRequest,
-} from './types';
+import Cookies from 'js-cookie';
+
 import { RootState } from '../../store';
 import { setAccessToken } from './auth';
 import { API_PATHS, EXCLUDE_FROM_REAUTH } from './constants';
+import {
+  Account,
+  Category,
+  JwtToken,
+  LoginRequest,
+  PaginatedCategoryRequest,
+  PaginatedResponse,
+  PaginatedTransactionRequest,
+  RegistrationRequest,
+  RegistrationResponse,
+  Summary,
+  Transaction,
+  TransactionRequestParams,
+} from './types';
 
 const reauthMutex = new Mutex();
 

@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
 import {
+  Button,
   Divider,
-  Select,
   Option,
+  Select,
   Stack,
   Typography,
-  Button,
 } from '@mui/joy';
 import { SxProps } from '@mui/system';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import moment from 'moment';
-import { Period, PeriodLabel } from './types';
+import React, { useState } from 'react';
+
 import { DateRangeModal } from './DateRangeModal';
+import { Period, PeriodLabel } from './types';
 
 export type PeriodSelectorProps = {
   value: Period,

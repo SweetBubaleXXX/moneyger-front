@@ -1,9 +1,10 @@
 import React from 'react';
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
-import Home from './Home';
-import Login from './Login';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 import { AddTransaction } from './AddTransaction';
 import { ROUTER_PATHS } from './constants';
+import Home from './Home';
+import Login from './Login';
 
 export default () => {
   return (

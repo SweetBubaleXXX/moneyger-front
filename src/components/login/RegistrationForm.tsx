@@ -1,19 +1,20 @@
-import React, { useEffect } from 'react';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, Controller } from 'react-hook-form';
 import {
+  FormControl,
+  FormHelperText,
   FormLabel,
   Input,
-  FormControl,
   Stack,
-  FormHelperText,
 } from '@mui/joy';
+import React, { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { z } from 'zod';
+
 import { useRegisterMutation } from '../../features/api/apiSlice';
 import { RegistrationRequest } from '../../features/api/types';
-import { LoginSchema } from './LoginForm';
 import { FormButton } from './FormButton';
+import { LoginSchema } from './LoginForm';
 
 export const RegistrationSchema = LoginSchema.extend({
   email: z.string().email(),

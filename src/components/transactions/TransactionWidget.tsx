@@ -1,19 +1,20 @@
-import React from 'react';
 import {
+  Avatar,
   Card,
   CardContent,
   Sheet,
-  Typography,
-  Avatar,
   Skeleton,
+  Typography,
 } from '@mui/joy';
 import { Stack } from '@mui/system';
 import moment from 'moment';
-import { Transaction } from '../../features/api/types';
+import React from 'react';
+
+import { OVERFLOW_ELLIPSIS } from '../../constants';
 import {
   useGetAllCategoriesQuery,
 } from '../../features/api/apiSlice';
-import { OVERFLOW_ELLIPSIS } from '../../constants';
+import { Transaction } from '../../features/api/types';
 
 export type TransactionWidgetProps = {
   transaction: Transaction,

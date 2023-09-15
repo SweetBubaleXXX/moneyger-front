@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -7,19 +5,22 @@ import {
   Stack,
 } from '@mui/joy';
 import { Cross } from 'lucide-react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import {
-  useGetTransactionsQuery,
-  useGetTransactionsSummaryQuery,
-} from '../features/api/apiSlice';
+  DEFAULT_PERIOD,
+  PeriodSelector,
+} from '../components/period/PeriodSelector';
+import { Period } from '../components/period/types';
+import { SummaryWidget } from '../components/summary/SummaryWidget';
 import {
   TransactionWidget,
 } from '../components/transactions/TransactionWidget';
 import {
-  PeriodSelector,
-  DEFAULT_PERIOD,
-} from '../components/period/PeriodSelector';
-import { Period } from '../components/period/types';
-import { SummaryWidget } from '../components/summary/SummaryWidget';
+  useGetTransactionsQuery,
+  useGetTransactionsSummaryQuery,
+} from '../features/api/apiSlice';
 import { PAGE_SIZE } from '../features/api/constants';
 import { ROUTER_PATHS } from './constants';
 

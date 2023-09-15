@@ -1,9 +1,10 @@
-import React from 'react';
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
 } from '@mui/joy';
+import React from 'react';
+
 import { Category } from '../../features/api/types';
 import { CategorySelector } from './CategorySelector';
 

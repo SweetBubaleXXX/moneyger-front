@@ -1,11 +1,12 @@
-import React from 'react';
-import Decimal from 'decimal.js';
 import {
   Divider,
   Skeleton,
   Stack,
   Typography,
 } from '@mui/joy';
+import Decimal from 'decimal.js';
+import React from 'react';
+
 import { CurrencyCode } from '../../features/api/types';
 
 export type SummaryWidgetProps = {
