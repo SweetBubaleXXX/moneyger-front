@@ -7,7 +7,7 @@ export const API_PATHS = {
   getAccount: 'accounts/auth/users/me/',
   getAllCategories: 'categories/?limit=99999',
   getTransactionsSummary: 'transactions/summary/',
-  getCategories: (pageNumber: number = 1) => 
+  getCategories: (pageNumber: number = 1) =>
     `categories/?${getPaginationQuery(pageNumber)}`,
   getCategoryById: (categoryId: number) => `categories/${categoryId}/`,
   getTransactions: (pageNumber: number = 1) =>

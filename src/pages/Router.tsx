@@ -12,7 +12,7 @@ export default () => {
         <Route path={ROUTER_PATHS.home} element={<Home />}></Route>
         <Route path={ROUTER_PATHS.login} element={<Login />}></Route>
         <Route
-          path={ROUTER_PATHS.addTransaction} 
+          path={ROUTER_PATHS.addTransaction}
           element={<AddTransaction />}></Route>
       </Routes>
     </BrowserRouter>

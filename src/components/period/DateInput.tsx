@@ -15,7 +15,7 @@ export const DateInput = (props: DateRangeInputProps) => {
       type="date"
       defaultValue={formatDate(props.defaultValue)}
       slotProps={{
-        input: { 
+        input: {
           min: props.min && formatDate(props.min),
           max: props.max && formatDate(props.max),
         },
@@ -24,7 +24,7 @@ export const DateInput = (props: DateRangeInputProps) => {
     />
   );
 };
-  
+
 function formatDate(value: MomentInput): string {
   return moment(value).format('YYYY-MM-DD');
 }

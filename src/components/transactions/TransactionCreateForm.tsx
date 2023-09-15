@@ -4,7 +4,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { NumericFormat } from 'react-number-format';
 import moment from 'moment';
-import { 
+import {
   Divider,
   FormLabel,
   Input,
@@ -24,10 +24,10 @@ import {
 } from '@mui/joy';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { toast } from 'sonner';
-import { 
+import {
   Category,
   CurrencyCode,
-  TransactionCreateRequest, 
+  TransactionCreateRequest,
 } from '../../features/api/types';
 import { CURRENCY_CODES } from '../../constants';
 import { CategorySelector } from '../categories/CategorySelector';
@@ -49,8 +49,8 @@ export const TransactionCreateForm = () => {
   ] = useState<boolean>(false);
   const [category, setCategory] = useState<Category | undefined>();
   const [currency, setCurrency] = useState<CurrencyCode>(CURRENCY_CODES[0]);
-  const { 
-    control, handleSubmit, formState: {errors},
+  const {
+    control, handleSubmit, formState: { errors },
   } = useForm<TransactionCreateRequest>(
     { resolver: zodResolver(TransactionSchema) }
   );
@@ -64,21 +64,21 @@ export const TransactionCreateForm = () => {
   }, [errors.amount]);
 
   return (
-    <form onSubmit={handleSubmit(() => {})}>
+    <form onSubmit={handleSubmit(() => { })}>
       {DefaultToaster}
       <Stack spacing={4} padding={3}>
         <Controller
           name="amount"
           control={control}
           defaultValue="0"
-          render={({field}) => (
+          render={({ field }) => (
             <Box>
               <FormLabel>Amount</FormLabel>
               <NumericFormat
                 size="lg"
                 allowNegative={false}
                 customInput={Input}
-                sx={{input: {textAlign: 'center'}}}
+                sx={{ input: { textAlign: 'center' } }}
                 error={!!errors.amount}
                 {...field}
                 endDecorator={
@@ -87,7 +87,7 @@ export const TransactionCreateForm = () => {
                     <Controller
                       name="currency"
                       control={control}
-                      render={({field}) => (
+                      render={({ field }) => (
                         <Select
                           variant="plain"
                           slotProps={{
@@ -144,14 +144,14 @@ export const TransactionCreateForm = () => {
             {
               ['OUT', 'IN'].map(value =>
                 <TabPanel key={value} value={value}>
-                  <CategorySelector 
+                  <CategorySelector
                     selected={category}
                     onChange={setCategory}
                     filter={
                       category =>
                         !category.parentCategory
                         && category.transactionType === value
-                    }/>
+                    } />
                 </TabPanel>
               )
             }
@@ -161,13 +161,13 @@ export const TransactionCreateForm = () => {
           name="transactionTime"
           control={control}
           defaultValue={moment().format('YYYY-MM-DDTHH:mm')}
-          render={({field}) =>
+          render={({ field }) =>
             <Box>
               <FormLabel>Transaction Time</FormLabel>
               <Input
                 type="datetime-local"
                 slotProps={{
-                  input: { 
+                  input: {
                     max: moment().format('YYYY-MM-DDTHH:mm'),
                   },
                 }}
@@ -178,8 +178,8 @@ export const TransactionCreateForm = () => {
           name="comment"
           control={control}
           defaultValue=""
-          render={({field}) =>
-            <Textarea variant="plain" placeholder="Comment..." {...field}/>} />
+          render={({ field }) =>
+            <Textarea variant="plain" placeholder="Comment..." {...field} />} />
         <Button type="submit">
           Add
         </Button>

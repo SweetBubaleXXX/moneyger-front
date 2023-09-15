@@ -1,14 +1,14 @@
 import React from 'react';
 import Decimal from 'decimal.js';
-import { 
+import {
   Divider,
   Skeleton,
   Stack,
-  Typography, 
+  Typography,
 } from '@mui/joy';
 import { CurrencyCode } from '../../features/api/types';
 
-export type SummaryWidgetProps ={
+export type SummaryWidgetProps = {
   income: number,
   outcome: number,
   currency?: CurrencyCode,
@@ -31,7 +31,7 @@ export const SummaryWidget = (props: SummaryWidgetProps) => {
           {props.outcome}
         </Skeleton>
       </Typography>
-      <Divider sx={{minWidth: 60}}>
+      <Divider sx={{ minWidth: 60 }}>
         {props.currency}
       </Divider>
       <Typography level="body-lg" color="neutral">

@@ -37,7 +37,7 @@ export const PeriodSelector = (props: PeriodSelectorProps) => {
     <>
       <Stack direction="column" spacing={1} alignItems="center">
         <Stack direction="row" spacing={2} justifyContent="space-between">
-          <Button 
+          <Button
             variant="plain"
             disabled={selectedPeriod === 'custom'}
             onClick={
@@ -65,10 +65,10 @@ export const PeriodSelector = (props: PeriodSelectorProps) => {
             <Option value="year">Year</Option>
             <Divider />
             <Option value="custom" onClick={() => setDateRangePickerOpen(true)}>
-            Custom
+              Custom
             </Option>
           </Select>
-          <Button 
+          <Button
             variant="plain"
             disabled={!canIncrementPeriod(props.value, selectedPeriod)}
             onClick={
@@ -81,13 +81,13 @@ export const PeriodSelector = (props: PeriodSelectorProps) => {
           {renderPeriodHint(props.value, selectedPeriod)}
         </Typography>
       </Stack>
-      <DateRangeModal 
+      <DateRangeModal
         open={dateRangePickerOpen}
         initialValue={props.value}
         onClose={value => {
           setDateRangePickerOpen(false);
           props.onChange(value);
-        }}/>
+        }} />
     </>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { 
+import {
   Card,
   CardContent,
   Sheet,
@@ -11,7 +11,7 @@ import { Stack } from '@mui/system';
 import moment from 'moment';
 import { Transaction } from '../../features/api/types';
 import {
-  useGetAllCategoriesQuery, 
+  useGetAllCategoriesQuery,
 } from '../../features/api/apiSlice';
 import { OVERFLOW_ELLIPSIS } from '../../constants';
 
@@ -31,23 +31,23 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
   const isLoading = props.loading ?? false;
 
   return (
-    <Card 
+    <Card
       variant="outlined"
-      sx={{'--Card-padding': '8px'}}>
+      sx={{ '--Card-padding': '8px' }}>
       <CardContent>
-        <Stack 
-          direction="row" 
+        <Stack
+          direction="row"
           alignItems="center"
           justifyContent="stretch"
-          sx={{gap: 1}}
+          sx={{ gap: 1 }}
         >
           <Avatar>
             <Skeleton loading={isLoading}>
               {category?.icon}
             </Skeleton>
           </Avatar>
-          <Sheet sx={{flexGrow: 1, overflow: 'hidden'}}>
-            <Typography level="title-lg"  sx={OVERFLOW_ELLIPSIS}>
+          <Sheet sx={{ flexGrow: 1, overflow: 'hidden' }}>
+            <Typography level="title-lg" sx={OVERFLOW_ELLIPSIS}>
               <Skeleton loading={isLoading}>
                 {category?.name}
               </Skeleton>

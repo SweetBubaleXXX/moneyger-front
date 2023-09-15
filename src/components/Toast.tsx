@@ -45,4 +45,4 @@ export const Toaster: typeof SonnerToaster = (props) => {
   );
 };
 
-export const DefaultToaster = <Toaster/>;
+export const DefaultToaster = <Toaster />;

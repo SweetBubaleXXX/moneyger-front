@@ -34,7 +34,7 @@ export type JwtToken = {
   refresh: string,
 }
 
-export type CurrencyCode =  typeof CURRENCY_CODES[number]
+export type CurrencyCode = typeof CURRENCY_CODES[number]
 
 export type TransactionType = 'IN' | 'OUT'
 

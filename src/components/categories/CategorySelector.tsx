@@ -19,13 +19,13 @@ export const CategorySelector = (props: CategorySelectorProps) => {
     <AccordionGroup>
       {
         primaryCategories?.sort((a, b) => b.displayOrder - a.displayOrder).map(
-          category => 
+          category =>
             <CategoryAccordion
               key={category.id}
               category={category}
               selected={props.selected}
               onChange={props.onChange}
-              filter={props.filter}/>
+              filter={props.filter} />
         )
       }
     </AccordionGroup>

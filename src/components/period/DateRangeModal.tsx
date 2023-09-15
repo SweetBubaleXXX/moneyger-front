@@ -18,7 +18,7 @@ export type DateRangeModalProps = {
 
 export const DateRangeModal = (props: DateRangeModalProps) => {
   const [period, setPeriod] = useState<Period>(props.initialValue);
-  
+
   return (
     <Modal
       open={props.open}
@@ -34,7 +34,7 @@ export const DateRangeModal = (props: DateRangeModalProps) => {
         <Typography level="h4">Custom date range</Typography>
         <Stack direction="column" spacing={1} paddingY={1}>
           <FormLabel>From</FormLabel>
-          <DateInput 
+          <DateInput
             defaultValue={props.initialValue.from}
             max={moment.min(moment(), moment(period.to)).toDate()}
             onChange={value => setPeriod({
@@ -43,7 +43,7 @@ export const DateRangeModal = (props: DateRangeModalProps) => {
             })}
           />
           <FormLabel>To</FormLabel>
-          <DateInput 
+          <DateInput
             defaultValue={props.initialValue.to}
             min={period.from}
             max={moment().toDate()}

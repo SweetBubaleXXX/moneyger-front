@@ -42,7 +42,7 @@ const baseQuery = fetchBaseQuery({
 });
 
 const baseQueryWithReauth: BaseQueryFn<
-string | FetchArgs, unknown, FetchBaseQueryError
+  string | FetchArgs, unknown, FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   await reauthMutex.waitForUnlock();
   let result = await baseQuery(args, api, extraOptions);
@@ -88,7 +88,7 @@ export const api = createApi({
     getAllCategories: builder.query<Category[], void>({
       query: () => API_PATHS.getAllCategories,
       providesTags: ['Category'],
-      transformResponse: (response: PaginatedResponse<Category>) => 
+      transformResponse: (response: PaginatedResponse<Category>) =>
         camelcaseKeys(response.results),
     }),
     getCategories: builder
@@ -109,7 +109,7 @@ export const api = createApi({
           url: API_PATHS.getTransactions(request.page),
           params: decamelizeKeys(request.params),
         }),
-        serializeQueryArgs: ({queryArgs}) => queryArgs.params,
+        serializeQueryArgs: ({ queryArgs }) => queryArgs.params,
         transformResponse: (response: PaginatedResponse<Transaction>) => {
           response.results = camelcaseKeys(response.results);
           return response;
@@ -118,7 +118,7 @@ export const api = createApi({
           newItems: PaginatedResponse<Transaction>) => {
           currentCache.results.push(...newItems.results);
         },
-        forceRefetch({currentArg, previousArg}) {
+        forceRefetch({ currentArg, previousArg }) {
           return currentArg?.page !== previousArg?.page;
         },
         providesTags: ['Transaction'],

@@ -9,19 +9,20 @@ export default () => {
     <>
       {DefaultToaster}
       <Sheet sx={{
-        display:'flex',
-        justifyContent:'center',
-        alignItems:'center',
-        minHeight:'100vh'}}
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+      }}
       >
-        <Card variant="outlined" sx={{width: 300}}>
+        <Card variant="outlined" sx={{ width: 300 }}>
           <Tabs>
             <TabList tabFlex={1}>
               <Tab>Login</Tab>
               <Tab>Registration</Tab>
             </TabList>
             <TabPanel value={0}>
-              <LoginForm/>
+              <LoginForm />
             </TabPanel>
             <TabPanel value={1}>
               <RegistrationForm />

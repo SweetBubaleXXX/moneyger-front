@@ -1,21 +1,21 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Box, 
+  Box,
   IconButton,
   Typography,
 } from '@mui/joy';
 import { ChevronLeft } from 'lucide-react';
 import {
-  TransactionCreateForm, 
+  TransactionCreateForm,
 } from '../components/transactions/TransactionCreateForm';
 
 export const AddTransaction = () => {
   const navigate = useNavigate();
-  
+
   return (
     <>
-      <Box 
+      <Box
         display="flex"
         flexDirection="column"
         justifyContent="space-around"

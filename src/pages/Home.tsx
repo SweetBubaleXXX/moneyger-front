@@ -7,7 +7,7 @@ import {
   Stack,
 } from '@mui/joy';
 import { Cross } from 'lucide-react';
-import { 
+import {
   useGetTransactionsQuery,
   useGetTransactionsSummaryQuery,
 } from '../features/api/apiSlice';
@@ -15,7 +15,7 @@ import {
   TransactionWidget,
 } from '../components/transactions/TransactionWidget';
 import {
-  PeriodSelector, 
+  PeriodSelector,
   DEFAULT_PERIOD,
 } from '../components/period/PeriodSelector';
 import { Period } from '../components/period/types';
@@ -58,7 +58,7 @@ export default () => {
         <PeriodSelector value={period} onChange={value => {
           setPeriod(value);
           setPage(1);
-        }}/>
+        }} />
       </Box>
       <Stack spacing={2} padding={2} marginX="auto" sx={{
         maxWidth: { sm: 'sm' },
@@ -70,7 +70,7 @@ export default () => {
               <TransactionWidget
                 key={index}
                 transaction={transaction}
-                loading={transactions.isFetching}/>
+                loading={transactions.isFetching} />
           )
         }
         {
@@ -79,7 +79,7 @@ export default () => {
             disabled={transactions.isFetching}
             onClick={() => setPage(page + 1)}
           >
-          Load More
+            Load More
           </Button>
         }
       </Stack>
