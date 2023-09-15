@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { z } from 'zod';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -23,6 +23,7 @@ import {
   useTheme,
 } from '@mui/joy';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { toast } from 'sonner';
 import { 
   Category,
   CurrencyCode,
@@ -30,9 +31,10 @@ import {
 } from '../../features/api/types';
 import { CURRENCY_CODES } from '../../constants';
 import { CategorySelector } from '../categories/CategorySelector';
+import { DefaultToaster } from '../Toast';
 
 export const TransactionSchema = z.object({
-  amount: z.number().positive().finite(),
+  amount: z.preprocess(Number, z.number().positive().finite()),
   category: z.number().int().positive(),
   currency: z.enum(CURRENCY_CODES),
   transactionTime: z.date(),
@@ -52,9 +54,18 @@ export const TransactionCreateForm = () => {
   } = useForm<TransactionCreateRequest>(
     { resolver: zodResolver(TransactionSchema) }
   );
-  
+
+  useEffect(() => {
+    if (errors.amount) {
+      toast.error('Amount', {
+        description: errors.amount.message,
+      });
+    }
+  }, [errors.amount]);
+
   return (
-    <form>
+    <form onSubmit={handleSubmit(() => {})}>
+      {DefaultToaster}
       <Stack spacing={4} padding={3}>
         <Controller
           name="amount"
@@ -68,6 +79,7 @@ export const TransactionCreateForm = () => {
                 allowNegative={false}
                 customInput={Input}
                 sx={{input: {textAlign: 'center'}}}
+                error={!!errors.amount}
                 {...field}
                 endDecorator={
                   <>
