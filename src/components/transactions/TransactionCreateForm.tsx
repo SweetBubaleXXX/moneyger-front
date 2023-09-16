@@ -28,7 +28,10 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { CURRENCY_CODES } from '../../constants';
-import { useCreateTransactionMutation } from '../../features/api/apiSlice';
+import {
+  useCreateTransactionMutation,
+  useGetAccountQuery,
+} from '../../features/api/apiSlice';
 import {
   Category,
   CurrencyCode,
@@ -54,8 +57,15 @@ export const TransactionCreateForm = () => {
   const [
     categorySelectorOpen, setCategorySelectorOpen,
   ] = useState<boolean>(false);
+  const { account } = useGetAccountQuery(undefined, {
+    selectFromResult: result => ({
+      account: result.data,
+    }),
+  });
   const [category, setCategory] = useState<Category | undefined>();
-  const [currency, setCurrency] = useState<CurrencyCode>(CURRENCY_CODES[0]);
+  const [currency, setCurrency] = useState<CurrencyCode>(
+    account?.defaultCurrency || CURRENCY_CODES[0]
+  );
   const {
     control, handleSubmit, formState: { errors },
   } = useForm<TransactionCreateRequest>(
@@ -115,7 +125,7 @@ export const TransactionCreateForm = () => {
                     <Controller
                       name="currency"
                       control={control}
-                      defaultValue={CURRENCY_CODES[0]}
+                      defaultValue={currency}
                       render={({ field }) => (
                         <Select
                           variant="plain"
