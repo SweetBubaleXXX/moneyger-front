@@ -75,6 +75,10 @@ export type Transaction = {
   transactionTime: string,
 }
 
+export type TransactionCreateRequest = Omit<
+  Transaction, 'id' | 'transactionType' | 'comment' | 'transactionTime'
+> & Partial<Pick<Transaction, 'comment' | 'transactionTime'>>
+
 export type TransactionRequestParams = {
   category?: number,
   currency?: CurrencyCode,
@@ -85,14 +89,10 @@ export type TransactionRequestParams = {
   search?: string,
 }
 
-export type PaginatedTransactionRequest =
+export type PaginatedGetTransactionRequest =
   PaginatedParamsRequest<TransactionRequestParams>
 
 export type Summary = {
   total: number,
   currency: CurrencyCode,
 }
-
-export type TransactionCreateRequest = Omit<
-  Transaction, 'id' | 'transactionType'
->

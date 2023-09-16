@@ -19,12 +19,13 @@ import {
   JwtToken,
   LoginRequest,
   PaginatedCategoryRequest,
+  PaginatedGetTransactionRequest,
   PaginatedResponse,
-  PaginatedTransactionRequest,
   RegistrationRequest,
   RegistrationResponse,
   Summary,
   Transaction,
+  TransactionCreateRequest,
   TransactionRequestParams,
 } from './types';
 
@@ -105,7 +106,7 @@ export const api = createApi({
       providesTags: ['Category'],
     }),
     getTransactions: builder
-      .query<PaginatedResponse<Transaction>, PaginatedTransactionRequest>({
+      .query<PaginatedResponse<Transaction>, PaginatedGetTransactionRequest>({
         query: request => ({
           url: API_PATHS.getTransactions(request.page),
           params: decamelizeKeys(request.params),
@@ -130,6 +131,14 @@ export const api = createApi({
         params: decamelizeKeys(request),
       }),
       providesTags: ['Transaction'],
+    }),
+    createTransaction: builder.mutation<Transaction, TransactionCreateRequest>({
+      query: request => ({
+        url: API_PATHS.createTransaction(request.category),
+        method: 'POST',
+        body: decamelizeKeys(request),
+      }),
+      invalidatesTags: ['Transaction'],
     }),
     login: builder.mutation<JwtToken, LoginRequest>({
       query: credentials => ({
@@ -156,6 +165,7 @@ export const {
   useGetCategoryByIdQuery,
   useGetTransactionsQuery,
   useGetTransactionsSummaryQuery,
+  useCreateTransactionMutation,
   useLoginMutation,
   useRegisterMutation,
 } = api;
