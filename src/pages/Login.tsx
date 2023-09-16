@@ -3,12 +3,10 @@ import React from 'react';
 
 import { LoginForm } from '../components/login/LoginForm';
 import { RegistrationForm } from '../components/login/RegistrationForm';
-import { DefaultToaster } from '../components/Toast';
 
 export default () => {
   return (
     <>
-      {DefaultToaster}
       <Sheet sx={{
         display: 'flex',
         justifyContent: 'center',

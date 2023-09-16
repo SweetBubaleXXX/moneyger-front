@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom/client';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Provider } from 'react-redux';
 
+import { DefaultToaster } from './components/Toast';
 import Router from './pages/Router';
 import reportWebVitals from './reportWebVitals';
 import { store } from './store';
@@ -30,6 +31,7 @@ root.render(
               },
             }}
           />
+          {DefaultToaster}
           <Router />
         </CssVarsProvider>
       </Provider>

@@ -23,6 +23,7 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -34,7 +35,6 @@ import {
   TransactionCreateRequest,
 } from '../../features/api/types';
 import { CategorySelector } from '../categories/CategorySelector';
-import { DefaultToaster } from '../Toast';
 
 export const TransactionSchema = z.object({
   amount: z.preprocess(Number, z.number().positive().finite()),
@@ -44,11 +44,12 @@ export const TransactionSchema = z.object({
     value => value < moment().toDate(),
     'Enter valid date'
   ),
-  comment: z.string(),
+  comment: z.string().max(255),
 });
 
 export const TransactionCreateForm = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const greaterThanMd = useMediaQuery(theme.breakpoints.up('md'));
   const [
     categorySelectorOpen, setCategorySelectorOpen,
@@ -63,33 +64,36 @@ export const TransactionCreateForm = () => {
   const [createTransaction, result] = useCreateTransactionMutation();
 
   useEffect(() => {
-    const failed = result.isError && 'data' in result;
-    if (failed) {
-      const errorDetail = (result.data as { detail?: string }).detail;
-      const toastMessage = errorDetail || result.status;
-      toast.error(toastMessage);
+    if (result.isError) {
+      toast.error('Failed to add transaction');
     }
   }, [result.isError]);
 
   useEffect(() => {
-    if (errors.amount) {
-      toast.error('Amount', {
-        description: errors.amount.message,
-      });
+    if (result.isSuccess) {
+      toast.success('Transaction added');
+      navigate(-1);
     }
-  }, [errors.amount]);
+  }, [result.isSuccess, navigate]);
 
   useEffect(() => {
-    if (errors.category) {
-      toast.error('Category', {
-        description: errors.category.message,
-      });
+    for (const [field, error] of Object.entries({
+      'Amount': errors.amount,
+      'Category': errors.category,
+      'Comment': errors.comment,
+      'Currency': errors.currency,
+      'Transaction Time': errors.transactionTime,
+    })) {
+      if (error) {
+        toast.error(field, {
+          description: error.message,
+        });
+      }
     }
-  }, [errors.category]);
+  }, [errors]);
 
   return (
     <form onSubmit={handleSubmit(createTransaction)}>
-      {DefaultToaster}
       <Stack spacing={4} padding={3}>
         <Controller
           name="amount"
