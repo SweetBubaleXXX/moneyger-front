@@ -27,7 +27,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { CURRENCY_CODES } from '../../constants';
+import { CURRENCY_CODES, DATETIME_INPUT_FORMAT } from '../../constants';
 import {
   useCreateTransactionMutation,
   useGetAccountQuery,
@@ -215,7 +215,7 @@ export const TransactionCreateForm = () => {
         <Controller
           name="transactionTime"
           control={control}
-          defaultValue={moment().format('YYYY-MM-DDTHH:mm')}
+          defaultValue={moment().format(DATETIME_INPUT_FORMAT)}
           render={({ field }) =>
             <FormControl error={!!errors.transactionTime}>
               <FormLabel>Transaction Time</FormLabel>
@@ -223,7 +223,7 @@ export const TransactionCreateForm = () => {
                 type="datetime-local"
                 slotProps={{
                   input: {
-                    max: moment().endOf('day').format('YYYY-MM-DDTHH:mm'),
+                    max: moment().endOf('day').format(DATETIME_INPUT_FORMAT),
                   },
                 }}
                 {...field}

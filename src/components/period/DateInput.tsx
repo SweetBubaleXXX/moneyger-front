@@ -1,6 +1,8 @@
 import { Input } from '@mui/joy';
-import moment, { MomentInput } from 'moment';
+import moment from 'moment';
 import React from 'react';
+
+import { DATE_INPUT_FORMAT } from '../../constants';
 
 export type DateRangeInputProps = {
   defaultValue?: Date,
@@ -16,8 +18,8 @@ export const DateInput = (props: DateRangeInputProps) => {
       defaultValue={formatDate(props.defaultValue)}
       slotProps={{
         input: {
-          min: props.min && formatDate(props.min),
-          max: props.max && formatDate(props.max),
+          min: formatDate(props.min),
+          max: formatDate(props.max),
         },
       }}
       onChange={event => props.onChange(event.target.value)}
@@ -25,6 +27,6 @@ export const DateInput = (props: DateRangeInputProps) => {
   );
 };
 
-function formatDate(value: MomentInput): string {
-  return moment(value).format('YYYY-MM-DD');
+function formatDate(value?: Date): string | undefined {
+  return value && moment(value).format(DATE_INPUT_FORMAT);
 }

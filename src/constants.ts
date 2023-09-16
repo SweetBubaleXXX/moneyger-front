@@ -7,3 +7,7 @@ export const OVERFLOW_ELLIPSIS: SxProps = {
   whiteSpace: 'nowrap',
   textOverflow: 'ellipsis',
 };
+
+export const DATE_INPUT_FORMAT = 'YYYY-MM-DD';
+
+export const DATETIME_INPUT_FORMAT = 'YYYY-MM-DDTHH:mm';
