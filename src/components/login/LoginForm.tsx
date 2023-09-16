@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  Button,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -16,7 +17,6 @@ import { z } from 'zod';
 import { useLoginMutation } from '../../features/api/apiSlice';
 import { setAccessToken } from '../../features/api/auth';
 import { LoginRequest } from '../../features/api/types';
-import { FormButton } from './FormButton';
 
 export const LoginSchema = z.object({
   username: z.string()
@@ -95,7 +95,9 @@ export const LoginForm = () => {
             </FormControl>
           )}
         />
-        <FormButton buttonText="Login" isLoading={isLoading} />
+        <Button type="submit" loading={isLoading}>
+          Login
+        </Button>
       </Stack>
     </form>
   );

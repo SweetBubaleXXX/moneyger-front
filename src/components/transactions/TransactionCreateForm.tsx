@@ -228,7 +228,7 @@ export const TransactionCreateForm = () => {
             <FormControl error={!!errors.comment}>
               <Textarea variant="plain" placeholder="Comment..." {...field} />
             </FormControl>} />
-        <Button type="submit">
+        <Button type="submit" loading={result.isLoading}>
           Add
         </Button>
       </Stack>

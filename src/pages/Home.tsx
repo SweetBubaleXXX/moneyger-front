@@ -77,7 +77,7 @@ export default () => {
         {
           showLoadMoreButton && <Button
             variant="outlined"
-            disabled={transactions.isFetching}
+            loading={transactions.isFetching}
             onClick={() => setPage(page + 1)}
           >
             Load More

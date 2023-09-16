@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  Button,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -13,7 +14,6 @@ import { z } from 'zod';
 
 import { useRegisterMutation } from '../../features/api/apiSlice';
 import { RegistrationRequest } from '../../features/api/types';
-import { FormButton } from './FormButton';
 import { LoginSchema } from './LoginForm';
 
 export const RegistrationSchema = LoginSchema.extend({
@@ -112,7 +112,9 @@ export const RegistrationForm = () => {
             </FormControl>
           )}
         />
-        <FormButton buttonText="Register" isLoading={isLoading} />
+        <Button type="submit" loading={isLoading}>
+          Register
+        </Button>
       </Stack>
     </form>
   );
