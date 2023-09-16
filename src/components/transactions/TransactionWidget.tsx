@@ -12,6 +12,7 @@ import React from 'react';
 
 import { OVERFLOW_ELLIPSIS } from '../../constants';
 import {
+  selectCategoryById,
   useGetAllCategoriesQuery,
 } from '../../features/api/apiSlice';
 import { Transaction } from '../../features/api/types';
@@ -24,9 +25,7 @@ export type TransactionWidgetProps = {
 export const TransactionWidget = (props: TransactionWidgetProps) => {
   const { category } = useGetAllCategoriesQuery(undefined, {
     selectFromResult: result => ({
-      category: result.data?.find(
-        category => category.id === props.transaction.category
-      ),
+      category: selectCategoryById(result, props.transaction.category),
     }),
   });
   const isLoading = props.loading ?? false;

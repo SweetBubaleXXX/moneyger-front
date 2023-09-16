@@ -35,7 +35,8 @@ import {
 import {
   Category,
   CurrencyCode,
-  TransactionCreateRequest,
+  Transaction,
+  TransactionCreateUpdateRequest,
 } from '../../features/api/types';
 import { CategorySelector } from '../categories/CategorySelector';
 
@@ -47,10 +48,12 @@ export const TransactionSchema = z.object({
     value => value < moment().toDate(),
     'Enter valid date'
   ),
-  comment: z.string().max(255),
+  comment: z.string().max(255).optional(),
 });
 
-export const TransactionCreateForm = () => {
+export type TransactionFormProps = Partial<Transaction>
+
+export const TransactionForm = (props: TransactionFormProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const greaterThanMd = useMediaQuery(theme.breakpoints.up('md'));
@@ -64,11 +67,11 @@ export const TransactionCreateForm = () => {
   });
   const [category, setCategory] = useState<Category | undefined>();
   const [currency, setCurrency] = useState<CurrencyCode>(
-    account?.defaultCurrency || CURRENCY_CODES[0]
+    props.currency || account?.defaultCurrency || CURRENCY_CODES[0]
   );
   const {
     control, handleSubmit, formState: { errors },
-  } = useForm<TransactionCreateRequest>(
+  } = useForm<TransactionCreateUpdateRequest>(
     { resolver: zodResolver(TransactionSchema) }
   );
   const [createTransaction, result] = useCreateTransactionMutation();
@@ -108,7 +111,7 @@ export const TransactionCreateForm = () => {
         <Controller
           name="amount"
           control={control}
-          defaultValue="0"
+          defaultValue={props.amount ?? '0'}
           render={({ field }) => (
             <Box>
               <FormLabel>Amount</FormLabel>
@@ -215,7 +218,9 @@ export const TransactionCreateForm = () => {
         <Controller
           name="transactionTime"
           control={control}
-          defaultValue={moment().format(DATETIME_INPUT_FORMAT)}
+          defaultValue={
+            moment(props.transactionTime).format(DATETIME_INPUT_FORMAT)
+          }
           render={({ field }) =>
             <FormControl error={!!errors.transactionTime}>
               <FormLabel>Transaction Time</FormLabel>
@@ -233,7 +238,7 @@ export const TransactionCreateForm = () => {
         <Controller
           name="comment"
           control={control}
-          defaultValue=""
+          defaultValue={props.comment}
           render={({ field }) =>
             <FormControl error={!!errors.comment}>
               <Textarea variant="plain" placeholder="Comment..." {...field} />

@@ -1,3 +1,4 @@
+import { createSelector } from '@reduxjs/toolkit';
 import {
   BaseQueryFn,
   createApi,
@@ -25,7 +26,7 @@ import {
   RegistrationResponse,
   Summary,
   Transaction,
-  TransactionCreateRequest,
+  TransactionCreateUpdateRequest,
   TransactionRequestParams,
 } from './types';
 
@@ -132,14 +133,15 @@ export const api = createApi({
       }),
       providesTags: ['Transaction'],
     }),
-    createTransaction: builder.mutation<Transaction, TransactionCreateRequest>({
-      query: request => ({
-        url: API_PATHS.createTransaction(request.category),
-        method: 'POST',
-        body: decamelizeKeys(request),
+    createTransaction: builder
+      .mutation<Transaction, TransactionCreateUpdateRequest>({
+        query: request => ({
+          url: API_PATHS.createTransaction(request.category),
+          method: 'POST',
+          body: decamelizeKeys(request),
+        }),
+        invalidatesTags: ['Transaction'],
       }),
-      invalidatesTags: ['Transaction'],
-    }),
     login: builder.mutation<JwtToken, LoginRequest>({
       query: credentials => ({
         url: API_PATHS.createToken,
@@ -169,3 +171,11 @@ export const {
   useLoginMutation,
   useRegisterMutation,
 } = api;
+
+export const selectCategoryById = createSelector(
+  result => result.data,
+  (_, categoryId) => categoryId,
+  (data, categoryId) => data?.find(
+    category => category.id === categoryId
+  )
+);

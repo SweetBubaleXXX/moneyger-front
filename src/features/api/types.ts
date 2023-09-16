@@ -75,7 +75,7 @@ export type Transaction = {
   transactionTime: string,
 }
 
-export type TransactionCreateRequest = Omit<
+export type TransactionCreateUpdateRequest = Omit<
   Transaction, 'id' | 'transactionType' | 'comment' | 'transactionTime'
 > & Partial<Pick<Transaction, 'comment' | 'transactionTime'>>
 

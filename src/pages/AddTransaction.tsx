@@ -8,8 +8,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
-  TransactionCreateForm,
-} from '../components/transactions/TransactionCreateForm';
+  TransactionForm,
+} from '../components/transactions/TransactionForm';
 
 export const AddTransaction = () => {
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ export const AddTransaction = () => {
           maxWidth={300}
           marginX="auto"
         >
-          <TransactionCreateForm />
+          <TransactionForm />
         </Box>
       </Box>
     </>
