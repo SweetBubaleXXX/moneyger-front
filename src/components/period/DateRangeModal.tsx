@@ -39,7 +39,7 @@ export const DateRangeModal = (props: DateRangeModalProps) => {
             defaultValue={props.initialValue.from}
             max={moment.min(moment(), moment(period.to)).toDate()}
             onChange={value => setPeriod({
-              from: moment(value).toDate(),
+              from: parseDate(value) ?? period.from,
               to: period.to,
             })}
           />
@@ -50,7 +50,7 @@ export const DateRangeModal = (props: DateRangeModalProps) => {
             max={moment().toDate()}
             onChange={value => setPeriod({
               from: period.from,
-              to: moment(value).toDate(),
+              to: parseDate(value) ?? period.to,
             })}
           />
         </Stack>
@@ -58,3 +58,11 @@ export const DateRangeModal = (props: DateRangeModalProps) => {
     </Modal>
   );
 };
+
+function parseDate(value: string): Date | null {
+  const parsedValue = moment(value);
+  if (!parsedValue.isValid()) {
+    return null;
+  }
+  return parsedValue.toDate();
+}
