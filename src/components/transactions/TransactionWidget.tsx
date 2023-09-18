@@ -1,7 +1,12 @@
 import {
   Avatar,
+  Button,
   Card,
   CardContent,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
   Dropdown,
   IconButton,
   ListDivider,
@@ -9,14 +14,16 @@ import {
   Menu,
   MenuButton,
   MenuItem,
+  Modal,
+  ModalDialog,
   Sheet,
   Skeleton,
   Typography,
 } from '@mui/joy';
 import { Stack } from '@mui/system';
-import { Copy, MoreVertical, Pencil, Trash } from 'lucide-react';
+import { AlertTriangle, Copy, MoreVertical, Pencil, Trash } from 'lucide-react';
 import moment from 'moment';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { OVERFLOW_ELLIPSIS } from '../../constants';
 import {
@@ -31,6 +38,9 @@ export type TransactionWidgetProps = {
 }
 
 export const TransactionWidget = (props: TransactionWidgetProps) => {
+  const [
+    confirmDeletionOpen, setConfirmDeletionOpen,
+  ] = useState<boolean>(false);
   const { category } = useGetAllCategoriesQuery(undefined, {
     selectFromResult: result => ({
       category: selectCategoryById(result, props.transaction.category),
@@ -107,13 +117,42 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
           Duplicate
         </MenuItem>
         <ListDivider />
-        <MenuItem color="danger">
+        <MenuItem color="danger" onClick={() => setConfirmDeletionOpen(true)}>
           <ListItemDecorator sx={{ color: 'inherit' }}>
             <Trash />
           </ListItemDecorator>
           Delete
         </MenuItem>
       </Menu>
+      <Modal
+        open={confirmDeletionOpen}
+        onClose={() => setConfirmDeletionOpen(false)}
+      >
+        <ModalDialog variant="outlined">
+          <DialogTitle>
+            <AlertTriangle />
+            Confirmation
+          </DialogTitle>
+          <Divider />
+          <DialogContent>
+            Are you sure you want to delete this transaction?
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="solid"
+              color="danger" onClick={() => setConfirmDeletionOpen(false)}>
+              Delete
+            </Button>
+            <Button
+              variant="plain"
+              color="neutral"
+              onClick={() => setConfirmDeletionOpen(false)}
+            >
+              Cancel
+            </Button>
+          </DialogActions>
+        </ModalDialog>
+      </Modal>
     </Dropdown>
   );
 };
