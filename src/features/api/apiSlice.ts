@@ -122,7 +122,7 @@ export const api = createApi({
           currentCache.results.push(...newItems.results);
         },
         forceRefetch({ currentArg, previousArg }) {
-          return currentArg?.page !== previousArg?.page;
+          return currentArg?.page !== (previousArg?.page ?? 1) + 1;
         },
         providesTags: ['Transaction'],
       }),
@@ -142,6 +142,13 @@ export const api = createApi({
         }),
         invalidatesTags: ['Transaction'],
       }),
+    deleteTransaction: builder.mutation<any, number>({
+      query: transactionId => ({
+        url: API_PATHS.getTransactionById(transactionId),
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Transaction'],
+    }),
     login: builder.mutation<JwtToken, LoginRequest>({
       query: credentials => ({
         url: API_PATHS.createToken,
@@ -176,6 +183,7 @@ export const {
   useGetTransactionsQuery,
   useGetTransactionsSummaryQuery,
   useCreateTransactionMutation,
+  useDeleteTransactionMutation,
   useLoginMutation,
   useRegisterMutation,
 } = api;

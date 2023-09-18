@@ -23,11 +23,12 @@ import {
 import { Stack } from '@mui/system';
 import { AlertTriangle, Copy, MoreVertical, Pencil, Trash } from 'lucide-react';
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { OVERFLOW_ELLIPSIS } from '../../constants';
 import {
   selectCategoryById,
+  useDeleteTransactionMutation,
   useGetAllCategoriesQuery,
 } from '../../features/api/apiSlice';
 import { Transaction } from '../../features/api/types';
@@ -41,6 +42,7 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
   const [
     confirmDeletionOpen, setConfirmDeletionOpen,
   ] = useState<boolean>(false);
+  const [deleteTransaction, deletionResult] = useDeleteTransactionMutation();
   const category = useGetAllCategoriesQuery(undefined, {
     selectFromResult: ({ data, isLoading }) => ({
       data: selectCategoryById(data, props.transaction.category),
@@ -48,6 +50,12 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
     }),
   });
   const isLoading = category.isLoading || (props.loading ?? false);
+
+  useEffect(() => {
+    if (deletionResult.isSuccess) {
+      setConfirmDeletionOpen(false);
+    }
+  }, [deletionResult.isSuccess]);
 
   return (
     <Dropdown>
@@ -141,7 +149,10 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
           <DialogActions>
             <Button
               variant="solid"
-              color="danger" onClick={() => setConfirmDeletionOpen(false)}>
+              color="danger"
+              loading={deletionResult.isLoading}
+              onClick={() => deleteTransaction(props.transaction.id)}
+            >
               Delete
             </Button>
             <Button
