@@ -60,14 +60,10 @@ export const TransactionForm = (props: TransactionFormProps) => {
   const [
     categorySelectorOpen, setCategorySelectorOpen,
   ] = useState<boolean>(false);
-  const { account } = useGetAccountQuery(undefined, {
-    selectFromResult: result => ({
-      account: result.data,
-    }),
-  });
+  const account = useGetAccountQuery();
   const [category, setCategory] = useState<Category | undefined>();
   const [currency, setCurrency] = useState<CurrencyCode>(
-    props.currency || account?.defaultCurrency || CURRENCY_CODES[0]
+    props.currency || account.data?.defaultCurrency || CURRENCY_CODES[0]
   );
   const {
     control, handleSubmit, formState: { errors },
@@ -75,6 +71,12 @@ export const TransactionForm = (props: TransactionFormProps) => {
     { resolver: zodResolver(TransactionSchema) }
   );
   const [createTransaction, result] = useCreateTransactionMutation();
+
+  useEffect(() => {
+    if (!account.isLoading && account.data?.defaultCurrency) {
+      setCurrency(account.data.defaultCurrency);
+    }
+  }, [account.data, account.isLoading]);
 
   useEffect(() => {
     if (result.isError) {
