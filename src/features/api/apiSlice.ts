@@ -13,7 +13,7 @@ import Cookies from 'js-cookie';
 
 import { RootState } from '../../store';
 import { setAccessToken } from './auth';
-import { API_PATHS, EXCLUDE_FROM_REAUTH } from './constants';
+import { API_PATHS, EXCLUDE_FROM_REAUTH, PAGE_SIZE } from './constants';
 import {
   Account,
   Category,
@@ -117,12 +117,16 @@ export const api = createApi({
           response.results = camelcaseKeys(response.results);
           return response;
         },
-        merge: (currentCache: PaginatedResponse<Transaction>,
-          newItems: PaginatedResponse<Transaction>) => {
+        merge: (currentCache, newItems, { arg }) => {
+          if ((arg.page ?? 1) === 1) {
+            return newItems;
+          }
+          currentCache.count = newItems.count;
           currentCache.results.push(...newItems.results);
+          return currentCache;
         },
         forceRefetch({ currentArg, previousArg }) {
-          return currentArg?.page !== (previousArg?.page ?? 1) + 1;
+          return currentArg?.page !== previousArg?.page;
         },
         providesTags: ['Transaction'],
       }),

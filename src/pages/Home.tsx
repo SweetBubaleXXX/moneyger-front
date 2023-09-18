@@ -71,7 +71,8 @@ export default () => {
               <TransactionWidget
                 key={index}
                 transaction={transaction}
-                loading={transactions.isFetching} />
+                loading={transactions.isFetching}
+                onDelete={() => setPage(1)} />
           )
         }
         {

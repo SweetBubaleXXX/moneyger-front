@@ -36,6 +36,7 @@ import { Transaction } from '../../features/api/types';
 export type TransactionWidgetProps = {
   transaction: Transaction,
   loading?: boolean,
+  onDelete?: () => void,
 }
 
 export const TransactionWidget = (props: TransactionWidgetProps) => {
@@ -151,7 +152,10 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
               variant="solid"
               color="danger"
               loading={deletionResult.isLoading}
-              onClick={() => deleteTransaction(props.transaction.id)}
+              onClick={() => {
+                deleteTransaction(props.transaction.id);
+                props.onDelete?.();
+              }}
             >
               Delete
             </Button>
