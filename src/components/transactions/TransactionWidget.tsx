@@ -48,7 +48,7 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
             direction="row"
             alignItems="center"
             justifyContent="stretch"
-            sx={{ gap: 1 }}
+            sx={{ gap: 0.5 }}
           >
             <Avatar>
               <Skeleton loading={isLoading}>
@@ -93,7 +93,7 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
           </Stack>
         </CardContent>
       </Card>
-      <Menu placement="bottom-end">
+      <Menu placement="bottom-start">
         <MenuItem>
           <ListItemDecorator>
             <Pencil />
