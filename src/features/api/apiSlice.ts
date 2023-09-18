@@ -161,7 +161,7 @@ export const api = createApi({
 });
 
 export const selectCategoryById = createSelector(
-  (result: { data: Category[] | undefined }) => result.data,
+  (categories?: Category[]) => categories,
   (_: any, categoryId: number) => categoryId,
   (data, categoryId) => data?.find(
     category => category.id === categoryId

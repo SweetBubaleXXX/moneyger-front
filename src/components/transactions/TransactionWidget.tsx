@@ -41,12 +41,13 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
   const [
     confirmDeletionOpen, setConfirmDeletionOpen,
   ] = useState<boolean>(false);
-  const { category } = useGetAllCategoriesQuery(undefined, {
-    selectFromResult: result => ({
-      category: selectCategoryById(result, props.transaction.category),
+  const category = useGetAllCategoriesQuery(undefined, {
+    selectFromResult: ({ data, isLoading }) => ({
+      data: selectCategoryById(data, props.transaction.category),
+      isLoading,
     }),
   });
-  const isLoading = props.loading ?? false;
+  const isLoading = category.isLoading || (props.loading ?? false);
 
   return (
     <Dropdown>
@@ -62,13 +63,13 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
           >
             <Avatar>
               <Skeleton loading={isLoading}>
-                {category?.icon}
+                {category.data?.icon}
               </Skeleton>
             </Avatar>
             <Sheet sx={{ flexGrow: 1, overflow: 'hidden' }}>
               <Typography level="title-lg" sx={OVERFLOW_ELLIPSIS}>
                 <Skeleton loading={isLoading}>
-                  {category?.name}
+                  {category.data?.name}
                 </Skeleton>
               </Typography>
               <Typography level="body-sm" sx={OVERFLOW_ELLIPSIS}>
