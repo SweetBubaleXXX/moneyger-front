@@ -13,7 +13,7 @@ import Cookies from 'js-cookie';
 
 import { RootState } from '../../store';
 import { setAccessToken } from './auth';
-import { API_PATHS, EXCLUDE_FROM_REAUTH, PAGE_SIZE } from './constants';
+import { API_PATHS, EXCLUDE_FROM_REAUTH } from './constants';
 import {
   Account,
   Category,
