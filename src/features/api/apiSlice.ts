@@ -160,6 +160,14 @@ export const api = createApi({
   }),
 });
 
+export const selectCategoryById = createSelector(
+  (result: { data: Category[] | undefined }) => result.data,
+  (_: any, categoryId: number) => categoryId,
+  (data, categoryId) => data?.find(
+    category => category.id === categoryId
+  )
+);
+
 export const {
   useGetAccountQuery,
   useGetAllCategoriesQuery,
@@ -171,11 +179,3 @@ export const {
   useLoginMutation,
   useRegisterMutation,
 } = api;
-
-export const selectCategoryById = createSelector(
-  (result: { data: Category[] | undefined }) => result.data,
-  (_: any, categoryId: number) => categoryId,
-  (data, categoryId) => data?.find(
-    category => category.id === categoryId
-  )
-);
