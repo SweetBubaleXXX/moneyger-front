@@ -6,7 +6,7 @@ export type AuthState = {
 
 export type PaginatedResponse<T> = {
   count: number,
-  results: T[],
+  results: T,
 }
 
 export type PaginatedParamsRequest<T> = {
@@ -89,7 +89,7 @@ export type TransactionRequestParams = {
   search?: string,
 }
 
-export type PaginatedGetTransactionRequest =
+export type PaginatedTransactionRequest =
   PaginatedParamsRequest<TransactionRequestParams>
 
 export type Summary = {

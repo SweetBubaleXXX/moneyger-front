@@ -31,12 +31,15 @@ import {
   useDeleteTransactionMutation,
   useGetAllCategoriesQuery,
 } from '../../features/api/apiSlice';
-import { Transaction } from '../../features/api/types';
+import {
+  PaginatedTransactionRequest,
+  Transaction,
+} from '../../features/api/types';
 
 export type TransactionWidgetProps = {
   transaction: Transaction,
   loading?: boolean,
-  onDelete?: () => void,
+  requestParams: PaginatedTransactionRequest,
 }
 
 export const TransactionWidget = (props: TransactionWidgetProps) => {
@@ -152,10 +155,10 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
               variant="solid"
               color="danger"
               loading={deletionResult.isLoading}
-              onClick={() => {
-                deleteTransaction(props.transaction.id);
-                props.onDelete?.();
-              }}
+              onClick={() => deleteTransaction({
+                id: props.transaction.id,
+                params: props.requestParams,
+              })}
             >
               Delete
             </Button>
@@ -169,6 +172,6 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
           </DialogActions>
         </ModalDialog>
       </Modal>
-    </Dropdown>
+    </Dropdown >
   );
 };

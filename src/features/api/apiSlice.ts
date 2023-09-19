@@ -1,4 +1,8 @@
-import { createSelector } from '@reduxjs/toolkit';
+import {
+  createEntityAdapter,
+  createSelector,
+  EntityState,
+} from '@reduxjs/toolkit';
 import {
   BaseQueryFn,
   createApi,
@@ -20,8 +24,8 @@ import {
   JwtToken,
   LoginRequest,
   PaginatedCategoryRequest,
-  PaginatedGetTransactionRequest,
   PaginatedResponse,
+  PaginatedTransactionRequest,
   RegistrationRequest,
   RegistrationResponse,
   Summary,
@@ -29,8 +33,6 @@ import {
   TransactionCreateUpdateRequest,
   TransactionRequestParams,
 } from './types';
-
-const reauthMutex = new Mutex();
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_API_URL,
@@ -43,6 +45,8 @@ const baseQuery = fetchBaseQuery({
   },
   credentials: 'include',
 });
+
+const reauthMutex = new Mutex();
 
 const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs, unknown, FetchBaseQueryError
@@ -79,6 +83,12 @@ const baseQueryWithReauth: BaseQueryFn<
   return result;
 };
 
+export const transactionsAdapter = createEntityAdapter<Transaction>({
+  selectId: transaction => transaction.id,
+});
+
+export const transactionsSelector = transactionsAdapter.getSelectors();
+
 export const api = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['Account', 'Category', 'Transaction'],
@@ -91,7 +101,7 @@ export const api = createApi({
     getAllCategories: builder.query<Category[], void>({
       query: () => API_PATHS.getAllCategories,
       providesTags: ['Category'],
-      transformResponse: (response: PaginatedResponse<Category>) =>
+      transformResponse: (response: PaginatedResponse<Category[]>) =>
         camelcaseKeys(response.results),
     }),
     getCategories: builder
@@ -106,30 +116,34 @@ export const api = createApi({
       query: API_PATHS.getCategoryById,
       providesTags: ['Category'],
     }),
-    getTransactions: builder
-      .query<PaginatedResponse<Transaction>, PaginatedGetTransactionRequest>({
-        query: request => ({
-          url: API_PATHS.getTransactions(request.page),
-          params: decamelizeKeys(request.params),
-        }),
-        serializeQueryArgs: ({ queryArgs }) => queryArgs.params,
-        transformResponse: (response: PaginatedResponse<Transaction>) => {
-          response.results = camelcaseKeys(response.results);
-          return response;
-        },
-        merge: (currentCache, newItems, { arg }) => {
-          if ((arg.page ?? 1) === 1) {
-            return newItems;
-          }
-          currentCache.count = newItems.count;
-          currentCache.results.push(...newItems.results);
-          return currentCache;
-        },
-        forceRefetch({ currentArg, previousArg }) {
-          return currentArg?.page !== previousArg?.page;
-        },
-        providesTags: ['Transaction'],
+    getTransactions: builder.query<
+      PaginatedResponse<EntityState<Transaction>>,
+      PaginatedTransactionRequest
+    >({
+      query: request => ({
+        url: API_PATHS.getTransactions(request.page),
+        params: decamelizeKeys(request.params),
       }),
+      serializeQueryArgs: ({ queryArgs }) => queryArgs.params,
+      transformResponse: (response: PaginatedResponse<Transaction[]>) => ({
+        count: response.count,
+        results: transactionsAdapter.addMany(
+          transactionsAdapter.getInitialState(),
+          camelcaseKeys(response.results),
+        ),
+      }),
+      merge: (currentState, response) => {
+        currentState.count = response.count;
+        transactionsAdapter.setMany(
+          currentState.results,
+          transactionsSelector.selectAll(response.results)
+        );
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg?.page !== previousArg?.page;
+      },
+      providesTags: ['Transaction'],
+    }),
     getTransactionsSummary: builder.query<Summary, TransactionRequestParams>({
       query: request => ({
         url: API_PATHS.getTransactionsSummary,
@@ -146,13 +160,21 @@ export const api = createApi({
         }),
         invalidatesTags: ['Transaction'],
       }),
-    deleteTransaction: builder.mutation<any, number>({
-      query: transactionId => ({
-        url: API_PATHS.getTransactionById(transactionId),
-        method: 'DELETE',
+    deleteTransaction: builder
+      .mutation<any, { id: number, params: PaginatedTransactionRequest }>({
+        query: request => ({
+          url: API_PATHS.getTransactionById(request.id),
+          method: 'DELETE',
+        }),
+        invalidatesTags: ['Transaction'],
+        onQueryStarted(arg, { dispatch }) {
+          dispatch(
+            api.util.updateQueryData('getTransactions', arg.params, draft => {
+              transactionsAdapter.removeOne(draft.results, arg.id);
+            })
+          );
+        },
       }),
-      invalidatesTags: ['Transaction'],
-    }),
     login: builder.mutation<JwtToken, LoginRequest>({
       query: credentials => ({
         url: API_PATHS.createToken,

@@ -18,6 +18,7 @@ import {
   TransactionWidget,
 } from '../components/transactions/TransactionWidget';
 import {
+  transactionsSelector,
   useGetTransactionsQuery,
   useGetTransactionsSummaryQuery,
 } from '../features/api/apiSlice';
@@ -31,10 +32,11 @@ export default () => {
     transactionTimeAfter: period.from.toISOString(),
     transactionTimeBefore: period.to.toISOString(),
   };
-  const transactions = useGetTransactionsQuery({
+  const getTransactionsRequestParams = {
     page,
     params: periodFilters,
-  });
+  };
+  const transactions = useGetTransactionsQuery(getTransactionsRequestParams);
   const incomeSummary = useGetTransactionsSummaryQuery({
     transactionType: 'IN',
     ...periodFilters,
@@ -66,14 +68,16 @@ export default () => {
         marginBottom: '75px',
       }}>
         {
-          transactions.data?.results.map(
-            (transaction, index) =>
-              <TransactionWidget
-                key={index}
-                transaction={transaction}
-                loading={transactions.isFetching}
-                onDelete={() => setPage(1)} />
-          )
+          transactions.data && transactionsSelector
+            .selectAll(transactions.data.results)
+            .map(
+              (transaction, index) =>
+                <TransactionWidget
+                  key={index}
+                  transaction={transaction}
+                  loading={transactions.isFetching}
+                  requestParams={getTransactionsRequestParams} />
+            )
         }
         {
           showLoadMoreButton && <Button
