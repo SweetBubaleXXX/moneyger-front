@@ -66,7 +66,10 @@ export const TransactionForm = (props: TransactionFormProps) => {
     props.currency || account.data?.defaultCurrency || CURRENCY_CODES[0]
   );
   const {
-    control, handleSubmit, formState: { errors },
+    handleSubmit,
+    resetField,
+    control,
+    formState: { errors },
   } = useForm<TransactionCreateUpdateRequest>(
     { resolver: zodResolver(TransactionSchema) }
   );
@@ -75,8 +78,9 @@ export const TransactionForm = (props: TransactionFormProps) => {
   useEffect(() => {
     if (!account.isLoading && account.data?.defaultCurrency) {
       setCurrency(account.data.defaultCurrency);
+      resetField('currency', { defaultValue: account.data.defaultCurrency });
     }
-  }, [account.data, account.isLoading]);
+  }, [account.data, account.isLoading, resetField]);
 
   useEffect(() => {
     if (result.isError) {
@@ -150,14 +154,16 @@ export const TransactionForm = (props: TransactionFormProps) => {
                             setCurrency(value!);
                           }}
                         >
-                          {CURRENCY_CODES.map(curCode =>
-                            <Option
-                              value={curCode}
-                              key={curCode}
-                            >
-                              {curCode}
-                            </Option>
-                          )}
+                          {
+                            CURRENCY_CODES.map(curCode =>
+                              <Option
+                                value={curCode}
+                                key={curCode}
+                              >
+                                {curCode}
+                              </Option>
+                            )
+                          }
                         </Select>
                       )}
                     />

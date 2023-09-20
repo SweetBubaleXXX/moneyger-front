@@ -4,7 +4,7 @@ import React from 'react';
 import { LoginForm } from '../components/login/LoginForm';
 import { RegistrationForm } from '../components/login/RegistrationForm';
 
-export default () => {
+export const Login = () => {
   return (
     <>
       <Sheet sx={{

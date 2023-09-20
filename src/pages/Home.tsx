@@ -25,7 +25,7 @@ import {
 import { PAGE_SIZE } from '../features/api/constants';
 import { ROUTER_PATHS } from './constants';
 
-export default () => {
+export const Home = () => {
   const [page, setPage] = useState<number>(1);
   const [period, setPeriod] = useState<Period>(DEFAULT_PERIOD);
   const periodFilters = {

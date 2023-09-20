@@ -3,8 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { AddTransaction } from './AddTransaction';
 import { ROUTER_PATHS } from './constants';
-import Home from './Home';
-import Login from './Login';
+import { Home } from './Home';
+import { Login } from './Login';
 
 export default () => {
   return (
