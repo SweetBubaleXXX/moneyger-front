@@ -115,6 +115,7 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
             <MenuButton
               slots={{ root: IconButton }}
               slotProps={{ root: { variant: 'plain' } }}
+              disabled={props.loading}
             >
               <MoreVertical />
             </MenuButton>
