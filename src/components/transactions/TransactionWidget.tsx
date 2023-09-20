@@ -35,6 +35,7 @@ import {
   PaginatedTransactionRequest,
   Transaction,
 } from '../../features/api/types';
+import { TransactionUpdateModal } from './TransactionUpdateModal';
 
 export type TransactionWidgetProps = {
   transaction: Transaction,
@@ -45,6 +46,10 @@ export type TransactionWidgetProps = {
 export const TransactionWidget = (props: TransactionWidgetProps) => {
   const [
     confirmDeletionOpen, setConfirmDeletionOpen,
+  ] = useState<boolean>(false);
+  const [
+    transactionUpdateModalOpen,
+    setTransactionUpdateModalOpen,
   ] = useState<boolean>(false);
   const [deleteTransaction, deletionResult] = useDeleteTransactionMutation();
   const category = useGetAllCategoriesQuery(undefined, {
@@ -117,7 +122,7 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
         </CardContent>
       </Card>
       <Menu placement="bottom-start">
-        <MenuItem>
+        <MenuItem onClick={() => setTransactionUpdateModalOpen(true)}>
           <ListItemDecorator>
             <Pencil />
           </ListItemDecorator>
@@ -137,6 +142,11 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
           Delete
         </MenuItem>
       </Menu>
+      <TransactionUpdateModal
+        open={transactionUpdateModalOpen}
+        onClose={setTransactionUpdateModalOpen}
+        initialValue={props.transaction}
+      />
       <Modal
         open={confirmDeletionOpen}
         onClose={() => setConfirmDeletionOpen(false)}

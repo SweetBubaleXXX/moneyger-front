@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { toast } from 'sonner';
 
-import { useCreateTransactionMutation } from '../../features/api/apiSlice';
+import { useUpdateTransactionMutation } from '../../features/api/apiSlice';
 import { Transaction } from '../../features/api/types';
 import {
   BaseTransactionModal,
@@ -9,23 +9,23 @@ import {
 } from './BaseTransactionModal';
 import { TransactionForm } from './TransactionForm';
 
-export type TransactionCreationModalProps =
-  BaseTransactionModalProps & { initialValue?: Transaction }
+export type TransactionUpdateModalProps =
+  BaseTransactionModalProps & { initialValue: Transaction }
 
-export const TransactionCreationModal = (
-  props: TransactionCreationModalProps
+export const TransactionUpdateModal = (
+  props: TransactionUpdateModalProps
 ) => {
-  const [createTransaction, result] = useCreateTransactionMutation();
+  const [updateTransaction, result] = useUpdateTransactionMutation();
 
   useEffect(() => {
     if (result.isError) {
-      toast.error('Failed to add transaction');
+      toast.error('Failed to update transaction');
     }
   }, [result.isError]);
 
   useEffect(() => {
     if (result.isSuccess) {
-      toast.success('Transaction added');
+      toast.success('Transaction updated');
       props.onClose(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -33,16 +33,19 @@ export const TransactionCreationModal = (
 
   return (
     <BaseTransactionModal
-      title="Add Transaction"
+      title="Edit Transaction"
       open={props.open}
       onClose={props.onClose}
     >
       <TransactionForm
-        onSubmit={createTransaction}
-        submitButtonText="Add"
+        onSubmit={request => updateTransaction({
+          id: props.initialValue.id,
+          ...request,
+        })}
+        submitButtonText="Save"
         isLoading={result.isLoading}
+        initialValue={props.initialValue}
       />
     </BaseTransactionModal>
-
   );
 };

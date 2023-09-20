@@ -27,7 +27,11 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { CURRENCY_CODES, DATETIME_INPUT_FORMAT } from '../../constants';
-import { useGetAccountQuery } from '../../features/api/apiSlice';
+import {
+  selectCategoryById,
+  useGetAccountQuery,
+  useGetAllCategoriesQuery,
+} from '../../features/api/apiSlice';
 import {
   Category,
   CurrencyCode,
@@ -49,8 +53,10 @@ export const TransactionSchema = z.object({
 
 export type TransactionFormProps = {
   onSubmit: (request: TransactionCreateUpdateRequest) => void,
+  submitButtonText: string,
   isLoading?: boolean,
-} & Partial<Transaction>
+  initialValue?: Transaction
+}
 
 export const TransactionForm = (props: TransactionFormProps) => {
   const theme = useTheme();
@@ -59,9 +65,15 @@ export const TransactionForm = (props: TransactionFormProps) => {
     categorySelectorOpen, setCategorySelectorOpen,
   ] = useState<boolean>(false);
   const account = useGetAccountQuery();
+  const initialCategory = useGetAllCategoriesQuery(undefined, {
+    selectFromResult: ({ data, isLoading }) => ({
+      data: selectCategoryById(data, props.initialValue?.category),
+      isLoading,
+    }),
+  });
   const [category, setCategory] = useState<Category | undefined>();
   const [currency, setCurrency] = useState<CurrencyCode>(
-    props.currency || CURRENCY_CODES[0]
+    props.initialValue?.currency || CURRENCY_CODES[0]
   );
   const {
     handleSubmit,
@@ -73,11 +85,26 @@ export const TransactionForm = (props: TransactionFormProps) => {
   );
 
   useEffect(() => {
-    if (!account.isLoading && account.data?.defaultCurrency) {
+    if (
+      !props.initialValue &&
+      !account.isLoading &&
+      account.data?.defaultCurrency
+    ) {
       setCurrency(account.data.defaultCurrency);
       resetField('currency', { defaultValue: account.data.defaultCurrency });
     }
-  }, [account.data, account.isLoading, resetField]);
+  }, [account, props.initialValue, resetField]);
+
+  useEffect(() => {
+    if (
+      props.initialValue &&
+      !initialCategory.isLoading &&
+      initialCategory.data
+    ) {
+      setCategory(initialCategory.data);
+      resetField('category', { defaultValue: initialCategory.data.id });
+    }
+  }, [initialCategory, props.initialValue, resetField]);
 
   useEffect(() => {
     for (const [field, error] of Object.entries({
@@ -101,7 +128,7 @@ export const TransactionForm = (props: TransactionFormProps) => {
         <Controller
           name="amount"
           control={control}
-          defaultValue={props.amount ?? '0'}
+          defaultValue={props.initialValue?.amount ?? '0'}
           render={({ field }) => (
             <Box>
               <FormLabel>Amount</FormLabel>
@@ -133,6 +160,7 @@ export const TransactionForm = (props: TransactionFormProps) => {
                           }}
                           {...field}
                           value={currency}
+                          disabled={!props.initialValue && account.isLoading}
                           onChange={(_, value) => {
                             field.onChange(value);
                             setCurrency(value!);
@@ -166,6 +194,7 @@ export const TransactionForm = (props: TransactionFormProps) => {
                 variant="soft"
                 color={errors.category ? 'danger' : 'primary'}
                 startDecorator={category && <Avatar>{category.icon}</Avatar>}
+                loading={props.initialValue && initialCategory.isLoading}
                 onClick={() => setCategorySelectorOpen(true)}
                 sx={{
                   alignSelf: 'center',
@@ -211,7 +240,8 @@ export const TransactionForm = (props: TransactionFormProps) => {
           name="transactionTime"
           control={control}
           defaultValue={
-            moment(props.transactionTime).format(DATETIME_INPUT_FORMAT)
+            moment(props.initialValue?.transactionTime)
+              .format(DATETIME_INPUT_FORMAT)
           }
           render={({ field }) =>
             <FormControl error={!!errors.transactionTime}>
@@ -230,13 +260,13 @@ export const TransactionForm = (props: TransactionFormProps) => {
         <Controller
           name="comment"
           control={control}
-          defaultValue={props.comment}
+          defaultValue={props.initialValue?.comment}
           render={({ field }) =>
             <FormControl error={!!errors.comment}>
               <Textarea variant="plain" placeholder="Comment..." {...field} />
             </FormControl>} />
         <Button type="submit" loading={props.isLoading}>
-          Add
+          {props.submitButtonText}
         </Button>
       </Stack>
     </form>

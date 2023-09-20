@@ -167,6 +167,15 @@ export const api = createApi({
         }),
         invalidatesTags: ['Transaction'],
       }),
+    updateTransaction: builder
+      .mutation<Transaction, TransactionCreateUpdateRequest & { id: number }>({
+        query: request => ({
+          url: API_PATHS.getTransactionById(request.id),
+          method: 'PUT',
+          body: decamelizeKeys(request),
+        }),
+        invalidatesTags: ['Transaction'],
+      }),
     deleteTransaction: builder
       .mutation<any, { id: number, params: PaginatedTransactionRequest }>({
         query: request => ({
@@ -202,10 +211,9 @@ export const api = createApi({
 
 export const selectCategoryById = createSelector(
   (categories?: Category[]) => categories,
-  (_: any, categoryId: number) => categoryId,
-  (data, categoryId) => data?.find(
-    category => category.id === categoryId
-  )
+  (_: any, categoryId?: number) => categoryId,
+  (data, categoryId) =>
+    categoryId ? data?.find(category => category.id === categoryId) : undefined,
 );
 
 export const {
@@ -216,6 +224,7 @@ export const {
   useGetTransactionsQuery,
   useGetTransactionsSummaryQuery,
   useCreateTransactionMutation,
+  useUpdateTransactionMutation,
   useDeleteTransactionMutation,
   useLoginMutation,
   useRegisterMutation,
