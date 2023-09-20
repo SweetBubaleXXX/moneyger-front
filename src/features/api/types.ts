@@ -92,6 +92,11 @@ export type TransactionRequestParams = {
 export type PaginatedTransactionRequest =
   PaginatedParamsRequest<TransactionRequestParams>
 
+export type TransactionMutationParams = {
+  id: number,
+  params?: PaginatedTransactionRequest,
+}
+
 export type Summary = {
   total: number,
   currency: CurrencyCode,

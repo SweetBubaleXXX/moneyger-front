@@ -31,6 +31,7 @@ import {
   Summary,
   Transaction,
   TransactionCreateUpdateRequest,
+  TransactionMutationParams,
   TransactionRequestParams,
 } from './types';
 
@@ -167,28 +168,44 @@ export const api = createApi({
         }),
         invalidatesTags: ['Transaction'],
       }),
-    updateTransaction: builder
-      .mutation<Transaction, TransactionCreateUpdateRequest & { id: number }>({
-        query: request => ({
-          url: API_PATHS.getTransactionById(request.id),
-          method: 'PUT',
-          body: decamelizeKeys(request),
-        }),
-        invalidatesTags: ['Transaction'],
+    updateTransaction: builder.mutation<
+      Transaction, TransactionCreateUpdateRequest & TransactionMutationParams
+    >({
+      query: request => ({
+        url: API_PATHS.getTransactionById(request.id),
+        method: 'PUT',
+        body: decamelizeKeys(request),
       }),
+      invalidatesTags: ['Transaction'],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        const updateResult = await queryFulfilled;
+        if (!arg.params) { return; }
+        dispatch(
+          api.util.updateQueryData('getTransactions', arg.params, draft => {
+            transactionsAdapter.setOne(draft.results, updateResult.data);
+          })
+        );
+      },
+    }),
     deleteTransaction: builder
-      .mutation<any, { id: number, params: PaginatedTransactionRequest }>({
+      .mutation<any, TransactionMutationParams>({
         query: request => ({
           url: API_PATHS.getTransactionById(request.id),
           method: 'DELETE',
         }),
         invalidatesTags: ['Transaction'],
-        onQueryStarted(arg, { dispatch }) {
-          dispatch(
+        async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+          if (!arg.params) { return; }
+          const deleteResult = dispatch(
             api.util.updateQueryData('getTransactions', arg.params, draft => {
               transactionsAdapter.removeOne(draft.results, arg.id);
             })
           );
+          try {
+            await queryFulfilled;
+          } catch {
+            deleteResult.undo();
+          }
         },
       }),
     login: builder.mutation<JwtToken, LoginRequest>({
