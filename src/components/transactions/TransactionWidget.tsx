@@ -122,6 +122,12 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
           </Stack>
         </CardContent>
       </Card>
+      <TransactionUpdateModal
+        open={transactionUpdateModalOpen}
+        onClose={setTransactionUpdateModalOpen}
+        initialValue={props.transaction}
+        requestParams={props.requestParams}
+      />
       <Menu placement="bottom-start">
         <MenuItem onClick={() => setTransactionUpdateModalOpen(true)}>
           <ListItemDecorator>
@@ -143,11 +149,6 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
           Delete
         </MenuItem>
       </Menu>
-      <TransactionUpdateModal
-        open={transactionUpdateModalOpen}
-        onClose={setTransactionUpdateModalOpen}
-        initialValue={props.transaction}
-      />
       <Modal
         open={confirmDeletionOpen}
         onClose={() => setConfirmDeletionOpen(false)}

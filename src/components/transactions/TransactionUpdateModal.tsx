@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import { toast } from 'sonner';
 
 import { useUpdateTransactionMutation } from '../../features/api/apiSlice';
-import { Transaction } from '../../features/api/types';
+import {
+  PaginatedTransactionRequest,
+  Transaction,
+} from '../../features/api/types';
 import {
   BaseTransactionModal,
   BaseTransactionModalProps,
@@ -10,7 +13,10 @@ import {
 import { TransactionForm } from './TransactionForm';
 
 export type TransactionUpdateModalProps =
-  BaseTransactionModalProps & { initialValue: Transaction }
+  BaseTransactionModalProps & {
+    initialValue: Transaction,
+    requestParams?: PaginatedTransactionRequest,
+  }
 
 export const TransactionUpdateModal = (
   props: TransactionUpdateModalProps
@@ -40,6 +46,7 @@ export const TransactionUpdateModal = (
       <TransactionForm
         onSubmit={request => updateTransaction({
           id: props.initialValue.id,
+          params: props.requestParams,
           ...request,
         })}
         submitButtonText="Save"
