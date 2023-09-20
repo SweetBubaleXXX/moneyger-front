@@ -6,7 +6,6 @@ import {
 } from '@mui/joy';
 import { Cross } from 'lucide-react';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 import {
   DEFAULT_PERIOD,
@@ -14,6 +13,9 @@ import {
 } from '../components/period/PeriodSelector';
 import { Period } from '../components/period/types';
 import { SummaryWidget } from '../components/summary/SummaryWidget';
+import {
+  TransactionCreationModal,
+} from '../components/transactions/TransactionCreationModal';
 import {
   TransactionWidget,
 } from '../components/transactions/TransactionWidget';
@@ -23,10 +25,13 @@ import {
   useGetTransactionsSummaryQuery,
 } from '../features/api/apiSlice';
 import { PAGE_SIZE } from '../features/api/constants';
-import { ROUTER_PATHS } from './constants';
 
 export const Home = () => {
   const [page, setPage] = useState<number>(1);
+  const [
+    transactionCreationModalOpen,
+    setTransactionCreationModalOpen,
+  ] = useState<boolean>(false);
   const [period, setPeriod] = useState<Period>(DEFAULT_PERIOD);
   const periodFilters = {
     transactionTimeAfter: period.from.toISOString(),
@@ -98,15 +103,21 @@ export const Home = () => {
         display="flex"
         justifyContent="center"
       >
-        <Link to={ROUTER_PATHS.addTransaction}>
-          <IconButton variant="solid" sx={{
+        <IconButton
+          variant="solid"
+          onClick={() => setTransactionCreationModalOpen(true)}
+          sx={{
             '--IconButton-size': '70px',
             borderRadius: '100%',
-          }}>
-            <Cross />
-          </IconButton>
-        </Link>
+          }}
+        >
+          <Cross />
+        </IconButton>
       </Box>
+      <TransactionCreationModal
+        open={transactionCreationModalOpen}
+        onClose={setTransactionCreationModalOpen}
+      />
     </>
   );
 };

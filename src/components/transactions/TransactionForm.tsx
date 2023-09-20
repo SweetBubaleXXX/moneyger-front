@@ -23,15 +23,11 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { CURRENCY_CODES, DATETIME_INPUT_FORMAT } from '../../constants';
-import {
-  useCreateTransactionMutation,
-  useGetAccountQuery,
-} from '../../features/api/apiSlice';
+import { useGetAccountQuery } from '../../features/api/apiSlice';
 import {
   Category,
   CurrencyCode,
@@ -51,11 +47,13 @@ export const TransactionSchema = z.object({
   comment: z.string().max(255).optional(),
 });
 
-export type TransactionFormProps = Partial<Transaction>
+export type TransactionFormProps = {
+  onSubmit: (request: TransactionCreateUpdateRequest) => void,
+  isLoading?: boolean,
+} & Partial<Transaction>
 
 export const TransactionForm = (props: TransactionFormProps) => {
   const theme = useTheme();
-  const navigate = useNavigate();
   const greaterThanMd = useMediaQuery(theme.breakpoints.up('md'));
   const [
     categorySelectorOpen, setCategorySelectorOpen,
@@ -63,7 +61,7 @@ export const TransactionForm = (props: TransactionFormProps) => {
   const account = useGetAccountQuery();
   const [category, setCategory] = useState<Category | undefined>();
   const [currency, setCurrency] = useState<CurrencyCode>(
-    props.currency || account.data?.defaultCurrency || CURRENCY_CODES[0]
+    props.currency || CURRENCY_CODES[0]
   );
   const {
     handleSubmit,
@@ -73,7 +71,6 @@ export const TransactionForm = (props: TransactionFormProps) => {
   } = useForm<TransactionCreateUpdateRequest>(
     { resolver: zodResolver(TransactionSchema) }
   );
-  const [createTransaction, result] = useCreateTransactionMutation();
 
   useEffect(() => {
     if (!account.isLoading && account.data?.defaultCurrency) {
@@ -81,19 +78,6 @@ export const TransactionForm = (props: TransactionFormProps) => {
       resetField('currency', { defaultValue: account.data.defaultCurrency });
     }
   }, [account.data, account.isLoading, resetField]);
-
-  useEffect(() => {
-    if (result.isError) {
-      toast.error('Failed to add transaction');
-    }
-  }, [result.isError]);
-
-  useEffect(() => {
-    if (result.isSuccess) {
-      toast.success('Transaction added');
-      navigate(-1);
-    }
-  }, [result.isSuccess, navigate]);
 
   useEffect(() => {
     for (const [field, error] of Object.entries({
@@ -112,7 +96,7 @@ export const TransactionForm = (props: TransactionFormProps) => {
   }, [errors]);
 
   return (
-    <form onSubmit={handleSubmit(createTransaction)}>
+    <form onSubmit={handleSubmit(props.onSubmit)}>
       <Stack spacing={4} padding={3}>
         <Controller
           name="amount"
@@ -251,7 +235,7 @@ export const TransactionForm = (props: TransactionFormProps) => {
             <FormControl error={!!errors.comment}>
               <Textarea variant="plain" placeholder="Comment..." {...field} />
             </FormControl>} />
-        <Button type="submit" loading={result.isLoading}>
+        <Button type="submit" loading={props.isLoading}>
           Add
         </Button>
       </Stack>
