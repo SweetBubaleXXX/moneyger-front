@@ -4,6 +4,7 @@ import {
   IconButton,
   Stack,
 } from '@mui/joy';
+import { skipToken } from '@reduxjs/toolkit/dist/query';
 import { Cross } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -41,7 +42,9 @@ export const Home = () => {
     page,
     params: periodFilters,
   };
-  const transactions = useGetTransactionsQuery(getTransactionsRequestParams);
+  const transactions = useGetTransactionsQuery(
+    transactionCreationModalOpen ? skipToken : getTransactionsRequestParams
+  );
   const incomeSummary = useGetTransactionsSummaryQuery({
     transactionType: 'IN',
     ...periodFilters,
@@ -105,7 +108,10 @@ export const Home = () => {
       >
         <IconButton
           variant="solid"
-          onClick={() => setTransactionCreationModalOpen(true)}
+          onClick={() => {
+            setTransactionCreationModalOpen(true);
+            setPage(1);
+          }}
           sx={{
             '--IconButton-size': '70px',
             borderRadius: '100%',

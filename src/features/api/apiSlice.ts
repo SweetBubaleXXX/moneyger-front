@@ -132,12 +132,19 @@ export const api = createApi({
           camelcaseKeys(response.results),
         ),
       }),
-      merge: (currentState, response) => {
+      merge: (currentState, response, request) => {
         currentState.count = response.count;
-        transactionsAdapter.setMany(
-          currentState.results,
-          transactionsSelector.selectAll(response.results)
-        );
+        if ((request.arg.page ?? 1) === 1) {
+          transactionsAdapter.setAll(
+            currentState.results,
+            transactionsSelector.selectAll(response.results)
+          );
+        } else {
+          transactionsAdapter.setMany(
+            currentState.results,
+            transactionsSelector.selectAll(response.results)
+          );
+        }
       },
       forceRefetch({ currentArg, previousArg }) {
         return currentArg?.page !== previousArg?.page;
