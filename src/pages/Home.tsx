@@ -6,7 +6,7 @@ import {
 } from '@mui/joy';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import { Cross } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   DEFAULT_PERIOD,
@@ -55,6 +55,12 @@ export const Home = () => {
   });
   const totalPages = (transactions.data?.count || 0) / PAGE_SIZE;
   const showLoadMoreButton = totalPages > page;
+
+  useEffect(() => {
+    if (transactionCreationModalOpen) {
+      setPage(1);
+    }
+  }, [transactionCreationModalOpen]);
 
   return (
     <>
@@ -108,10 +114,7 @@ export const Home = () => {
       >
         <IconButton
           variant="solid"
-          onClick={() => {
-            setTransactionCreationModalOpen(true);
-            setPage(1);
-          }}
+          onClick={() => setTransactionCreationModalOpen(true)}
           sx={{
             '--IconButton-size': '70px',
             borderRadius: '100%',
