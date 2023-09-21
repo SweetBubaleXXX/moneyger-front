@@ -1,8 +1,7 @@
 import {
   Avatar,
-  Card,
-  CardContent,
-  IconButton,
+  Box,
+  Button,
   Sheet,
   Skeleton,
   Stack,
@@ -12,7 +11,6 @@ import { Reorder, useDragControls } from 'framer-motion';
 import { Grip } from 'lucide-react';
 import React from 'react';
 
-import { OVERFLOW_ELLIPSIS } from '../../constants';
 import { Category } from '../../features/api/types';
 
 export type CategoryWidgetProps = {
@@ -31,47 +29,53 @@ export const CategoryWidget = (props: CategoryWidgetProps) => {
       dragListener={false}
       dragControls={dragControls}
     >
-      <Card
+      <Button
         variant="outlined"
+        fullWidth={true}
         sx={{
           my: 1,
-          '--Card-padding': '8px',
         }}>
-        <CardContent>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-around"
-            gap={2}
-          >
-            <Avatar>
+        <Stack
+          width="100%"
+          direction="row"
+          alignItems="center"
+          gap={2}
+        >
+          <Avatar>
+            <Skeleton loading={props.isLoading}>
+              {props.category.icon}
+            </Skeleton>
+          </Avatar>
+          <Sheet sx={{
+            flexGrow: 1,
+            overflow: 'hidden',
+            background: 'transparent',
+          }}>
+            <Typography
+              level="title-lg"
+              textAlign="left"
+              noWrap
+            >--Icon-fontSize
               <Skeleton loading={props.isLoading}>
-                {props.category.icon}
+                {props.category.name}
               </Skeleton>
-            </Avatar>
-            <Sheet sx={{ flexGrow: 1, overflow: 'hidden' }}>
-              <Typography level="title-lg" sx={OVERFLOW_ELLIPSIS}>
-                <Skeleton loading={props.isLoading}>
-                  {props.category.name}
-                </Skeleton>
-              </Typography>
-            </Sheet>
-            {
-              props.draggable &&
-              <IconButton
-                size="lg"
-                style={{
-                  cursor: 'move',
-                  touchAction: 'none',
-                }}
-                onPointerDown={e => dragControls.start(e)}
-              >
-                <Grip />
-              </IconButton>
-            }
-          </Stack>
-        </CardContent>
-      </Card>
+            </Typography>
+          </Sheet>
+          {
+            props.draggable &&
+            <Box
+              padding={1}
+              style={{
+                cursor: 'move',
+                touchAction: 'none',
+              }}
+              onPointerDown={e => dragControls.start(e)}
+            >
+              <Grip />
+            </Box>
+          }
+        </Stack>
+      </Button>
     </Reorder.Item>
   );
 };

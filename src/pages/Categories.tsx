@@ -1,57 +1,30 @@
 import {
-  Avatar,
-  Card,
-  CardContent,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemContent,
-  Sheet,
-  Skeleton,
-  Stack,
-  Typography,
+  Tab,
+  TabList,
+  TabPanel,
+  Tabs,
 } from '@mui/joy';
-import { Reorder } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import { CategoryWidget } from '../components/categories/CategoryWidget';
-import {
-  selectCategoriesByParentId,
-  useGetAllCategoriesQuery,
-} from '../features/api/apiSlice';
-import { Category } from '../features/api/types';
+import { CategoryList } from '../components/categories/CategoryList';
 
 export const Categories = () => {
-  const { primaryCategories, isLoading } = useGetAllCategoriesQuery(undefined, {
-    selectFromResult: result => ({
-      primaryCategories: selectCategoriesByParentId(result.data, null),
-      isLoading: result.isFetching,
-    }),
-  });
-  const [orderedCategories, setOrderedCategories] = useState<Category[]>([]);
-
-  useEffect(() => {
-    if (primaryCategories) {
-      setOrderedCategories(primaryCategories);
-    }
-  }, [primaryCategories]);
 
   return (
-    <Reorder.Group
-      as="div"
-      axis="y"
-      values={orderedCategories}
-      onReorder={setOrderedCategories}
-    >
-      {orderedCategories.map(category =>
-        <CategoryWidget
-          key={category.id}
-          category={category}
-          draggable={true}
-          isLoading={isLoading}
-        />
-      )}
-    </Reorder.Group>
+    <Tabs defaultValue="OUT">
+      <TabList tabFlex={1}>
+        <Tab value="OUT">Outcome</Tab>
+        <Tab value="IN">Income</Tab>
+      </TabList>
+      {
+        ['OUT', 'IN'].map(value =>
+          <TabPanel key={value} value={value}>
+            <CategoryList filter={category =>
+              !category.parentCategory && category.transactionType === value
+            } />
+          </TabPanel>
+        )
+      }
+    </Tabs>
   );
 };

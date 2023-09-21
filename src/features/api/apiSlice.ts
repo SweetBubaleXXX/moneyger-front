@@ -177,12 +177,10 @@ export const selectCategoryById = createSelector(
     categoryId ? data?.find(category => category.id === categoryId) : undefined,
 );
 
-export const selectCategoriesByParentId = createSelector(
+export const filterCategoriesSelector = createSelector(
   (categories?: Category[]) => categories,
-  (_: any, categoryId: number | null) => categoryId,
-  (data, categoryId) => {
-    return data?.filter(category => category.parentCategory === categoryId);
-  }
+  (_: any, filter?: (category: Category) => boolean) => filter || (() => true),
+  (data, filter) => data?.filter(filter)
 );
 
 export const {
