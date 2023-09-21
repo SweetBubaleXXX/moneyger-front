@@ -15,9 +15,6 @@ import {
   TransactionCreationModal,
 } from '../components/transactions/TransactionCreationModal';
 import { TransactionList } from '../components/transactions/TransactionList';
-import {
-  useGetTransactionsSummaryQuery,
-} from '../features/api/apiSlice';
 
 export const Home = () => {
   const [
@@ -29,24 +26,10 @@ export const Home = () => {
     transactionTimeAfter: period.from.toISOString(),
     transactionTimeBefore: period.to.toISOString(),
   };
-  const incomeSummary = useGetTransactionsSummaryQuery({
-    transactionType: 'IN',
-    ...periodFilters,
-  });
-  const outcomeSummary = useGetTransactionsSummaryQuery({
-    transactionType: 'OUT',
-    ...periodFilters,
-  });
 
   return (
     <>
-      <SummaryWidget
-        income={incomeSummary.data?.total || 0}
-        outcome={outcomeSummary.data?.total || 0}
-        currency={incomeSummary.data?.currency}
-        isLoading={incomeSummary.isFetching || outcomeSummary.isFetching}
-        isError={incomeSummary.isError || outcomeSummary.isError}
-      />
+      <SummaryWidget filters={periodFilters} />
       <Box display="flex" justifyContent="center" padding={2}>
         <PeriodSelector value={period} onChange={setPeriod} />
       </Box>

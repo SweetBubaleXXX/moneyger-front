@@ -5,42 +5,53 @@ import {
   Typography,
 } from '@mui/joy';
 import Decimal from 'decimal.js';
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import { CurrencyCode } from '../../features/api/types';
+import { useGetTransactionsSummaryQuery } from '../../features/api/apiSlice';
+import { TransactionRequestParams } from '../../features/api/types';
 
 export type SummaryWidgetProps = {
-  income: number,
-  outcome: number,
-  currency?: CurrencyCode,
-  isLoading?: boolean,
-  isError?: boolean,
+  filters: Partial<TransactionRequestParams>
 }
 
 export const SummaryWidget = (props: SummaryWidgetProps) => {
-  const showSkeleton = props.isLoading || props.isError;
+  const incomeSummary = useGetTransactionsSummaryQuery({
+    transactionType: 'IN',
+    ...props.filters,
+  });
+  const outcomeSummary = useGetTransactionsSummaryQuery({
+    transactionType: 'OUT',
+    ...props.filters,
+  });
+  const isLoading = incomeSummary.isFetching || outcomeSummary.isFetching;
+  const isError = incomeSummary.isError || outcomeSummary.isError;
+  const showSkeleton = isLoading || isError;
+  const income = incomeSummary.data?.total || 0;
+  const outcome = outcomeSummary.data?.total || 0;
+  const total = useMemo(
+    () => new Decimal(income).add(outcome).toString(),
+    [income, outcome]
+  );
 
   return (
     <Stack mx="auto" my={2} width="min-content" textAlign="center">
       <Typography level="h2" color="success">
         <Skeleton loading={showSkeleton}>
-          {props.income}
+          {income}
         </Skeleton>
       </Typography>
       <Typography level="h2" color="danger">
         <Skeleton loading={showSkeleton}>
-          {props.outcome}
+          {outcome}
         </Skeleton>
       </Typography>
       <Divider sx={{ minWidth: 60 }}>
-        {props.currency}
+        {incomeSummary.data?.currency}
       </Divider>
       <Typography level="body-lg" color="neutral">
-        <Skeleton loading={showSkeleton}>{
-          new Decimal(props.income)
-            .add(props.outcome)
-            .toString()
-        }</Skeleton>
+        <Skeleton loading={showSkeleton}>
+          {total}
+        </Skeleton>
       </Typography>
     </Stack>
   );
