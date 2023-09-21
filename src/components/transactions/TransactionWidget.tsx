@@ -25,7 +25,6 @@ import { AlertTriangle, Copy, MoreVertical, Pencil, Trash } from 'lucide-react';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 
-import { OVERFLOW_ELLIPSIS } from '../../constants';
 import {
   selectCategoryById,
   useDeleteTransactionMutation,
@@ -90,17 +89,17 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
               </Skeleton>
             </Avatar>
             <Sheet sx={{ flexGrow: 1, overflow: 'hidden' }}>
-              <Typography level="title-lg" sx={OVERFLOW_ELLIPSIS}>
+              <Typography level="title-lg" noWrap>
                 <Skeleton loading={isLoading}>
                   {category.data?.name}
                 </Skeleton>
               </Typography>
-              <Typography level="body-sm" sx={OVERFLOW_ELLIPSIS}>
+              <Typography level="body-sm" noWrap>
                 <Skeleton loading={isLoading}>
                   {props.transaction.comment}
                 </Skeleton>
               </Typography>
-              <Typography level="body-xs" sx={OVERFLOW_ELLIPSIS}>
+              <Typography level="body-xs" noWrap>
                 <Skeleton loading={isLoading}>
                   {moment(props.transaction.transactionTime).format('llll')}
                 </Skeleton>
