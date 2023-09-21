@@ -41,6 +41,7 @@ export const TransactionCreationModal = (
         onSubmit={createTransaction}
         submitButtonText="Add"
         isLoading={result.isLoading}
+        initialValue={props.initialValue}
       />
     </BaseTransactionModal>
 

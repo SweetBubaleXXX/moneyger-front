@@ -33,6 +33,10 @@ export const Home = () => {
     transactionCreationModalOpen,
     setTransactionCreationModalOpen,
   ] = useState<boolean>(false);
+  const [
+    transactionDuplicateModalOpen,
+    setTransactionDuplicateModalOpen,
+  ] = useState<boolean>(false);
   const [period, setPeriod] = useState<Period>(DEFAULT_PERIOD);
   const periodFilters = {
     transactionTimeAfter: period.from.toISOString(),
@@ -42,8 +46,10 @@ export const Home = () => {
     page,
     params: periodFilters,
   };
+  const modalOpen =
+    transactionCreationModalOpen || transactionDuplicateModalOpen;
   const transactions = useGetTransactionsQuery(
-    transactionCreationModalOpen ? skipToken : getTransactionsRequestParams
+    modalOpen ? skipToken : getTransactionsRequestParams
   );
   const incomeSummary = useGetTransactionsSummaryQuery({
     transactionType: 'IN',
@@ -57,10 +63,10 @@ export const Home = () => {
   const showLoadMoreButton = totalPages > page;
 
   useEffect(() => {
-    if (transactionCreationModalOpen) {
+    if (modalOpen) {
       setPage(1);
     }
-  }, [transactionCreationModalOpen]);
+  }, [modalOpen]);
 
   return (
     <>
@@ -90,7 +96,9 @@ export const Home = () => {
                   key={index}
                   transaction={transaction}
                   loading={transactions.isFetching}
-                  requestParams={getTransactionsRequestParams} />
+                  requestParams={getTransactionsRequestParams}
+                  onDuplicateModalOpen={setTransactionDuplicateModalOpen}
+                />
             )
         }
         {

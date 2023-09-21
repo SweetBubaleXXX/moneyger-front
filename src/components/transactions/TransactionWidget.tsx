@@ -35,12 +35,14 @@ import {
   PaginatedTransactionRequest,
   Transaction,
 } from '../../features/api/types';
+import { TransactionCreationModal } from './TransactionCreationModal';
 import { TransactionUpdateModal } from './TransactionUpdateModal';
 
 export type TransactionWidgetProps = {
   transaction: Transaction,
   loading?: boolean,
   requestParams: PaginatedTransactionRequest,
+  onDuplicateModalOpen?: (open: boolean) => void,
 }
 
 export const TransactionWidget = (props: TransactionWidgetProps) => {
@@ -50,6 +52,10 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
   const [
     transactionUpdateModalOpen,
     setTransactionUpdateModalOpen,
+  ] = useState<boolean>(false);
+  const [
+    transactionDuplicateModalOpen,
+    setTransactionDuplicateModalOpen,
   ] = useState<boolean>(false);
   const [deleteTransaction, deletionResult] = useDeleteTransactionMutation();
   const category = useGetAllCategoriesQuery(undefined, {
@@ -128,6 +134,14 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
         initialValue={props.transaction}
         requestParams={props.requestParams}
       />
+      <TransactionCreationModal
+        open={transactionDuplicateModalOpen}
+        onClose={() => {
+          setTransactionDuplicateModalOpen(false);
+          props.onDuplicateModalOpen?.(false);
+        }}
+        initialValue={props.transaction}
+      />
       <Menu placement="bottom-start">
         <MenuItem onClick={() => setTransactionUpdateModalOpen(true)}>
           <ListItemDecorator>
@@ -135,7 +149,10 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
           </ListItemDecorator>
           Edit
         </MenuItem>
-        <MenuItem disabled>
+        <MenuItem onClick={() => {
+          setTransactionDuplicateModalOpen(true);
+          props.onDuplicateModalOpen?.(true);
+        }}>
           <ListItemDecorator>
             <Copy />
           </ListItemDecorator>
