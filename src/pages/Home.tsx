@@ -1,12 +1,9 @@
 import {
   Box,
-  Button,
   IconButton,
-  Stack,
 } from '@mui/joy';
-import { skipToken } from '@reduxjs/toolkit/dist/query';
 import { Cross } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   DEFAULT_PERIOD,
@@ -17,40 +14,21 @@ import { SummaryWidget } from '../components/summary/SummaryWidget';
 import {
   TransactionCreationModal,
 } from '../components/transactions/TransactionCreationModal';
+import { TransactionList } from '../components/transactions/TransactionList';
 import {
-  TransactionWidget,
-} from '../components/transactions/TransactionWidget';
-import {
-  transactionsSelector,
-  useGetTransactionsQuery,
   useGetTransactionsSummaryQuery,
 } from '../features/api/apiSlice';
-import { PAGE_SIZE } from '../features/api/constants';
 
 export const Home = () => {
-  const [page, setPage] = useState<number>(1);
   const [
     transactionCreationModalOpen,
     setTransactionCreationModalOpen,
-  ] = useState<boolean>(false);
-  const [
-    transactionDuplicateModalOpen,
-    setTransactionDuplicateModalOpen,
   ] = useState<boolean>(false);
   const [period, setPeriod] = useState<Period>(DEFAULT_PERIOD);
   const periodFilters = {
     transactionTimeAfter: period.from.toISOString(),
     transactionTimeBefore: period.to.toISOString(),
   };
-  const getTransactionsRequestParams = {
-    page,
-    params: periodFilters,
-  };
-  const modalOpen =
-    transactionCreationModalOpen || transactionDuplicateModalOpen;
-  const transactions = useGetTransactionsQuery(
-    modalOpen ? skipToken : getTransactionsRequestParams
-  );
   const incomeSummary = useGetTransactionsSummaryQuery({
     transactionType: 'IN',
     ...periodFilters,
@@ -59,14 +37,6 @@ export const Home = () => {
     transactionType: 'OUT',
     ...periodFilters,
   });
-  const totalPages = (transactions.data?.count || 0) / PAGE_SIZE;
-  const showLoadMoreButton = totalPages > page;
-
-  useEffect(() => {
-    if (modalOpen) {
-      setPage(1);
-    }
-  }, [modalOpen]);
 
   return (
     <>
@@ -78,39 +48,15 @@ export const Home = () => {
         isError={incomeSummary.isError || outcomeSummary.isError}
       />
       <Box display="flex" justifyContent="center" padding={2}>
-        <PeriodSelector value={period} onChange={value => {
-          setPeriod(value);
-          setPage(1);
-        }} />
+        <PeriodSelector value={period} onChange={setPeriod} />
       </Box>
-      <Stack spacing={2} padding={2} marginX="auto" sx={{
-        maxWidth: { sm: 'sm' },
-        marginBottom: '75px',
-      }}>
-        {
-          transactions.data && transactionsSelector
-            .selectAll(transactions.data.results)
-            .map(
-              (transaction, index) =>
-                <TransactionWidget
-                  key={index}
-                  transaction={transaction}
-                  loading={transactions.isFetching}
-                  requestParams={getTransactionsRequestParams}
-                  onDuplicateModalOpen={setTransactionDuplicateModalOpen}
-                />
-            )
-        }
-        {
-          showLoadMoreButton && <Button
-            variant="outlined"
-            loading={transactions.isFetching}
-            onClick={() => setPage(page + 1)}
-          >
-            Load More
-          </Button>
-        }
-      </Stack>
+      <TransactionList
+        filters={periodFilters}
+        freezeState={transactionCreationModalOpen}
+        sx={{
+          marginBottom: '75px',
+        }}
+      />
       <Box
         zIndex={1250}
         position="fixed"
