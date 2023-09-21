@@ -41,7 +41,7 @@ import { TransactionUpdateModal } from './TransactionUpdateModal';
 export type TransactionWidgetProps = {
   transaction: Transaction,
   loading?: boolean,
-  requestParams: PaginatedTransactionRequest,
+  requestParams?: PaginatedTransactionRequest,
   onDuplicateModalOpen?: (open: boolean) => void,
 }
 
@@ -64,7 +64,7 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
       isLoading,
     }),
   });
-  const isLoading = category.isLoading || (props.loading ?? false);
+  const isLoading = props.loading || category.isLoading;
 
   useEffect(() => {
     if (deletionResult.isSuccess) {

@@ -5,9 +5,7 @@ import {
   ModalClose,
   ModalDialog,
 } from '@mui/joy';
-import React from 'react';
-import { ReactNode } from 'react';
-
+import React, { ReactNode } from 'react';
 
 export type BaseTransactionModalProps = {
   open: boolean,

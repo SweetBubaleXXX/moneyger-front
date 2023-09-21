@@ -79,7 +79,7 @@ export const TransactionForm = (props: TransactionFormProps) => {
     handleSubmit,
     resetField,
     control,
-    formState: { errors },
+    formState,
   } = useForm<TransactionCreateUpdateRequest>(
     { resolver: zodResolver(TransactionSchema) }
   );
@@ -108,11 +108,11 @@ export const TransactionForm = (props: TransactionFormProps) => {
 
   useEffect(() => {
     for (const [field, error] of Object.entries({
-      'Amount': errors.amount,
-      'Category': errors.category,
-      'Comment': errors.comment,
-      'Currency': errors.currency,
-      'Transaction Time': errors.transactionTime,
+      'Amount': formState.errors.amount,
+      'Category': formState.errors.category,
+      'Comment': formState.errors.comment,
+      'Currency': formState.errors.currency,
+      'Transaction Time': formState.errors.transactionTime,
     })) {
       if (error) {
         toast.error(field, {
@@ -120,7 +120,7 @@ export const TransactionForm = (props: TransactionFormProps) => {
         });
       }
     }
-  }, [errors]);
+  }, [formState.errors]);
 
   return (
     <form onSubmit={handleSubmit(props.onSubmit)}>
@@ -137,7 +137,7 @@ export const TransactionForm = (props: TransactionFormProps) => {
                 allowNegative={false}
                 customInput={Input}
                 sx={{ input: { textAlign: 'center' } }}
-                error={!!errors.amount}
+                error={!!formState.errors.amount}
                 {...field}
                 endDecorator={
                   <>
@@ -192,7 +192,7 @@ export const TransactionForm = (props: TransactionFormProps) => {
             <>
               <Button
                 variant="soft"
-                color={errors.category ? 'danger' : 'primary'}
+                color={formState.errors.category ? 'danger' : 'primary'}
                 startDecorator={category && <Avatar>{category.icon}</Avatar>}
                 loading={props.initialValue && initialCategory.isLoading}
                 onClick={() => setCategorySelectorOpen(true)}
@@ -244,7 +244,7 @@ export const TransactionForm = (props: TransactionFormProps) => {
               .format(DATETIME_INPUT_FORMAT)
           }
           render={({ field }) =>
-            <FormControl error={!!errors.transactionTime}>
+            <FormControl error={!!formState.errors.transactionTime}>
               <FormLabel>Transaction Time</FormLabel>
               <Input
                 type="datetime-local"
@@ -262,7 +262,7 @@ export const TransactionForm = (props: TransactionFormProps) => {
           control={control}
           defaultValue={props.initialValue?.comment}
           render={({ field }) =>
-            <FormControl error={!!errors.comment}>
+            <FormControl error={!!formState.errors.comment}>
               <Textarea variant="plain" placeholder="Comment..." {...field} />
             </FormControl>} />
         <Button type="submit" loading={props.isLoading}>
