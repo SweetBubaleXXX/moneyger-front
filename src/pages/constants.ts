@@ -1,5 +1,5 @@
 export const ROUTER_PATHS = {
   home: '/',
+  categories: '/categories',
   login: '/login',
-  addTransaction: '/add',
 } as const;

@@ -82,7 +82,7 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
             direction="row"
             alignItems="center"
             justifyContent="stretch"
-            sx={{ gap: 0.5 }}
+            gap={0.5}
           >
             <Avatar>
               <Skeleton loading={isLoading}>

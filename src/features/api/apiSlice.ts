@@ -177,6 +177,14 @@ export const selectCategoryById = createSelector(
     categoryId ? data?.find(category => category.id === categoryId) : undefined,
 );
 
+export const selectCategoriesByParentId = createSelector(
+  (categories?: Category[]) => categories,
+  (_: any, categoryId: number | null) => categoryId,
+  (data, categoryId) => {
+    return data?.filter(category => category.parentCategory === categoryId);
+  }
+);
+
 export const {
   useGetAccountQuery,
   useGetAllCategoriesQuery,

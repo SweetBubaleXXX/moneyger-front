@@ -5,7 +5,7 @@ export const API_PATHS = {
   refreshToken: 'accounts/auth/jwt/refresh/',
   registerAccount: 'accounts/auth/users/',
   getAccount: 'accounts/auth/users/me/',
-  getAllCategories: 'categories/?limit=99999',
+  getAllCategories: 'categories/?limit=99999&ordering=display_order',
   getTransactionsSummary: 'transactions/summary/',
   getCategories: (pageNumber: number = 1) =>
     `categories/?${getPaginationQuery(pageNumber)}`,
