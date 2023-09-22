@@ -1,0 +1,15 @@
+name: Code style
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup yarn
+        run: npm install -g yarn
+      - name: Install modules
+        run: yarn
+      - name: Run linter
+        run: yarn lint
