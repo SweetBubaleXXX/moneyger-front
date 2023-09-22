@@ -18,9 +18,12 @@ export type TransactionUpdateModalProps =
     requestParams?: PaginatedTransactionRequest,
   }
 
-export const TransactionUpdateModal = (
-  props: TransactionUpdateModalProps
-) => {
+export const TransactionUpdateModal = ({
+  open,
+  onClose,
+  initialValue,
+  requestParams,
+}: TransactionUpdateModalProps) => {
   const [updateTransaction, result] = useUpdateTransactionMutation();
 
   useEffect(() => {
@@ -32,26 +35,25 @@ export const TransactionUpdateModal = (
   useEffect(() => {
     if (result.isSuccess) {
       toast.success('Transaction updated');
-      props.onClose(false);
+      onClose(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [result.isSuccess]);
+  }, [result.isSuccess, onClose]);
 
   return (
     <TransactionModal
       title="Edit Transaction"
-      open={props.open}
-      onClose={props.onClose}
+      open={open}
+      onClose={onClose}
     >
       <TransactionForm
         onSubmit={request => updateTransaction({
-          id: props.initialValue.id,
-          params: props.requestParams,
+          id: initialValue.id,
+          params: requestParams,
           ...request,
         })}
         submitButtonText="Save"
         isLoading={result.isLoading}
-        initialValue={props.initialValue}
+        initialValue={initialValue}
       />
     </TransactionModal>
   );

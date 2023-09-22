@@ -12,9 +12,11 @@ import {
 export type TransactionCreationModalProps =
   BaseTransactionModalProps & { initialValue?: Transaction }
 
-export const TransactionCreationModal = (
-  props: TransactionCreationModalProps
-) => {
+export const TransactionCreationModal = ({
+  open,
+  onClose,
+  initialValue,
+}: TransactionCreationModalProps) => {
   const [createTransaction, result] = useCreateTransactionMutation();
 
   useEffect(() => {
@@ -26,22 +28,21 @@ export const TransactionCreationModal = (
   useEffect(() => {
     if (result.isSuccess) {
       toast.success('Transaction added');
-      props.onClose(false);
+      onClose(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [result.isSuccess]);
+  }, [result.isSuccess, onClose]);
 
   return (
     <TransactionModal
       title="Add Transaction"
-      open={props.open}
-      onClose={props.onClose}
+      open={open}
+      onClose={onClose}
     >
       <TransactionForm
         onSubmit={createTransaction}
         submitButtonText="Add"
         isLoading={result.isLoading}
-        initialValue={props.initialValue}
+        initialValue={initialValue}
       />
     </TransactionModal>
 
