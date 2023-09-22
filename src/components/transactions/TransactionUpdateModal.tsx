@@ -6,11 +6,11 @@ import {
   PaginatedTransactionRequest,
   Transaction,
 } from '../../features/api/types';
-import {
-  BaseTransactionModal,
-  BaseTransactionModalProps,
-} from './BaseTransactionModal';
 import { TransactionForm } from './TransactionForm';
+import {
+  BaseTransactionModalProps,
+  TransactionModal,
+} from './TransactionModal';
 
 export type TransactionUpdateModalProps =
   BaseTransactionModalProps & {
@@ -38,7 +38,7 @@ export const TransactionUpdateModal = (
   }, [result.isSuccess]);
 
   return (
-    <BaseTransactionModal
+    <TransactionModal
       title="Edit Transaction"
       open={props.open}
       onClose={props.onClose}
@@ -53,6 +53,6 @@ export const TransactionUpdateModal = (
         isLoading={result.isLoading}
         initialValue={props.initialValue}
       />
-    </BaseTransactionModal>
+    </TransactionModal>
   );
 };

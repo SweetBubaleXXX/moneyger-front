@@ -58,23 +58,34 @@ export type TransactionFormProps = {
   initialValue?: Transaction
 }
 
-export const TransactionForm = (props: TransactionFormProps) => {
+export const TransactionForm = ({
+  onSubmit,
+  submitButtonText,
+  isLoading,
+  initialValue,
+}: TransactionFormProps) => {
   const theme = useTheme();
   const greaterThanMd = useMediaQuery(theme.breakpoints.up('md'));
+
   const [
     categorySelectorOpen, setCategorySelectorOpen,
   ] = useState<boolean>(false);
+
   const account = useGetAccountQuery();
+
   const initialCategory = useGetAllCategoriesQuery(undefined, {
     selectFromResult: ({ data, isLoading }) => ({
-      data: selectCategoryById(data, props.initialValue?.category),
+      data: selectCategoryById(data, initialValue?.category),
       isLoading,
     }),
   });
+
   const [category, setCategory] = useState<Category | undefined>();
+
   const [currency, setCurrency] = useState<CurrencyCode>(
-    props.initialValue?.currency || CURRENCY_CODES[0]
+    initialValue?.currency || CURRENCY_CODES[0]
   );
+  
   const {
     handleSubmit,
     resetField,
@@ -86,25 +97,25 @@ export const TransactionForm = (props: TransactionFormProps) => {
 
   useEffect(() => {
     if (
-      !props.initialValue &&
+      !initialValue &&
       !account.isLoading &&
       account.data?.defaultCurrency
     ) {
       setCurrency(account.data.defaultCurrency);
       resetField('currency', { defaultValue: account.data.defaultCurrency });
     }
-  }, [account, props.initialValue, resetField]);
+  }, [account, initialValue, resetField]);
 
   useEffect(() => {
     if (
-      props.initialValue &&
+      initialValue &&
       !initialCategory.isLoading &&
       initialCategory.data
     ) {
       setCategory(initialCategory.data);
       resetField('category', { defaultValue: initialCategory.data.id });
     }
-  }, [initialCategory, props.initialValue, resetField]);
+  }, [initialCategory, initialValue, resetField]);
 
   useEffect(() => {
     for (const [field, error] of Object.entries({
@@ -123,12 +134,12 @@ export const TransactionForm = (props: TransactionFormProps) => {
   }, [formState.errors]);
 
   return (
-    <form onSubmit={handleSubmit(props.onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={4} padding={3}>
         <Controller
           name="amount"
           control={control}
-          defaultValue={props.initialValue?.amount ?? '0'}
+          defaultValue={initialValue?.amount ?? '0'}
           render={({ field }) => (
             <Box>
               <FormLabel>Amount</FormLabel>
@@ -160,7 +171,7 @@ export const TransactionForm = (props: TransactionFormProps) => {
                           }}
                           {...field}
                           value={currency}
-                          disabled={!props.initialValue && account.isLoading}
+                          disabled={!initialValue && account.isLoading}
                           onChange={(_, value) => {
                             field.onChange(value);
                             setCurrency(value!);
@@ -194,7 +205,7 @@ export const TransactionForm = (props: TransactionFormProps) => {
                 variant="soft"
                 color={formState.errors.category ? 'danger' : 'primary'}
                 startDecorator={category && <Avatar>{category.icon}</Avatar>}
-                loading={props.initialValue && initialCategory.isLoading}
+                loading={initialValue && initialCategory.isLoading}
                 onClick={() => setCategorySelectorOpen(true)}
                 sx={{
                   alignSelf: 'center',
@@ -240,7 +251,7 @@ export const TransactionForm = (props: TransactionFormProps) => {
           name="transactionTime"
           control={control}
           defaultValue={
-            moment(props.initialValue?.transactionTime)
+            moment(initialValue?.transactionTime)
               .format(DATETIME_INPUT_FORMAT)
           }
           render={({ field }) =>
@@ -260,13 +271,13 @@ export const TransactionForm = (props: TransactionFormProps) => {
         <Controller
           name="comment"
           control={control}
-          defaultValue={props.initialValue?.comment}
+          defaultValue={initialValue?.comment}
           render={({ field }) =>
             <FormControl error={!!formState.errors.comment}>
               <Textarea variant="plain" placeholder="Comment..." {...field} />
             </FormControl>} />
-        <Button type="submit" loading={props.isLoading}>
-          {props.submitButtonText}
+        <Button type="submit" loading={isLoading}>
+          {submitButtonText}
         </Button>
       </Stack>
     </form>

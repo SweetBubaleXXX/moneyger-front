@@ -12,28 +12,31 @@ export type CategoryAccordionProps = {
   category: Category,
   selected?: Category,
   onChange?: (category: Category) => void,
-  filter?: (category: Category) => boolean,
 }
 
-export const CategoryAccordion = (props: CategoryAccordionProps) => {
+export const CategoryAccordion = ({
+  category,
+  selected,
+  onChange,
+}: CategoryAccordionProps) => {
   return (
     <Accordion
-      key={props.category.id}
-      onChange={() => props.onChange?.(props.category)}
+      key={category.id}
+      onChange={() => onChange?.(category)}
     >
       <AccordionSummary
         color={
-          props.category.id === props.selected?.id ? 'primary' : 'neutral'
+          category.id === selected?.id ? 'primary' : 'neutral'
         }
       >
-        {props.category.name}
+        {category.name}
       </AccordionSummary>
       <AccordionDetails>
         <CategorySelector
-          selected={props.selected}
-          onChange={(category) => props.onChange?.(category)}
+          selected={selected}
+          onChange={(category) => onChange?.(category)}
           filter={
-            subcategory => subcategory.parentCategory === props.category.id
+            subcategory => subcategory.parentCategory === category.id
           }
         />
       </AccordionDetails>

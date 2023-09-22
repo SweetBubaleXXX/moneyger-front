@@ -40,31 +40,46 @@ import { TransactionUpdateModal } from './TransactionUpdateModal';
 
 export type TransactionWidgetProps = {
   transaction: Transaction,
-  loading?: boolean,
+  isLoading?: boolean,
   requestParams?: PaginatedTransactionRequest,
   onDuplicateModalOpen?: (open: boolean) => void,
 }
 
-export const TransactionWidget = (props: TransactionWidgetProps) => {
+export const TransactionWidget = ({
+  transaction,
+  isLoading,
+  requestParams,
+  onDuplicateModalOpen,
+}: TransactionWidgetProps) => {
   const [
     confirmDeletionOpen, setConfirmDeletionOpen,
   ] = useState<boolean>(false);
+
   const [
     transactionUpdateModalOpen,
     setTransactionUpdateModalOpen,
   ] = useState<boolean>(false);
+
   const [
     transactionDuplicateModalOpen,
     setTransactionDuplicateModalOpen,
   ] = useState<boolean>(false);
+
   const [deleteTransaction, deletionResult] = useDeleteTransactionMutation();
+
   const category = useGetAllCategoriesQuery(undefined, {
     selectFromResult: ({ data, isLoading }) => ({
-      data: selectCategoryById(data, props.transaction.category),
+      data: selectCategoryById(data, transaction.category),
       isLoading,
     }),
   });
-  const isLoading = props.loading || category.isLoading;
+
+  const loading = isLoading || category.isLoading;
+
+  const setDuplicateModalOpen = (open: boolean) => {
+    setTransactionDuplicateModalOpen(open);
+    onDuplicateModalOpen?.(open);
+  };
 
   useEffect(() => {
     if (deletionResult.isSuccess) {
@@ -82,27 +97,27 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
             direction="row"
             alignItems="center"
             justifyContent="stretch"
-            sx={{ gap: 0.5 }}
+            gap={0.5}
           >
             <Avatar>
-              <Skeleton loading={isLoading}>
+              <Skeleton loading={loading}>
                 {category.data?.icon}
               </Skeleton>
             </Avatar>
             <Sheet sx={{ flexGrow: 1, overflow: 'hidden' }}>
               <Typography level="title-lg" sx={OVERFLOW_ELLIPSIS}>
-                <Skeleton loading={isLoading}>
+                <Skeleton loading={loading}>
                   {category.data?.name}
                 </Skeleton>
               </Typography>
               <Typography level="body-sm" sx={OVERFLOW_ELLIPSIS}>
-                <Skeleton loading={isLoading}>
-                  {props.transaction.comment}
+                <Skeleton loading={loading}>
+                  {transaction.comment}
                 </Skeleton>
               </Typography>
               <Typography level="body-xs" sx={OVERFLOW_ELLIPSIS}>
-                <Skeleton loading={isLoading}>
-                  {moment(props.transaction.transactionTime).format('llll')}
+                <Skeleton loading={loading}>
+                  {moment(transaction.transactionTime).format('llll')}
                 </Skeleton>
               </Typography>
             </Sheet>
@@ -110,18 +125,18 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
               level="body-md"
               textAlign="right"
               color={
-                props.transaction.transactionType === 'IN' ?
+                transaction.transactionType === 'IN' ?
                   'success' : 'danger'
               }
             >
-              <Skeleton loading={isLoading}>
-                {props.transaction.amount} {props.transaction.currency}
+              <Skeleton loading={loading}>
+                {transaction.amount} {transaction.currency}
               </Skeleton>
             </Typography>
             <MenuButton
               slots={{ root: IconButton }}
               slotProps={{ root: { variant: 'plain' } }}
-              disabled={props.loading}
+              disabled={loading}
             >
               <MoreVertical />
             </MenuButton>
@@ -131,16 +146,13 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
       <TransactionUpdateModal
         open={transactionUpdateModalOpen}
         onClose={setTransactionUpdateModalOpen}
-        initialValue={props.transaction}
-        requestParams={props.requestParams}
+        initialValue={transaction}
+        requestParams={requestParams}
       />
       <TransactionCreationModal
         open={transactionDuplicateModalOpen}
-        onClose={() => {
-          setTransactionDuplicateModalOpen(false);
-          props.onDuplicateModalOpen?.(false);
-        }}
-        initialValue={props.transaction}
+        onClose={() => () => setDuplicateModalOpen(false)}
+        initialValue={transaction}
       />
       <Menu placement="bottom-start">
         <MenuItem onClick={() => setTransactionUpdateModalOpen(true)}>
@@ -149,10 +161,7 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
           </ListItemDecorator>
           Edit
         </MenuItem>
-        <MenuItem onClick={() => {
-          setTransactionDuplicateModalOpen(true);
-          props.onDuplicateModalOpen?.(true);
-        }}>
+        <MenuItem onClick={() => setDuplicateModalOpen(true)}>
           <ListItemDecorator>
             <Copy />
           </ListItemDecorator>
@@ -185,8 +194,8 @@ export const TransactionWidget = (props: TransactionWidgetProps) => {
               color="danger"
               loading={deletionResult.isLoading}
               onClick={() => deleteTransaction({
-                id: props.transaction.id,
-                params: props.requestParams,
+                id: transaction.id,
+                params: requestParams,
               })}
             >
               Delete

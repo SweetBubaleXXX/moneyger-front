@@ -3,11 +3,11 @@ import { toast } from 'sonner';
 
 import { useCreateTransactionMutation } from '../../features/api/apiSlice';
 import { Transaction } from '../../features/api/types';
-import {
-  BaseTransactionModal,
-  BaseTransactionModalProps,
-} from './BaseTransactionModal';
 import { TransactionForm } from './TransactionForm';
+import {
+  BaseTransactionModalProps,
+  TransactionModal,
+} from './TransactionModal';
 
 export type TransactionCreationModalProps =
   BaseTransactionModalProps & { initialValue?: Transaction }
@@ -32,7 +32,7 @@ export const TransactionCreationModal = (
   }, [result.isSuccess]);
 
   return (
-    <BaseTransactionModal
+    <TransactionModal
       title="Add Transaction"
       open={props.open}
       onClose={props.onClose}
@@ -43,7 +43,7 @@ export const TransactionCreationModal = (
         isLoading={result.isLoading}
         initialValue={props.initialValue}
       />
-    </BaseTransactionModal>
+    </TransactionModal>
 
   );
 };

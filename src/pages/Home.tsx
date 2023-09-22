@@ -21,7 +21,9 @@ export const Home = () => {
     transactionCreationModalOpen,
     setTransactionCreationModalOpen,
   ] = useState<boolean>(false);
+
   const [period, setPeriod] = useState<Period>(DEFAULT_PERIOD);
+
   const periodFilters = {
     transactionTimeAfter: period.from.toISOString(),
     transactionTimeBefore: period.to.toISOString(),
@@ -35,7 +37,7 @@ export const Home = () => {
       </Box>
       <TransactionList
         filters={periodFilters}
-        freezeState={transactionCreationModalOpen}
+        reset={transactionCreationModalOpen}
         sx={{
           marginBottom: '75px',
         }}

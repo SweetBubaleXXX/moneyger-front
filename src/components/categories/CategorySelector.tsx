@@ -4,15 +4,22 @@ import {
 import React from 'react';
 
 import { useGetAllCategoriesQuery } from '../../features/api/apiSlice';
+import { Category } from '../../features/api/types';
 import { CategoryAccordion, CategoryAccordionProps } from './CategoryAccordion';
 
-export type CategorySelectorProps = Omit<CategoryAccordionProps, 'category'>
+export type CategorySelectorProps = Omit<CategoryAccordionProps, 'category'> & {
+  filter?: (category: Category) => boolean,
+}
 
-export const CategorySelector = (props: CategorySelectorProps) => {
+export const CategorySelector = ({
+  selected,
+  onChange,
+  filter,
+}: CategorySelectorProps) => {
   const { primaryCategories } = useGetAllCategoriesQuery(undefined, {
     selectFromResult: result => ({
       primaryCategories: result.data?.filter(category =>
-        props.filter?.(category) ?? true),
+        filter?.(category) ?? true),
     }),
   });
 
@@ -24,9 +31,9 @@ export const CategorySelector = (props: CategorySelectorProps) => {
             <CategoryAccordion
               key={category.id}
               category={category}
-              selected={props.selected}
-              onChange={props.onChange}
-              filter={props.filter} />
+              selected={selected}
+              onChange={onChange}
+            />
         )
       }
     </AccordionGroup>
