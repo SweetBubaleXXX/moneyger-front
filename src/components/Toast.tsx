@@ -1,7 +1,7 @@
+import { css, Global } from '@emotion/react';
+import { useTheme } from '@mui/joy';
 import React from 'react';
 import { Toaster as SonnerToaster } from 'sonner';
-import { Global, css } from '@emotion/react';
-import { useTheme } from '@mui/joy';
 
 
 export const Toaster: typeof SonnerToaster = (props) => {
@@ -45,4 +45,4 @@ export const Toaster: typeof SonnerToaster = (props) => {
   );
 };
 
-export const DefaultToaster = <Toaster/>;
+export const DefaultToaster = <Toaster />;

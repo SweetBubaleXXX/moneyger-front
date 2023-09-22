@@ -1,21 +1,22 @@
-import React, { useEffect } from 'react';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, Controller } from 'react-hook-form';
-import { 
+import {
+  Button,
+  FormControl,
+  FormHelperText,
   FormLabel,
   Input,
-  FormControl,
   Stack,
-  FormHelperText,
 } from '@mui/joy';
-import { toast } from 'sonner';
+import React, { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { z } from 'zod';
+
 import { useLoginMutation } from '../../features/api/apiSlice';
+import { setAccessToken } from '../../features/api/auth';
 import { LoginRequest } from '../../features/api/types';
-import { FormButton } from './FormButton';
-import { setToken } from '../../features/api/auth';
 
 export const LoginSchema = z.object({
   username: z.string()
@@ -23,18 +24,22 @@ export const LoginSchema = z.object({
     .regex(/^[\w.@+-]+$/, 'Letters, digits and @/./+/-/_ only')
     .max(150),
   password: z.string()
-    .min(8, {message: 'Password must contain at least 8 characters'}),
+    .min(8, { message: 'Password must contain at least 8 characters' }),
 });
 
 export const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { control, handleSubmit, formState: {errors}} = useForm<LoginRequest>(
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginRequest>(
     { resolver: zodResolver(LoginSchema) }
   );
   const [
     login,
-    { 
+    {
       isSuccess,
       isLoading,
       isError,
@@ -54,7 +59,7 @@ export const LoginForm = () => {
 
   useEffect(() => {
     if (isSuccess && loginResponse) {
-      dispatch(setToken(loginResponse.access));
+      dispatch(setAccessToken(loginResponse.access));
       navigate('/');
     }
   }, [isSuccess, loginResponse, navigate, dispatch]);
@@ -66,10 +71,10 @@ export const LoginForm = () => {
           name="username"
           control={control}
           defaultValue=""
-          render={({field}) => (
+          render={({ field }) => (
             <FormControl error={!!errors.username}>
               <FormLabel>Username</FormLabel>
-              <Input {...field}/>
+              <Input {...field} />
               <FormHelperText>
                 {errors.username?.message}
               </FormHelperText>
@@ -80,17 +85,19 @@ export const LoginForm = () => {
           name="password"
           control={control}
           defaultValue=""
-          render={({field}) => (
+          render={({ field }) => (
             <FormControl error={!!errors.password}>
               <FormLabel>Password</FormLabel>
-              <Input type="password" {...field}/>
+              <Input type="password" {...field} />
               <FormHelperText>
                 {errors.password?.message}
               </FormHelperText>
             </FormControl>
           )}
         />
-        <FormButton buttonText="Login" isLoading={isLoading}/>
+        <Button type="submit" loading={isLoading}>
+          Login
+        </Button>
       </Stack>
     </form>
   );

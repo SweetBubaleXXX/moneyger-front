@@ -1,19 +1,20 @@
-import React, { useEffect } from 'react';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, Controller } from 'react-hook-form';
-import { 
+import {
+  Button,
+  FormControl,
+  FormHelperText,
   FormLabel,
   Input,
-  FormControl,
   Stack,
-  FormHelperText,
 } from '@mui/joy';
+import React, { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { z } from 'zod';
+
 import { useRegisterMutation } from '../../features/api/apiSlice';
 import { RegistrationRequest } from '../../features/api/types';
 import { LoginSchema } from './LoginForm';
-import { FormButton } from './FormButton';
 
 export const RegistrationSchema = LoginSchema.extend({
   email: z.string().email(),
@@ -24,11 +25,11 @@ export const RegistrationSchema = LoginSchema.extend({
 });
 
 export const RegistrationForm = () => {
-  const { 
+  const {
     control,
     handleSubmit,
     reset: resetForm,
-    formState: {errors},
+    formState: { errors },
   } = useForm<RegistrationRequest & { confirmPassword: string }>(
     { resolver: zodResolver(RegistrationSchema) }
   );
@@ -59,10 +60,10 @@ export const RegistrationForm = () => {
           name="username"
           control={control}
           defaultValue=""
-          render={({field}) => (
+          render={({ field }) => (
             <FormControl error={!!errors.username}>
               <FormLabel>Username</FormLabel>
-              <Input {...field}/>
+              <Input {...field} />
               <FormHelperText>
                 {errors.username?.message}
               </FormHelperText>
@@ -73,10 +74,10 @@ export const RegistrationForm = () => {
           name="email"
           control={control}
           defaultValue=""
-          render={({field}) => (
+          render={({ field }) => (
             <FormControl error={!!errors.email}>
               <FormLabel>Email</FormLabel>
-              <Input type="email" {...field}/>
+              <Input type="email" {...field} />
               <FormHelperText>
                 {errors.email?.message}
               </FormHelperText>
@@ -87,10 +88,10 @@ export const RegistrationForm = () => {
           name="password"
           control={control}
           defaultValue=""
-          render={({field}) => (
+          render={({ field }) => (
             <FormControl error={!!errors.password}>
               <FormLabel>Password</FormLabel>
-              <Input type="password" {...field}/>
+              <Input type="password" {...field} />
               <FormHelperText>
                 {errors.password?.message}
               </FormHelperText>
@@ -101,17 +102,19 @@ export const RegistrationForm = () => {
           name="confirmPassword"
           control={control}
           defaultValue=""
-          render={({field}) => (
+          render={({ field }) => (
             <FormControl error={!!errors.confirmPassword}>
               <FormLabel>Confirm password</FormLabel>
-              <Input type="password" {...field}/>
+              <Input type="password" {...field} />
               <FormHelperText>
                 {errors.confirmPassword?.message}
               </FormHelperText>
             </FormControl>
           )}
         />
-        <FormButton buttonText="Register" isLoading={isLoading}/>
+        <Button type="submit" loading={isLoading}>
+          Register
+        </Button>
       </Stack>
     </form>
   );

@@ -1,15 +1,15 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const tokenSliceInitialState = '';
+import { AuthState } from './types';
 
-export const tokenSlice = createSlice({
-  name: 'token',
-  initialState: tokenSliceInitialState,
+export const authSlice = createSlice({
+  name: 'auth',
+  initialState: {} as AuthState,
   reducers: {
-    setToken: (state, { payload } : PayloadAction<string>) => {
-      return payload;
+    setAccessToken: (state, { payload }: PayloadAction<string>) => {
+      return { ...state, accessToken: payload };
     },
   },
 });
 
-export const { setToken } = tokenSlice.actions;
+export const { setAccessToken } = authSlice.actions;

@@ -1,27 +1,41 @@
+import './index.css';
+
+import { GlobalStyles } from '@mui/joy';
+import { CssVarsProvider } from '@mui/joy/styles';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { CssVarsProvider } from '@mui/joy/styles';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
-import { persistor, store } from './store';
-import Router from './pages/Router';
-import { Skeleton } from '@mui/joy';
 
+import { DefaultToaster } from './components/Toast';
+import Router from './pages/Router';
+import reportWebVitals from './reportWebVitals';
+import { store } from './store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={<Skeleton/>} persistor={persistor}>
+    <ErrorBoundary fallback={<div>Something went wrong</div>}>
+      <Provider store={store}>
         <CssVarsProvider>
+          <GlobalStyles
+            styles={{
+              '& .lucide': {
+                color: 'var(--Icon-color)',
+                margin: 'var(--Icon-margin)',
+                fontSize: 'var(--Icon-fontSize, 20px)',
+                width: '1em',
+                height: '1em',
+              },
+            }}
+          />
+          {DefaultToaster}
           <Router />
         </CssVarsProvider>
-      </PersistGate>
-    </Provider>
+      </Provider>
+    </ErrorBoundary>
   </React.StrictMode>
 );
 

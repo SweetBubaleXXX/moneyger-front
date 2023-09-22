@@ -1,3 +1,19 @@
+import { CURRENCY_CODES } from '../../constants';
+
+export type AuthState = {
+  accessToken?: string,
+}
+
+export type PaginatedResponse<T> = {
+  count: number,
+  results: T[],
+}
+
+export type PaginatedParamsRequest<T> = {
+  page?: number,
+  params: T,
+}
+
 export interface LoginRequest {
   username: string,
   password: string,
@@ -18,9 +34,65 @@ export type JwtToken = {
   refresh: string,
 }
 
+export type CurrencyCode = typeof CURRENCY_CODES[number]
+
+export type TransactionType = 'IN' | 'OUT'
+
 export type Account = {
   id: number,
   username: string,
   email: string,
-  default_currency: string,
+  defaultCurrency: CurrencyCode,
+}
+
+export type Category = {
+  id: number,
+  parentCategory: number | null,
+  transactionType: TransactionType,
+  name: string,
+  displayOrder: number,
+  icon: string,
+  color: string,
+}
+
+export type CategoryRequestParams = {
+  transactionType?: TransactionType,
+  notSubcategory?: boolean,
+  ordering?: string,
+  search?: string,
+}
+
+export type PaginatedCategoryRequest =
+  PaginatedParamsRequest<CategoryRequestParams>
+
+export type Transaction = {
+  id: number,
+  category: number,
+  transactionType: TransactionType,
+  amount: string,
+  currency: CurrencyCode,
+  comment: string,
+  transactionTime: string,
+}
+
+export type TransactionCreateUpdateRequest = Omit<
+  Transaction, 'id' | 'transactionType' | 'comment' | 'transactionTime'
+> & Partial<Pick<Transaction, 'comment' | 'transactionTime'>>
+
+export type TransactionRequestParams = {
+  category?: number,
+  currency?: CurrencyCode,
+  transactionType?: TransactionType,
+  transactionTimeAfter?: string,
+  transactionTimeBefore?: string,
+  ordering?: string,
+  search?: string,
+}
+
+export type PaginatedGetTransactionRequest =
+  PaginatedParamsRequest<TransactionRequestParams>
+
+export type Summary = {
+  total: number,
+  currency: CurrencyCode,
 }
