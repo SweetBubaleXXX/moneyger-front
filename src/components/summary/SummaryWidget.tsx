@@ -14,20 +14,23 @@ export type SummaryWidgetProps = {
   filters: Partial<TransactionRequestParams>
 }
 
-export const SummaryWidget = (props: SummaryWidgetProps) => {
+export const SummaryWidget = ({ filters }: SummaryWidgetProps) => {
   const incomeSummary = useGetTransactionsSummaryQuery({
     transactionType: 'IN',
-    ...props.filters,
+    ...filters,
   });
+
   const outcomeSummary = useGetTransactionsSummaryQuery({
     transactionType: 'OUT',
-    ...props.filters,
+    ...filters,
   });
+
   const isLoading = incomeSummary.isFetching || outcomeSummary.isFetching;
   const isError = incomeSummary.isError || outcomeSummary.isError;
   const showSkeleton = isLoading || isError;
   const income = incomeSummary.data?.total || 0;
   const outcome = outcomeSummary.data?.total || 0;
+
   const total = useMemo(
     () => new Decimal(income).add(outcome).toString(),
     [income, outcome]

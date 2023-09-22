@@ -13,44 +13,54 @@ import { TransactionWidget } from './TransactionWidget';
 
 export type TransactionListProps = {
   filters: Partial<TransactionRequestParams>,
-  freezeState?: boolean,
+  reset?: boolean,
   sx?: SxProps
 }
 
-export const TransactionList = (props: TransactionListProps) => {
+export const TransactionList = ({
+  filters,
+  reset,
+  sx,
+}: TransactionListProps) => {
   const [page, setPage] = useState<number>(1);
+
   const [
     transactionDuplicateModalOpen,
     setTransactionDuplicateModalOpen,
   ] = useState<boolean>(false);
+
   const getTransactionsRequestParams = {
     page,
-    params: props.filters,
+    params: filters,
   };
-  const freezeState = props.freezeState || transactionDuplicateModalOpen;
+
+  const resetCache = reset || transactionDuplicateModalOpen;
+
   const transactions = useGetTransactionsQuery(
-    freezeState ? skipToken : getTransactionsRequestParams
+    resetCache ? skipToken : getTransactionsRequestParams
   );
+
   const totalPages = useMemo(
     () => (transactions.data?.count || 0) / PAGE_SIZE,
     [transactions.data?.count]
   );
+
   const showLoadMoreButton = totalPages > page;
 
   useEffect(() => {
-    if (freezeState) {
+    if (resetCache) {
       setPage(1);
     }
-  }, [freezeState]);
+  }, [resetCache]);
 
   useEffect(() => {
     setPage(1);
-  }, [props.filters]);
+  }, [filters]);
 
   return (
     <Stack spacing={2} padding={2} marginX="auto" sx={{
       maxWidth: { sm: 'sm' },
-      ...props.sx,
+      ...sx,
     }}>
       {
         transactions.data && transactionsSelector
@@ -60,7 +70,7 @@ export const TransactionList = (props: TransactionListProps) => {
               <TransactionWidget
                 key={index}
                 transaction={transaction}
-                loading={transactions.isFetching}
+                isLoading={transactions.isFetching}
                 requestParams={getTransactionsRequestParams}
                 onDuplicateModalOpen={setTransactionDuplicateModalOpen}
               />
