@@ -17,15 +17,21 @@ export type CategoryWidgetProps = {
   category: Category,
   draggable?: boolean,
   isLoading?: boolean,
+  onClick?: (categoryId: number) => void,
 }
 
-export const CategoryWidget = (props: CategoryWidgetProps) => {
+export const CategoryWidget = ({
+  category,
+  draggable,
+  isLoading,
+  onClick,
+}: CategoryWidgetProps) => {
   const dragControls = useDragControls();
 
   return (
     <Reorder.Item
       as="div"
-      value={props.category}
+      value={category}
       dragListener={false}
       dragControls={dragControls}
     >
@@ -34,7 +40,9 @@ export const CategoryWidget = (props: CategoryWidgetProps) => {
         fullWidth={true}
         sx={{
           my: 1,
-        }}>
+        }}
+        onClick={() => onClick?.(category.id)}
+      >
         <Stack
           width="100%"
           direction="row"
@@ -42,8 +50,8 @@ export const CategoryWidget = (props: CategoryWidgetProps) => {
           gap={2}
         >
           <Avatar>
-            <Skeleton loading={props.isLoading}>
-              {props.category.icon}
+            <Skeleton loading={isLoading}>
+              {category.icon}
             </Skeleton>
           </Avatar>
           <Sheet sx={{
@@ -55,14 +63,14 @@ export const CategoryWidget = (props: CategoryWidgetProps) => {
               level="title-lg"
               textAlign="left"
               noWrap
-            >--Icon-fontSize
-              <Skeleton loading={props.isLoading}>
-                {props.category.name}
+            >
+              <Skeleton loading={isLoading}>
+                {category.name}
               </Skeleton>
             </Typography>
           </Sheet>
           {
-            props.draggable &&
+            draggable &&
             <Box
               padding={1}
               style={{

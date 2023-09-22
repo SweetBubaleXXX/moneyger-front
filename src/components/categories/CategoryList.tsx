@@ -9,16 +9,25 @@ import { Category } from '../../features/api/types';
 import { CategoryWidget } from './CategoryWidget';
 
 export type CategoryListProps = {
-  filter?: (category: Category) => boolean
+  filter?: (category: Category) => boolean,
+  reorder?: boolean,
+  onReorder?: (categories: Category[]) => void,
+  onItemClick?: (categoryId: number) => void,
 }
 
-export const CategoryList = (props: CategoryListProps) => {
+export const CategoryList = ({
+  filter,
+  reorder,
+  onReorder,
+  onItemClick,
+}: CategoryListProps) => {
   const categories = useGetAllCategoriesQuery(undefined, {
     selectFromResult: result => ({
-      data: filterCategoriesSelector(result.data, props.filter),
+      data: filterCategoriesSelector(result.data, filter),
       isLoading: result.isFetching,
     }),
   });
+
   const [orderedCategories, setOrderedCategories] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -26,6 +35,10 @@ export const CategoryList = (props: CategoryListProps) => {
       setOrderedCategories(categories.data);
     }
   }, [categories.data]);
+
+  useEffect(() => {
+    onReorder?.(orderedCategories);
+  }, [onReorder, orderedCategories]);
 
   return (
     <Reorder.Group
@@ -38,8 +51,9 @@ export const CategoryList = (props: CategoryListProps) => {
         <CategoryWidget
           key={category.id}
           category={category}
-          draggable={true}
+          draggable={reorder}
           isLoading={categories.isLoading}
+          onClick={onItemClick}
         />
       )}
     </Reorder.Group>
