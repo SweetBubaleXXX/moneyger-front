@@ -12,6 +12,8 @@ export const API_PATHS = {
   getCategoryById: (categoryId: number) => `categories/${categoryId}/`,
   getTransactions: (pageNumber: number = 1) =>
     `transactions/?${getPaginationQuery(pageNumber)}`,
+  getTransactionById: (transactionId: number) =>
+    `transactions/${transactionId}/`,
   createTransaction: (categoryId: number) =>
     `categories/${categoryId}/transactions/`,
 } as const;

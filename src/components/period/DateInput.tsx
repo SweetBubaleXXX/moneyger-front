@@ -11,22 +11,27 @@ export type DateRangeInputProps = {
   onChange: (val: string) => void,
 }
 
-export const DateInput = (props: DateRangeInputProps) => {
+export const DateInput = ({
+  defaultValue,
+  min,
+  max,
+  onChange,
+}: DateRangeInputProps) => {
   return (
     <Input
       type="date"
-      defaultValue={formatDate(props.defaultValue)}
+      defaultValue={formatDate(defaultValue)}
       slotProps={{
         input: {
-          min: formatDate(props.min),
-          max: formatDate(props.max),
+          min: formatDate(min),
+          max: formatDate(max),
         },
       }}
-      onChange={event => props.onChange(event.target.value)}
+      onChange={event => onChange(event.target.value)}
     />
   );
 };
 
-function formatDate(value?: Date): string | undefined {
+const formatDate = (value?: Date) => {
   return value && moment(value).format(DATE_INPUT_FORMAT);
-}
+};

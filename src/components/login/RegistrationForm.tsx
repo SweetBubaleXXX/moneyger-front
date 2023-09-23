@@ -33,6 +33,7 @@ export const RegistrationForm = () => {
   } = useForm<RegistrationRequest & { confirmPassword: string }>(
     { resolver: zodResolver(RegistrationSchema) }
   );
+
   const [
     register,
     { isSuccess, isLoading, isError, error: registrationError },
