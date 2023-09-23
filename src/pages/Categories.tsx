@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { CategoryList } from '../components/categories/CategoryList';
+import { ROUTER_PATHS } from './constants';
 
 export const Categories = () => {
   const navigate = useNavigate();
@@ -71,7 +72,10 @@ export const Categories = () => {
                     >
                       Reorder
                     </Button>
-                    <Button startDecorator={<ListPlus />}>
+                    <Button
+                      startDecorator={<ListPlus />}
+                      onClick={() => navigate(ROUTER_PATHS.createCategory)}
+                    >
                       Add
                     </Button>
                   </ButtonGroup>

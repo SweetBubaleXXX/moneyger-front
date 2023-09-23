@@ -14,6 +14,7 @@ import { baseQueryWithReauth } from './queries';
 import {
   Account,
   Category,
+  CategoryCreateRequest,
   JwtToken,
   LoginRequest,
   PaginatedCategoryRequest,
@@ -103,6 +104,13 @@ export const api = createApi({
       }),
       providesTags: ['Transaction'],
     }),
+    createCategory: builder.mutation<Category, CategoryCreateRequest>({
+      query: request => ({
+        url: API_PATHS.createCategory,
+        body: decamelizeKeys(request),
+      }),
+      invalidatesTags: ['Category'],
+    }),
     createTransaction: builder
       .mutation<Transaction, TransactionCreateUpdateRequest>({
         query: request => ({
@@ -190,6 +198,7 @@ export const {
   useGetCategoryByIdQuery,
   useGetTransactionsQuery,
   useGetTransactionsSummaryQuery,
+  useCreateCategoryMutation,
   useCreateTransactionMutation,
   useUpdateTransactionMutation,
   useDeleteTransactionMutation,

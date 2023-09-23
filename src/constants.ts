@@ -1,3 +1,5 @@
+export const TRANSACTION_TYPES = ['IN', 'OUT'] as const;
+
 export const CURRENCY_CODES = ['USD', 'EUR', 'RUB', 'BYN'] as const;
 
 export const DATE_INPUT_FORMAT = 'YYYY-MM-DD';
