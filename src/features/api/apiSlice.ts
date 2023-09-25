@@ -107,6 +107,7 @@ export const api = createApi({
     createCategory: builder.mutation<Category, CategoryCreateRequest>({
       query: request => ({
         url: API_PATHS.createCategory,
+        method: 'POST',
         body: decamelizeKeys(request),
       }),
       invalidatesTags: ['Category'],

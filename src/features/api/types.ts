@@ -69,6 +69,10 @@ export type CategoryCreateRequest = Omit<
   Category, 'id' | 'parentCategory' | 'displayOrder' | 'icon' | 'color'
 > & Partial<Pick<Category, 'icon' | 'color'>>
 
+export type CategoryUpdateRequest = Omit<
+  CategoryCreateRequest, 'transactionType'
+>
+
 export type Transaction = {
   id: number,
   category: number,
