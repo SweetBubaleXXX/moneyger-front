@@ -8,8 +8,9 @@ import {
   Select,
   Stack,
 } from '@mui/joy';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { TRANSACTION_TYPES } from '../../constants';
@@ -34,6 +35,16 @@ export const CategoryCreateForm = ({
   } = useForm<CategoryCreateRequest>(
     { resolver: zodResolver(CategoryCreateSchema) }
   );
+
+  useEffect(() => {
+    const error = formState.errors.name;
+    if (error) {
+      toast.error('Category Name', {
+        description: error.message,
+      });
+    }
+  }, [formState.errors.name]);
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

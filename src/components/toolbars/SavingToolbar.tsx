@@ -1,17 +1,21 @@
-import { Button } from '@mui/joy';
+import { Button, ButtonProps } from '@mui/joy';
 import { Check, X } from 'lucide-react';
 import React from 'react';
 
 import { BaseToolbar } from './BaseToolbar';
 
 export type SavingToolbarProps = {
-  onSave: () => void,
+  onSave?: () => void,
   onCancel?: () => void,
+  saveButtonProps?: ButtonProps,
+  cancelButtonProps?: ButtonProps,
 }
 
 export const SavingToolbar = ({
   onSave,
   onCancel,
+  saveButtonProps,
+  cancelButtonProps,
 }: SavingToolbarProps) => {
   return (
     <BaseToolbar>
@@ -21,6 +25,7 @@ export const SavingToolbar = ({
           color="danger"
           startDecorator={<X />}
           onClick={onCancel}
+          {...cancelButtonProps}
         >
           Cancel
         </Button>
@@ -28,7 +33,8 @@ export const SavingToolbar = ({
       <Button
         color="success"
         startDecorator={<Check />}
-        onClick={onSave}
+        onClick={() => onSave?.()}
+        {...saveButtonProps}
       >
         Save
       </Button >

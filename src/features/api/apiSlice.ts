@@ -15,6 +15,7 @@ import {
   Account,
   Category,
   CategoryCreateRequest,
+  CategoryUpdateRequest,
   JwtToken,
   LoginRequest,
   PaginatedCategoryRequest,
@@ -112,6 +113,16 @@ export const api = createApi({
       }),
       invalidatesTags: ['Category'],
     }),
+    updateCategory: builder.mutation<
+      Category, CategoryUpdateRequest & { id: number }
+    >({
+      query: request => ({
+        url: API_PATHS.getCategoryById(request.id),
+        method: 'PATCH',
+        body: decamelizeKeys(request),
+      }),
+      invalidatesTags: ['Category'],
+    }),
     createTransaction: builder
       .mutation<Transaction, TransactionCreateUpdateRequest>({
         query: request => ({
@@ -200,6 +211,7 @@ export const {
   useGetTransactionsQuery,
   useGetTransactionsSummaryQuery,
   useCreateCategoryMutation,
+  useUpdateCategoryMutation,
   useCreateTransactionMutation,
   useUpdateTransactionMutation,
   useDeleteTransactionMutation,

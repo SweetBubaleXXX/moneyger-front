@@ -1,11 +1,13 @@
 import { Box, Card, CardContent, Divider, Stack } from '@mui/joy';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import { CategoryList } from '../components/categories/CategoryList';
 import {
   CategoryUpdateForm,
 } from '../components/categories/CategoryUpdateForm';
+import { CATEGORY_UPDATE_FORM_ID } from '../components/categories/constants';
 import {
   CategoryListToolbar,
 } from '../components/toolbars/CategoryListToolbar';
@@ -13,6 +15,7 @@ import { SavingToolbar } from '../components/toolbars/SavingToolbar';
 import {
   selectCategoryById,
   useGetAllCategoriesQuery,
+  useUpdateCategoryMutation,
 } from '../features/api/apiSlice';
 
 export type CategoryViewParams = {
@@ -33,6 +36,15 @@ export const CategoryView = () => {
     }),
   });
 
+  const [updateCategory, result] = useUpdateCategoryMutation();
+
+  useEffect(() => {
+    if (result.isSuccess) {
+      toast.success('Category updated');
+      setEditing(false);
+    }
+  }, [result.isSuccess]);
+
   return (
     <>
       <Card variant="outlined" sx={{
@@ -45,7 +57,10 @@ export const CategoryView = () => {
             category={category.data}
             disabled={reorder}
             onEdit={() => setEditing(true)}
-            onSubmit={() => { }}
+            onSubmit={formData => updateCategory({
+              id: category.data?.id!,
+              ...formData,
+            })}
           />
         </CardContent>
       </Card>
@@ -81,7 +96,15 @@ export const CategoryView = () => {
             :
             editing ?
               <SavingToolbar
-                onSave={() => { }}
+                onCancel={() => setEditing(false)}
+                cancelButtonProps={{
+                  form: CATEGORY_UPDATE_FORM_ID,
+                  type: 'reset',
+                }}
+                saveButtonProps={{
+                  form: CATEGORY_UPDATE_FORM_ID,
+                  type: 'submit',
+                }}
               />
               :
               <CategoryListToolbar

@@ -45,6 +45,7 @@ export const CategoryUpdateForm = ({
     <form
       id={CATEGORY_UPDATE_FORM_ID}
       onSubmit={handleSubmit(onSubmit)}
+      onReset={() => reset()}
       onChange={onEdit}
     >
       <Stack spacing={3} padding={2}>

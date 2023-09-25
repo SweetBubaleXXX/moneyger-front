@@ -5,8 +5,9 @@ import {
   TabPanel,
   Tabs,
 } from '@mui/joy';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import {
   CategoryCreateForm,
@@ -29,6 +30,19 @@ export const Categories = () => {
   ] = useState<boolean>(false);
 
   const [createCategory, result] = useCreateCategoryMutation();
+
+  useEffect(() => {
+    if (result.isError) {
+      toast.error('Failed to add category');
+    }
+  }, [result.isError]);
+
+  useEffect(() => {
+    if (result.isSuccess) {
+      toast.success('Category added');
+      setCategoryCreationModalOpen(false);
+    }
+  }, [result.isSuccess]);
 
   return (
     <>
