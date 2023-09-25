@@ -71,7 +71,7 @@ export type CategoryCreateRequest = Omit<
 
 export type CategoryUpdateRequest = Omit<
   CategoryCreateRequest, 'transactionType'
->
+> & Partial<Pick<Category, 'displayOrder'>>
 
 export type Transaction = {
   id: number,
