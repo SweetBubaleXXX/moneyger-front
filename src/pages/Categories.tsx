@@ -37,7 +37,7 @@ export const Categories = () => {
 
   const [
     updateDisplayOrder,
-    dislayOrderUpdateResult,
+    displayOrderUpdateResult,
   ] = useUpdateDisplayOrderMutation();
 
   useEffect(() => {
@@ -52,6 +52,12 @@ export const Categories = () => {
       setCategoryCreationModalOpen(false);
     }
   }, [categoryCreationResult.isSuccess]);
+
+  useEffect(() => {
+    if (displayOrderUpdateResult.isSuccess) {
+      toast.success('Saved');
+    }
+  }, [displayOrderUpdateResult.isSuccess]);
 
   return (
     <>
@@ -71,7 +77,7 @@ export const Categories = () => {
                 category =>
                   !category.parentCategory && category.transactionType === value
               }
-              loading={dislayOrderUpdateResult.isLoading}
+              loading={displayOrderUpdateResult.isLoading}
               reorder={reorder}
               onSubmitReorder={orderedCategories => {
                 updateDisplayOrder(orderedCategories);

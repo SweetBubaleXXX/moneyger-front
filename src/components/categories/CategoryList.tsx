@@ -36,10 +36,10 @@ export const CategoryList = ({
   const isLoading = loading || categories.isLoading;
 
   useEffect(() => {
-    if (categories.data) {
+    if (categories.data && !isLoading) {
       setOrderedCategories(categories.data);
     }
-  }, [categories.data]);
+  }, [categories.data, isLoading]);
 
   return (
     <>

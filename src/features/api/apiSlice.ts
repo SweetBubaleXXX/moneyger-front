@@ -163,9 +163,9 @@ export const api = createApi({
       },
     }),
     updateDisplayOrder: builder.mutation<void, Category[]>({
-      queryFn: async (categories, api, extraOptions, baseQuery) => {
+      queryFn: (categories, api, extraOptions, baseQuery) => {
         for (const [index, category] of categories.entries()) {
-          await baseQuery({
+          baseQuery({
             url: API_PATHS.getCategoryById(category.id),
             method: 'PATCH',
             body: decamelizeKeys({
