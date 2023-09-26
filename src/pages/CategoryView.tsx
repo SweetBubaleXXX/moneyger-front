@@ -8,7 +8,10 @@ import { CategoryModal } from '../components/categories/CategoryModal';
 import {
   CategoryUpdateForm,
 } from '../components/categories/CategoryUpdateForm';
-import { CATEGORY_UPDATE_FORM_ID } from '../components/categories/constants';
+import {
+  CATEGORY_UPDATE_FORM_ID,
+  REORDER_FORM_ID,
+} from '../components/categories/constants';
 import {
   SubcategoryCreateForm,
 } from '../components/categories/SubcategoryCreateForm';
@@ -21,6 +24,7 @@ import {
   useCreateSubcategoryMutation,
   useGetAllCategoriesQuery,
   useUpdateCategoryMutation,
+  useUpdateDisplayOrderMutation,
 } from '../features/api/apiSlice';
 
 export type CategoryViewParams = {
@@ -45,6 +49,11 @@ export const CategoryView = () => {
       isLoading: result.isFetching,
     }),
   });
+
+  const [
+    updateDisplayOrder,
+    displayOrderUpdateResult,
+  ] = useUpdateDisplayOrderMutation();
 
   const [
     createSubcategory,
@@ -79,6 +88,12 @@ export const CategoryView = () => {
     }
   }, [updateResult.isError]);
 
+  useEffect(() => {
+    if (displayOrderUpdateResult.isError) {
+      toast.error('Failed to save order');
+    }
+  }, [displayOrderUpdateResult.isError]);
+
   return (
     <>
       <Card variant="outlined" sx={{
@@ -107,8 +122,13 @@ export const CategoryView = () => {
       </Divider>
       <Stack mx="auto" maxWidth={400} padding={2} >
         <CategoryList
-          reorder={reorder}
           filter={category => category.parentCategory === categoryId}
+          loading={displayOrderUpdateResult.isLoading}
+          reorder={reorder}
+          onSubmitReorder={orderedCategories => {
+            updateDisplayOrder(orderedCategories);
+            setReorder(false);
+          }}
           onItemClick={
             subcategoryId => navigate(`/categories/${subcategoryId}`)
           }
@@ -125,7 +145,10 @@ export const CategoryView = () => {
           reorder ?
             <SavingToolbar
               onCancel={() => setReorder(false)}
-              onSave={() => { }}
+              saveButtonProps={{
+                form: REORDER_FORM_ID,
+                type: 'submit',
+              }}
             />
             :
             editing ?
