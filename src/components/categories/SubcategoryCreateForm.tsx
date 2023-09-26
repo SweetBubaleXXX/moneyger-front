@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  Button,
   FormControl,
   FormLabel,
   Input,
@@ -9,38 +10,23 @@ import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { Category, CategoryUpdateRequest } from '../../features/api/types';
+import { SubcategoryCreateRequest } from '../../features/api/types';
 import { BaseCategorySchema, CATEGORY_UPDATE_FORM_ID } from './constants';
 
-export type CategoryUpdateFormProps = {
-  onSubmit: (request: CategoryUpdateRequest) => void,
-  disabled?: boolean,
-  category?: Category,
-  onEdit?: (editing: boolean) => void,
+export type SubcategoryCreateFormProps = {
+  onSubmit: (request: SubcategoryCreateRequest) => void,
 }
 
-export const CategoryUpdateForm = ({
+export const SubcategoryCreateForm = ({
   onSubmit,
-  disabled,
-  category,
-  onEdit,
-}: CategoryUpdateFormProps) => {
+}: SubcategoryCreateFormProps) => {
   const {
     handleSubmit,
-    reset,
     control,
     formState,
-  } = useForm<CategoryUpdateRequest>(
+  } = useForm<SubcategoryCreateRequest>(
     { resolver: zodResolver(BaseCategorySchema) }
   );
-
-  const isDisabled = disabled || !category;
-
-  useEffect(() => {
-    if (category) {
-      reset(category);
-    }
-  }, [category, reset]);
 
   useEffect(() => {
     const error = formState.errors.name;
@@ -55,20 +41,15 @@ export const CategoryUpdateForm = ({
     <form
       id={CATEGORY_UPDATE_FORM_ID}
       onSubmit={handleSubmit(onSubmit)}
-      onReset={() => {
-        reset();
-        onEdit?.(false);
-      }}
-      onChange={() => onEdit?.(true)}
     >
       <Stack spacing={3} padding={2}>
         <Controller
           name="name"
           control={control}
-          defaultValue={category?.name}
+          defaultValue=""
           render={({ field }) =>
             <Input
-              disabled={isDisabled}
+              placeholder="Category Name"
               error={!!formState.errors.name}
               {...field}
             />
@@ -77,12 +58,11 @@ export const CategoryUpdateForm = ({
         <Controller
           name="color"
           control={control}
-          defaultValue={category?.color}
+          defaultValue="#0000ee"
           render={({ field }) =>
             <FormControl error={!!formState.errors.color}>
               <FormLabel>Color</FormLabel>
               <Input
-                disabled={isDisabled}
                 type="color"
                 variant="plain"
                 {...field}
@@ -90,6 +70,7 @@ export const CategoryUpdateForm = ({
             </FormControl>
           }
         />
+        <Button type="submit">Add</Button>
       </Stack>
     </form >
   );

@@ -23,6 +23,7 @@ import {
   PaginatedTransactionRequest,
   RegistrationRequest,
   RegistrationResponse,
+  SubcategoryCreateRequest,
   Summary,
   Transaction,
   TransactionCreateUpdateRequest,
@@ -108,6 +109,16 @@ export const api = createApi({
     createCategory: builder.mutation<Category, CategoryCreateRequest>({
       query: request => ({
         url: API_PATHS.createCategory,
+        method: 'POST',
+        body: decamelizeKeys(request),
+      }),
+      invalidatesTags: ['Category'],
+    }),
+    createSubcategory: builder.mutation<
+      Category, SubcategoryCreateRequest & { id: number }
+    >({
+      query: request => ({
+        url: API_PATHS.getSubcategories(request.id),
         method: 'POST',
         body: decamelizeKeys(request),
       }),
@@ -211,6 +222,7 @@ export const {
   useGetTransactionsQuery,
   useGetTransactionsSummaryQuery,
   useCreateCategoryMutation,
+  useCreateSubcategoryMutation,
   useUpdateCategoryMutation,
   useCreateTransactionMutation,
   useUpdateTransactionMutation,

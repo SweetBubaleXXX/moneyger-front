@@ -10,6 +10,7 @@ export const BaseToolbar = ({
 }: BaseToolbarProps) => {
   return (
     <ButtonGroup
+      variant="soft"
       buttonFlex="0 1 200px"
       sx={{ justifyContent: 'center' }}
     >

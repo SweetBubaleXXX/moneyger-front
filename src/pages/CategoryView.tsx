@@ -4,16 +4,21 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { CategoryList } from '../components/categories/CategoryList';
+import { CategoryModal } from '../components/categories/CategoryModal';
 import {
   CategoryUpdateForm,
 } from '../components/categories/CategoryUpdateForm';
 import { CATEGORY_UPDATE_FORM_ID } from '../components/categories/constants';
+import {
+  SubcategoryCreateForm,
+} from '../components/categories/SubcategoryCreateForm';
 import {
   CategoryListToolbar,
 } from '../components/toolbars/CategoryListToolbar';
 import { SavingToolbar } from '../components/toolbars/SavingToolbar';
 import {
   selectCategoryById,
+  useCreateSubcategoryMutation,
   useGetAllCategoriesQuery,
   useUpdateCategoryMutation,
 } from '../features/api/apiSlice';
@@ -29,6 +34,11 @@ export const CategoryView = () => {
   const [reorder, setReorder] = useState<boolean>(false);
   const [editing, setEditing] = useState<boolean>(false);
 
+  const [
+    subcategoryCreationModalOpen,
+    setSubcategoryCreationModalOpen,
+  ] = useState<boolean>(false);
+
   const category = useGetAllCategoriesQuery(undefined, {
     selectFromResult: result => ({
       data: selectCategoryById(result.data, categoryId),
@@ -36,14 +46,38 @@ export const CategoryView = () => {
     }),
   });
 
-  const [updateCategory, result] = useUpdateCategoryMutation();
+  const [
+    createSubcategory,
+    subcategoryCreationResult,
+  ] = useCreateSubcategoryMutation();
+
+  const [updateCategory, updateResult] = useUpdateCategoryMutation();
 
   useEffect(() => {
-    if (result.isSuccess) {
+    if (subcategoryCreationResult.isError) {
+      toast.error('Failed to add subcategory');
+    }
+  }, [subcategoryCreationResult.isError]);
+
+  useEffect(() => {
+    if (subcategoryCreationResult.isSuccess) {
+      toast.success('Subcategory added');
+      setSubcategoryCreationModalOpen(false);
+    }
+  }, [subcategoryCreationResult.isSuccess]);
+
+  useEffect(() => {
+    if (updateResult.isSuccess) {
       toast.success('Category updated');
       setEditing(false);
     }
-  }, [result.isSuccess]);
+  }, [updateResult.isSuccess]);
+
+  useEffect(() => {
+    if (updateResult.isError) {
+      toast.error('Failed to update category');
+    }
+  }, [updateResult.isError]);
 
   return (
     <>
@@ -108,10 +142,20 @@ export const CategoryView = () => {
               :
               <CategoryListToolbar
                 onReorder={() => setReorder(true)}
-                onAdd={() => { }}
+                onAdd={() => setSubcategoryCreationModalOpen(true)}
               />
         }
       </Box>
+      <CategoryModal
+        open={subcategoryCreationModalOpen}
+        onClose={setSubcategoryCreationModalOpen}
+        title="Add Subcategory"
+      >
+        <SubcategoryCreateForm onSubmit={formData => createSubcategory({
+          id: category.data?.id!,
+          ...formData,
+        })} />
+      </CategoryModal>
     </>
   );
 };
