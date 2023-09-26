@@ -162,6 +162,21 @@ export const api = createApi({
         );
       },
     }),
+    updateDisplayOrder: builder.mutation<void, Category[]>({
+      queryFn: async (categories, api, extraOptions, baseQuery) => {
+        for (const [index, category] of categories.entries()) {
+          await baseQuery({
+            url: API_PATHS.getCategoryById(category.id),
+            method: 'PATCH',
+            body: decamelizeKeys({
+              displayOrder: index + 1,
+            }),
+          });
+        }
+        return { data: void {} };
+      },
+      invalidatesTags: ['Category'],
+    }),
     deleteTransaction: builder
       .mutation<any, TransactionMutationParams>({
         query: request => ({
@@ -224,6 +239,7 @@ export const {
   useCreateCategoryMutation,
   useCreateSubcategoryMutation,
   useUpdateCategoryMutation,
+  useUpdateDisplayOrderMutation,
   useCreateTransactionMutation,
   useUpdateTransactionMutation,
   useDeleteTransactionMutation,

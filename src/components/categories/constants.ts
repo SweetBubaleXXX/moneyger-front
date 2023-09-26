@@ -7,3 +7,5 @@ export const BaseCategorySchema = z.object({
 });
 
 export const CATEGORY_UPDATE_FORM_ID = 'category-update-form';
+
+export const REORDER_FORM_ID = 'reorder-form';

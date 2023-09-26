@@ -7,18 +7,21 @@ import {
 } from '../../features/api/apiSlice';
 import { Category } from '../../features/api/types';
 import { CategoryWidget } from './CategoryWidget';
+import { REORDER_FORM_ID } from './constants';
 
 export type CategoryListProps = {
   filter?: (category: Category) => boolean,
   reorder?: boolean,
-  onReorder?: (categories: Category[]) => void,
+  loading?: boolean,
+  onSubmitReorder?: (categories: Category[]) => void,
   onItemClick?: (categoryId: number) => void,
 }
 
 export const CategoryList = ({
   filter,
   reorder,
-  onReorder,
+  loading,
+  onSubmitReorder,
   onItemClick,
 }: CategoryListProps) => {
   const categories = useGetAllCategoriesQuery(undefined, {
@@ -30,32 +33,41 @@ export const CategoryList = ({
 
   const [orderedCategories, setOrderedCategories] = useState<Category[]>([]);
 
+  const isLoading = loading || categories.isLoading;
+
   useEffect(() => {
     if (categories.data) {
       setOrderedCategories(categories.data);
     }
   }, [categories.data]);
 
-  useEffect(() => {
-    onReorder?.(orderedCategories);
-  }, [onReorder, orderedCategories]);
-
   return (
-    <Reorder.Group
-      as="div"
-      axis="y"
-      values={orderedCategories}
-      onReorder={setOrderedCategories}
-    >
-      {orderedCategories.map(category =>
-        <CategoryWidget
-          key={category.id}
-          category={category}
-          draggable={reorder}
-          isLoading={categories.isLoading}
-          onClick={onItemClick}
-        />
-      )}
-    </Reorder.Group>
+    <>
+      <Reorder.Group
+        as="div"
+        axis="y"
+        values={orderedCategories}
+        onReorder={setOrderedCategories}
+      >
+        {
+          orderedCategories.map(category =>
+            <CategoryWidget
+              key={category.id}
+              category={category}
+              draggable={reorder}
+              isLoading={isLoading}
+              onClick={onItemClick}
+            />
+          )
+        }
+      </Reorder.Group>
+      <form
+        id={REORDER_FORM_ID}
+        onSubmit={e => {
+          e.preventDefault();
+          onSubmitReorder?.(orderedCategories);
+        }}
+      />
+    </>
   );
 };

@@ -14,11 +14,15 @@ import {
 } from '../components/categories/CategoryCreateForm';
 import { CategoryList } from '../components/categories/CategoryList';
 import { CategoryModal } from '../components/categories/CategoryModal';
+import { REORDER_FORM_ID } from '../components/categories/constants';
 import {
   CategoryListToolbar,
 } from '../components/toolbars/CategoryListToolbar';
 import { SavingToolbar } from '../components/toolbars/SavingToolbar';
-import { useCreateCategoryMutation } from '../features/api/apiSlice';
+import {
+  useCreateCategoryMutation,
+  useUpdateDisplayOrderMutation,
+} from '../features/api/apiSlice';
 
 export const Categories = () => {
   const navigate = useNavigate();
@@ -29,20 +33,25 @@ export const Categories = () => {
     setCategoryCreationModalOpen,
   ] = useState<boolean>(false);
 
-  const [createCategory, result] = useCreateCategoryMutation();
+  const [createCategory, categoryCreationResult] = useCreateCategoryMutation();
+
+  const [
+    updateDisplayOrder,
+    dislayOrderUpdateResult,
+  ] = useUpdateDisplayOrderMutation();
 
   useEffect(() => {
-    if (result.isError) {
+    if (categoryCreationResult.isError) {
       toast.error('Failed to add category');
     }
-  }, [result.isError]);
+  }, [categoryCreationResult.isError]);
 
   useEffect(() => {
-    if (result.isSuccess) {
+    if (categoryCreationResult.isSuccess) {
       toast.success('Category added');
       setCategoryCreationModalOpen(false);
     }
-  }, [result.isSuccess]);
+  }, [categoryCreationResult.isSuccess]);
 
   return (
     <>
@@ -62,7 +71,12 @@ export const Categories = () => {
                 category =>
                   !category.parentCategory && category.transactionType === value
               }
+              loading={dislayOrderUpdateResult.isLoading}
               reorder={reorder}
+              onSubmitReorder={orderedCategories => {
+                updateDisplayOrder(orderedCategories);
+                setReorder(false);
+              }}
               onItemClick={
                 categoryId => !reorder && navigate(`./${categoryId}`)
               }
@@ -78,7 +92,10 @@ export const Categories = () => {
                 reorder ?
                   <SavingToolbar
                     onCancel={() => setReorder(false)}
-                    onSave={() => { }}
+                    saveButtonProps={{
+                      form: REORDER_FORM_ID,
+                      type: 'submit',
+                    }}
                   />
                   :
                   <CategoryListToolbar
