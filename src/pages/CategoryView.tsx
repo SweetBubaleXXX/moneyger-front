@@ -56,7 +56,7 @@ export const CategoryView = () => {
           <CategoryUpdateForm
             category={category.data}
             disabled={reorder}
-            onEdit={() => setEditing(true)}
+            onEdit={setEditing}
             onSubmit={formData => updateCategory({
               id: category.data?.id!,
               ...formData,
@@ -96,7 +96,6 @@ export const CategoryView = () => {
             :
             editing ?
               <SavingToolbar
-                onCancel={() => setEditing(false)}
                 cancelButtonProps={{
                   form: CATEGORY_UPDATE_FORM_ID,
                   type: 'reset',

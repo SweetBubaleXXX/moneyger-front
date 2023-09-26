@@ -15,7 +15,7 @@ export type CategoryUpdateFormProps = {
   onSubmit: (request: CategoryUpdateRequest) => void,
   disabled?: boolean,
   category?: Category,
-  onEdit?: () => void,
+  onEdit?: (editing: boolean) => void,
 }
 
 export const CategoryUpdateForm = ({
@@ -45,8 +45,11 @@ export const CategoryUpdateForm = ({
     <form
       id={CATEGORY_UPDATE_FORM_ID}
       onSubmit={handleSubmit(onSubmit)}
-      onReset={() => reset()}
-      onChange={onEdit}
+      onReset={() => {
+        reset();
+        onEdit?.(false);
+      }}
+      onChange={() => onEdit?.(true)}
     >
       <Stack spacing={3} padding={2}>
         <Controller

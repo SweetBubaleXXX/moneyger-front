@@ -20,7 +20,7 @@ export const SavingToolbar = ({
   return (
     <BaseToolbar>
       {
-        onCancel &&
+        (onCancel || cancelButtonProps) &&
         <Button
           color="danger"
           startDecorator={<X />}
