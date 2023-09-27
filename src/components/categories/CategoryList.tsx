@@ -1,3 +1,5 @@
+import { Box } from '@mui/joy';
+import { SxProps } from '@mui/joy/styles/types';
 import { Reorder } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 
@@ -15,6 +17,7 @@ export type CategoryListProps = {
   loading?: boolean,
   onSubmitReorder?: (categories: Category[]) => void,
   onItemClick?: (categoryId: number) => void,
+  sx?: SxProps,
 }
 
 export const CategoryList = ({
@@ -23,6 +26,7 @@ export const CategoryList = ({
   loading,
   onSubmitReorder,
   onItemClick,
+  sx,
 }: CategoryListProps) => {
   const categories = useGetAllCategoriesQuery(undefined, {
     selectFromResult: result => ({
@@ -42,7 +46,12 @@ export const CategoryList = ({
   }, [categories.data, isLoading]);
 
   return (
-    <>
+    <Box
+      maxWidth={450}
+      px={2}
+      mx="auto"
+      sx={sx}
+    >
       <Reorder.Group
         as="div"
         axis="y"
@@ -68,6 +77,6 @@ export const CategoryList = ({
           onSubmitReorder?.(orderedCategories);
         }}
       />
-    </>
+    </Box>
   );
 };

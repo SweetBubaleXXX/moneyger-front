@@ -5,10 +5,9 @@ import {
   Divider,
   IconButton,
   Sheet,
-  Stack,
   Typography,
 } from '@mui/joy';
-import { Trash, Undo2 } from 'lucide-react';
+import { ChevronLeft, Trash } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -38,6 +37,7 @@ import {
   useUpdateCategoryMutation,
   useUpdateDisplayOrderMutation,
 } from '../features/api/apiSlice';
+import { CATEGORY_BOTTOM_TOOLBAR_PROPS } from './constants';
 
 export type CategoryViewParams = {
   categoryId: string,
@@ -152,7 +152,7 @@ export const CategoryView = () => {
           <IconButton
             onClick={() => navigate(-1)}
           >
-            <Undo2 />
+            <ChevronLeft />
           </IconButton>
           <Typography level="title-md">
             Edit Category
@@ -192,27 +192,19 @@ export const CategoryView = () => {
       }}>
         Subcategories
       </Divider>
-      <Stack mx="auto" maxWidth={400} padding={2} >
-        <CategoryList
-          filter={category => category.parentCategory === categoryId}
-          loading={displayOrderUpdateResult.isLoading}
-          reorder={reorder}
-          onSubmitReorder={orderedCategories => {
-            updateDisplayOrder(orderedCategories);
-            setReorder(false);
-          }}
-          onItemClick={
-            subcategoryId => navigate(`/categories/${subcategoryId}`)
-          }
-        />
-      </Stack>
-      <Box
-        position="fixed"
-        padding={2}
-        left={0}
-        bottom={0}
-        right={0}
-      >
+      <CategoryList
+        filter={category => category.parentCategory === categoryId}
+        loading={displayOrderUpdateResult.isLoading}
+        reorder={reorder}
+        onSubmitReorder={orderedCategories => {
+          updateDisplayOrder(orderedCategories);
+          setReorder(false);
+        }}
+        onItemClick={
+          subcategoryId => navigate(`/categories/${subcategoryId}`)
+        }
+      />
+      <Box {...CATEGORY_BOTTOM_TOOLBAR_PROPS}>
         {
           reorder ?
             <SavingToolbar
