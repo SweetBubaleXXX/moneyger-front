@@ -1,12 +1,7 @@
 import {
   Avatar,
-  Button,
   Card,
   CardContent,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
   Dropdown,
   IconButton,
   ListDivider,
@@ -14,14 +9,12 @@ import {
   Menu,
   MenuButton,
   MenuItem,
-  Modal,
-  ModalDialog,
   Sheet,
   Skeleton,
   Typography,
 } from '@mui/joy';
 import { Stack } from '@mui/system';
-import { AlertTriangle, Copy, MoreVertical, Pencil, Trash } from 'lucide-react';
+import { Copy, MoreVertical, Pencil, Trash } from 'lucide-react';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 

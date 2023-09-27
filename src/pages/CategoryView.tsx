@@ -1,18 +1,12 @@
 import {
   Box,
-  Button,
   Card,
   CardContent,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Divider,
   IconButton,
-  Modal,
-  ModalDialog,
   Stack,
 } from '@mui/joy';
-import { AlertTriangle, Trash } from 'lucide-react';
+import { Trash } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
