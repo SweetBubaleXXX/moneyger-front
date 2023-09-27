@@ -23,10 +23,12 @@ export const CategoryCreateSchema = BaseCategorySchema.extend({
 
 export type CategoryCreateFormProps = {
   onSubmit: (request: CategoryCreateRequest) => void,
+  loading?: boolean,
 }
 
 export const CategoryCreateForm = ({
   onSubmit,
+  loading,
 }: CategoryCreateFormProps) => {
   const {
     handleSubmit,
@@ -89,7 +91,7 @@ export const CategoryCreateForm = ({
             </FormControl>
           }
         />
-        <Button type="submit">Add</Button>
+        <Button type="submit" loading={loading}>Add</Button>
       </Stack>
     </form >
   );

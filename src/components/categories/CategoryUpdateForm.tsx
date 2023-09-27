@@ -14,6 +14,7 @@ import { BaseCategorySchema, CATEGORY_UPDATE_FORM_ID } from './constants';
 
 export type CategoryUpdateFormProps = {
   onSubmit: (request: CategoryUpdateRequest) => void,
+  loading?: boolean,
   disabled?: boolean,
   category?: Category,
   onEdit?: (editing: boolean) => void,
@@ -21,6 +22,7 @@ export type CategoryUpdateFormProps = {
 
 export const CategoryUpdateForm = ({
   onSubmit,
+  loading,
   disabled,
   category,
   onEdit,
@@ -34,7 +36,7 @@ export const CategoryUpdateForm = ({
     { resolver: zodResolver(BaseCategorySchema) }
   );
 
-  const isDisabled = disabled || !category;
+  const isDisabled = disabled || loading || !category;
 
   useEffect(() => {
     if (category) {

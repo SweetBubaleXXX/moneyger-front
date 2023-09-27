@@ -118,7 +118,10 @@ export const Categories = () => {
         onClose={setCategoryCreationModalOpen}
         title="Add Category"
       >
-        <CategoryCreateForm onSubmit={createCategory} />
+        <CategoryCreateForm
+          onSubmit={createCategory}
+          loading={categoryCreationResult.isLoading}
+        />
       </CategoryModal>
     </>
   );

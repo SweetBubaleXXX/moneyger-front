@@ -9,6 +9,7 @@ export type SavingToolbarProps = {
   onCancel?: () => void,
   saveButtonProps?: ButtonProps,
   cancelButtonProps?: ButtonProps,
+  loading?: boolean,
 }
 
 export const SavingToolbar = ({
@@ -16,6 +17,7 @@ export const SavingToolbar = ({
   onCancel,
   saveButtonProps,
   cancelButtonProps,
+  loading,
 }: SavingToolbarProps) => {
   return (
     <BaseToolbar>
@@ -24,6 +26,7 @@ export const SavingToolbar = ({
         <Button
           color="danger"
           startDecorator={<X />}
+          disabled={loading}
           onClick={onCancel}
           {...cancelButtonProps}
         >
@@ -33,6 +36,7 @@ export const SavingToolbar = ({
       <Button
         color="success"
         startDecorator={<Check />}
+        disabled={loading}
         onClick={() => onSave?.()}
         {...saveButtonProps}
       >

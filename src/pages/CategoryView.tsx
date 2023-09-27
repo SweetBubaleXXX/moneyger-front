@@ -104,6 +104,7 @@ export const CategoryView = () => {
         <CardContent>
           <CategoryUpdateForm
             category={category.data}
+            loading={updateResult.isLoading}
             disabled={reorder}
             onEdit={setEditing}
             onSubmit={formData => updateCategory({
@@ -153,6 +154,7 @@ export const CategoryView = () => {
             :
             editing ?
               <SavingToolbar
+                loading={updateResult.isLoading}
                 cancelButtonProps={{
                   form: CATEGORY_UPDATE_FORM_ID,
                   type: 'reset',
