@@ -3,11 +3,7 @@ import {
   Card,
   CardContent,
   Divider,
-  IconButton,
-  Sheet,
-  Typography,
 } from '@mui/joy';
-import { ChevronLeft, Trash } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -24,10 +20,10 @@ import {
 import {
   SubcategoryCreateForm,
 } from '../components/categories/SubcategoryCreateForm';
-import { ConfirmationModal } from '../components/ConfirmationModal';
 import {
   CategoryListToolbar,
 } from '../components/toolbars/CategoryListToolbar';
+import { CategoryViewTopbar } from '../components/toolbars/CategoryViewTopbar';
 import { SavingToolbar } from '../components/toolbars/SavingToolbar';
 import {
   selectCategoryById,
@@ -53,11 +49,6 @@ export const CategoryView = () => {
   const [
     subcategoryCreationModalOpen,
     setSubcategoryCreationModalOpen,
-  ] = useState<boolean>(false);
-
-  const [
-    confirmDeletionOpen,
-    setConfirmDeletionOpen,
   ] = useState<boolean>(false);
 
   const category = useGetAllCategoriesQuery(undefined, {
@@ -115,7 +106,6 @@ export const CategoryView = () => {
 
   useEffect(() => {
     if (deletionResult.isError) {
-      setConfirmDeletionOpen(false);
       toast.error('Failed to delete category');
     }
   }, [deletionResult.isError]);
@@ -129,44 +119,11 @@ export const CategoryView = () => {
 
   return (
     <>
-      <Sheet
-        variant="outlined"
-        sx={{
-          position: 'sticky',
-          top: 0,
-          px: 1,
-          py: 0.5,
-          zIndex: 1100,
-          boxShadow: 'xs',
-        }}
-      >
-        <Box
-          width="100%"
-          maxWidth="sm"
-          mx="auto"
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          gap={1}
-        >
-          <IconButton
-            onClick={() => navigate(-1)}
-          >
-            <ChevronLeft />
-          </IconButton>
-          <Typography level="title-md">
-            Edit Category
-          </Typography>
-          <IconButton
-            onClick={() => setConfirmDeletionOpen(true)}
-            size="sm"
-            variant="plain"
-            color="danger"
-          >
-            <Trash />
-          </IconButton>
-        </Box>
-      </Sheet>
+      <CategoryViewTopbar
+        onGoBack={() => navigate(-1)}
+        onDelete={() => deleteCategory(category.data?.id!)}
+        isDeleting={deletionResult.isLoading}
+      />
       <Card variant="outlined" sx={{
         mx: 'auto',
         my: 3,
@@ -244,16 +201,6 @@ export const CategoryView = () => {
           ...formData,
         })} />
       </CategoryModal>
-      <ConfirmationModal
-        open={confirmDeletionOpen}
-        onCancel={() => setConfirmDeletionOpen(false)}
-        onConfirm={() => deleteCategory(category.data?.id!)}
-        confirmButtonText="Delete"
-        confirmButtonProps={{ color: 'danger' }}
-        loading={deletionResult.isLoading}
-      >
-        Are you sure you want to delete this category?
-      </ConfirmationModal>
     </>
   );
 };
