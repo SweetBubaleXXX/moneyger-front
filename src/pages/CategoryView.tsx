@@ -4,9 +4,11 @@ import {
   CardContent,
   Divider,
   IconButton,
+  Sheet,
   Stack,
+  Typography,
 } from '@mui/joy';
-import { Trash } from 'lucide-react';
+import { Trash, Undo2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -127,27 +129,50 @@ export const CategoryView = () => {
 
   return (
     <>
-      <Card variant="outlined" sx={{
-        mx: 'auto',
-        my: 3,
-        p: 3,
-        pb: 1,
-        maxWidth: 256,
-      }}>
-        <CardContent>
+      <Sheet
+        variant="outlined"
+        sx={{
+          position: 'sticky',
+          top: 0,
+          px: 1,
+          py: 0.5,
+          zIndex: 1100,
+          boxShadow: 'xs',
+        }}
+      >
+        <Box
+          width="100%"
+          maxWidth="sm"
+          mx="auto"
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          gap={1}
+        >
+          <IconButton
+            onClick={() => navigate(-1)}
+          >
+            <Undo2 />
+          </IconButton>
+          <Typography level="title-md">
+            Edit Category
+          </Typography>
           <IconButton
             onClick={() => setConfirmDeletionOpen(true)}
             size="sm"
             variant="plain"
             color="danger"
-            sx={{
-              position: 'absolute',
-              top: 4,
-              right: 4,
-            }}
           >
             <Trash />
           </IconButton>
+        </Box>
+      </Sheet>
+      <Card variant="outlined" sx={{
+        mx: 'auto',
+        my: 3,
+        maxWidth: 256,
+      }}>
+        <CardContent>
           <CategoryUpdateForm
             category={category.data}
             loading={updateResult.isLoading}
