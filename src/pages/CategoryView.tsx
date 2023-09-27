@@ -89,10 +89,10 @@ export const CategoryView = () => {
   }, [updateResult.isError]);
 
   useEffect(() => {
-    if (displayOrderUpdateResult.isError) {
-      toast.error('Failed to save order');
+    if (displayOrderUpdateResult.isSuccess) {
+      toast.success('Saved');
     }
-  }, [displayOrderUpdateResult.isError]);
+  }, [displayOrderUpdateResult.isSuccess]);
 
   return (
     <>

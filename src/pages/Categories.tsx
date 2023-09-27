@@ -54,12 +54,6 @@ export const Categories = () => {
   }, [categoryCreationResult.isSuccess]);
 
   useEffect(() => {
-    if (displayOrderUpdateResult.isError) {
-      toast.error('Failed to save order');
-    }
-  }, [displayOrderUpdateResult.isError]);
-
-  useEffect(() => {
     if (displayOrderUpdateResult.isSuccess) {
       toast.success('Saved');
     }

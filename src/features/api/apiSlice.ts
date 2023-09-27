@@ -138,11 +138,13 @@ export const api = createApi({
       queryFn: async (categories, api, extraOptions, baseQuery) => {
         const requests = [];
         for (const [index, category] of categories.entries()) {
+          const newDisplayOrder = index + 1;
+          if (category.displayOrder === newDisplayOrder) { continue; }
           const query = baseQuery({
             url: API_PATHS.getCategoryById(category.id),
             method: 'PATCH',
             body: decamelizeKeys({
-              displayOrder: index + 1,
+              displayOrder: newDisplayOrder,
             }),
           });
           requests.push(query);
