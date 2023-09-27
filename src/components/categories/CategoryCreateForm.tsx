@@ -15,6 +15,7 @@ import { z } from 'zod';
 
 import { TRANSACTION_TYPES } from '../../constants';
 import { CategoryCreateRequest } from '../../features/api/types';
+import { CategoryFormColorController } from './CategoryFormColorController';
 import { BaseCategorySchema } from './constants';
 
 export const CategoryCreateSchema = BaseCategorySchema.extend({
@@ -80,16 +81,9 @@ export const CategoryCreateForm = ({
             </FormControl>
           }
         />
-        <Controller
-          name="color"
+        <CategoryFormColorController
           control={control}
-          defaultValue="#0000ee"
-          render={({ field }) =>
-            <FormControl error={!!formState.errors.color}>
-              <FormLabel>Color</FormLabel>
-              <Input type="color" variant="plain" {...field} />
-            </FormControl>
-          }
+          error={!!formState.errors.color}
         />
         <Button type="submit" loading={loading}>Add</Button>
       </Stack>

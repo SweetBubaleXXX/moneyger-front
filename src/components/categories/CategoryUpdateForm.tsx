@@ -1,7 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  FormControl,
-  FormLabel,
   Input,
   Stack,
 } from '@mui/joy';
@@ -10,6 +8,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { Category, CategoryUpdateRequest } from '../../features/api/types';
+import { CategoryFormColorController } from './CategoryFormColorController';
 import { BaseCategorySchema, CATEGORY_UPDATE_FORM_ID } from './constants';
 
 export type CategoryUpdateFormProps = {
@@ -38,6 +37,11 @@ export const CategoryUpdateForm = ({
 
   const isDisabled = disabled || loading || !category;
 
+  const onReset = () => {
+    reset();
+    onEdit?.(false);
+  };
+
   useEffect(() => {
     if (category) {
       reset(category);
@@ -57,10 +61,7 @@ export const CategoryUpdateForm = ({
     <form
       id={CATEGORY_UPDATE_FORM_ID}
       onSubmit={handleSubmit(onSubmit)}
-      onReset={() => {
-        reset();
-        onEdit?.(false);
-      }}
+      onReset={onReset}
       onChange={() => onEdit?.(true)}
     >
       <Stack spacing={3} padding={2}>
@@ -76,21 +77,11 @@ export const CategoryUpdateForm = ({
             />
           }
         />
-        <Controller
-          name="color"
+        <CategoryFormColorController
           control={control}
           defaultValue={category?.color}
-          render={({ field }) =>
-            <FormControl error={!!formState.errors.color}>
-              <FormLabel>Color</FormLabel>
-              <Input
-                disabled={isDisabled}
-                type="color"
-                variant="plain"
-                {...field}
-              />
-            </FormControl>
-          }
+          error={!!formState.errors.color}
+          disabled={isDisabled}
         />
       </Stack>
     </form >

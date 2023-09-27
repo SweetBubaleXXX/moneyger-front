@@ -1,8 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,
-  FormControl,
-  FormLabel,
   Input,
   Stack,
 } from '@mui/joy';
@@ -11,7 +9,11 @@ import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { SubcategoryCreateRequest } from '../../features/api/types';
-import { BaseCategorySchema, CATEGORY_UPDATE_FORM_ID } from './constants';
+import { CategoryFormColorController } from './CategoryFormColorController';
+import {
+  BaseCategorySchema,
+  CATEGORY_UPDATE_FORM_ID,
+} from './constants';
 
 export type SubcategoryCreateFormProps = {
   onSubmit: (request: SubcategoryCreateRequest) => void,
@@ -55,20 +57,9 @@ export const SubcategoryCreateForm = ({
             />
           }
         />
-        <Controller
-          name="color"
+        <CategoryFormColorController
           control={control}
-          defaultValue="#0000ee"
-          render={({ field }) =>
-            <FormControl error={!!formState.errors.color}>
-              <FormLabel>Color</FormLabel>
-              <Input
-                type="color"
-                variant="plain"
-                {...field}
-              />
-            </FormControl>
-          }
+          error={!!formState.errors.color}
         />
         <Button type="submit">Add</Button>
       </Stack>
