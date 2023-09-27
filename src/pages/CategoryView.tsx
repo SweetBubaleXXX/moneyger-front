@@ -1,4 +1,18 @@
-import { Box, Card, CardContent, Divider, Stack } from '@mui/joy';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  IconButton,
+  Modal,
+  ModalDialog,
+  Stack,
+} from '@mui/joy';
+import { AlertTriangle, Trash } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -15,6 +29,7 @@ import {
 import {
   SubcategoryCreateForm,
 } from '../components/categories/SubcategoryCreateForm';
+import { ConfirmationModal } from '../components/ConfirmationModal';
 import {
   CategoryListToolbar,
 } from '../components/toolbars/CategoryListToolbar';
@@ -22,6 +37,7 @@ import { SavingToolbar } from '../components/toolbars/SavingToolbar';
 import {
   selectCategoryById,
   useCreateSubcategoryMutation,
+  useDeleteCategoryMutation,
   useGetAllCategoriesQuery,
   useUpdateCategoryMutation,
   useUpdateDisplayOrderMutation,
@@ -43,6 +59,11 @@ export const CategoryView = () => {
     setSubcategoryCreationModalOpen,
   ] = useState<boolean>(false);
 
+  const [
+    confirmDeletionOpen,
+    setConfirmDeletionOpen,
+  ] = useState<boolean>(false);
+
   const category = useGetAllCategoriesQuery(undefined, {
     selectFromResult: result => ({
       data: selectCategoryById(result.data, categoryId),
@@ -61,6 +82,8 @@ export const CategoryView = () => {
   ] = useCreateSubcategoryMutation();
 
   const [updateCategory, updateResult] = useUpdateCategoryMutation();
+
+  const [deleteCategory, deletionResult] = useDeleteCategoryMutation();
 
   useEffect(() => {
     if (subcategoryCreationResult.isError) {
@@ -94,14 +117,43 @@ export const CategoryView = () => {
     }
   }, [displayOrderUpdateResult.isSuccess]);
 
+  useEffect(() => {
+    if (deletionResult.isError) {
+      setConfirmDeletionOpen(false);
+      toast.error('Failed to delete category');
+    }
+  }, [deletionResult.isError]);
+
+  useEffect(() => {
+    if (deletionResult.isSuccess) {
+      toast.success('Category deleted');
+      navigate(-1);
+    }
+  }, [deletionResult.isSuccess, navigate]);
+
   return (
     <>
       <Card variant="outlined" sx={{
         mx: 'auto',
         my: 3,
+        p: 3,
+        pb: 1,
         maxWidth: 256,
       }}>
         <CardContent>
+          <IconButton
+            onClick={() => setConfirmDeletionOpen(true)}
+            size="sm"
+            variant="plain"
+            color="danger"
+            sx={{
+              position: 'absolute',
+              top: 4,
+              right: 4,
+            }}
+          >
+            <Trash />
+          </IconButton>
           <CategoryUpdateForm
             category={category.data}
             loading={updateResult.isLoading}
@@ -181,6 +233,16 @@ export const CategoryView = () => {
           ...formData,
         })} />
       </CategoryModal>
+      <ConfirmationModal
+        open={confirmDeletionOpen}
+        onCancel={() => setConfirmDeletionOpen(false)}
+        onConfirm={() => deleteCategory(category.data?.id!)}
+        confirmButtonText="Delete"
+        confirmButtonProps={{ color: 'danger' }}
+        loading={deletionResult.isLoading}
+      >
+        Are you sure you want to delete this category?
+      </ConfirmationModal>
     </>
   );
 };

@@ -154,6 +154,13 @@ export const api = createApi({
       },
       invalidatesTags: ['Category'],
     }),
+    deleteCategory: builder.mutation<void, number>({
+      query: categoryId => ({
+        url: API_PATHS.getCategoryById(categoryId),
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Category'],
+    }),
     createTransaction: builder
       .mutation<Transaction, TransactionCreateUpdateRequest>({
         query: request => ({
@@ -245,6 +252,7 @@ export const {
   useCreateSubcategoryMutation,
   useUpdateCategoryMutation,
   useUpdateDisplayOrderMutation,
+  useDeleteCategoryMutation,
   useCreateTransactionMutation,
   useUpdateTransactionMutation,
   useDeleteTransactionMutation,
