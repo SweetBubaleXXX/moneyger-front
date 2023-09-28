@@ -2,9 +2,10 @@ import { BoxProps } from '@mui/joy';
 
 export const ROUTER_PATHS = {
   home: '/',
+  login: '/login',
   categories: '/categories',
   categoryById: '/categories/:categoryId',
-  login: '/login',
+  getCategoryById: (categoryId: number) => `/categories/${categoryId}`,
 } as const;
 
 export const CATEGORY_BOTTOM_TOOLBAR_PROPS: BoxProps = {

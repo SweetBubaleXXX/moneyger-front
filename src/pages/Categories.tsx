@@ -23,7 +23,7 @@ import {
   useUpdateDisplayOrderMutation,
 } from '../features/api/apiSlice';
 import { TransactionType } from '../features/api/types';
-import { CATEGORY_BOTTOM_TOOLBAR_PROPS } from './constants';
+import { CATEGORY_BOTTOM_TOOLBAR_PROPS, ROUTER_PATHS } from './constants';
 
 export const Categories = () => {
   const navigate = useNavigate();
@@ -84,7 +84,8 @@ export const Categories = () => {
           setReorder(false);
         }}
         onItemClick={
-          categoryId => !reorder && navigate(`./${categoryId}`)
+          categoryId =>
+            !reorder && navigate(ROUTER_PATHS.getCategoryById(categoryId))
         }
       />
       <Box {...CATEGORY_BOTTOM_TOOLBAR_PROPS}>

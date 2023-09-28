@@ -33,7 +33,7 @@ import {
   useUpdateCategoryMutation,
   useUpdateDisplayOrderMutation,
 } from '../features/api/apiSlice';
-import { CATEGORY_BOTTOM_TOOLBAR_PROPS } from './constants';
+import { CATEGORY_BOTTOM_TOOLBAR_PROPS, ROUTER_PATHS } from './constants';
 
 export type CategoryViewParams = {
   categoryId: string,
@@ -158,7 +158,7 @@ export const CategoryView = () => {
           setReorder(false);
         }}
         onItemClick={
-          subcategoryId => navigate(`/categories/${subcategoryId}`)
+          subcategoryId => navigate(ROUTER_PATHS.getCategoryById(subcategoryId))
         }
       />
       <Box {...CATEGORY_BOTTOM_TOOLBAR_PROPS}>
