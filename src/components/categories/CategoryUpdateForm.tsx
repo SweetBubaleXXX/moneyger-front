@@ -1,14 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  Input,
   Stack,
 } from '@mui/joy';
 import React, { useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { toast } from 'sonner';
+import { useForm } from 'react-hook-form';
 
 import { Category, CategoryUpdateRequest } from '../../features/api/types';
+import { toastCategoryNameError } from '../../helpers/forms';
 import { CategoryFormColorController } from './CategoryFormColorController';
+import { CategoryFormNameController } from './CategoryFormNameController';
 import { BaseCategorySchema, CATEGORY_UPDATE_FORM_ID } from './constants';
 
 export type CategoryUpdateFormProps = {
@@ -48,14 +48,10 @@ export const CategoryUpdateForm = ({
     }
   }, [category, reset]);
 
-  useEffect(() => {
-    const error = formState.errors.name;
-    if (error) {
-      toast.error('Category Name', {
-        description: error.message,
-      });
-    }
-  }, [formState.errors.name]);
+  useEffect(
+    () => toastCategoryNameError(formState.errors.name),
+    [formState.errors.name]
+  );
 
   return (
     <form
@@ -65,17 +61,11 @@ export const CategoryUpdateForm = ({
       onChange={() => onEdit?.(true)}
     >
       <Stack spacing={3} padding={2}>
-        <Controller
-          name="name"
+        <CategoryFormNameController
+          disabled={isDisabled}
           control={control}
           defaultValue={category?.name}
-          render={({ field }) =>
-            <Input
-              disabled={isDisabled}
-              error={!!formState.errors.name}
-              {...field}
-            />
-          }
+          error={!!formState.errors.name}
         />
         <CategoryFormColorController
           control={control}

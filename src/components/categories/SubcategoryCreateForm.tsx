@@ -1,15 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,
-  Input,
   Stack,
 } from '@mui/joy';
 import React, { useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { toast } from 'sonner';
+import { useForm } from 'react-hook-form';
 
 import { SubcategoryCreateRequest } from '../../features/api/types';
+import { toastCategoryNameError } from '../../helpers/forms';
 import { CategoryFormColorController } from './CategoryFormColorController';
+import { CategoryFormNameController } from './CategoryFormNameController';
 import {
   BaseCategorySchema,
   CATEGORY_UPDATE_FORM_ID,
@@ -30,14 +30,10 @@ export const SubcategoryCreateForm = ({
     { resolver: zodResolver(BaseCategorySchema) }
   );
 
-  useEffect(() => {
-    const error = formState.errors.name;
-    if (error) {
-      toast.error('Category Name', {
-        description: error.message,
-      });
-    }
-  }, [formState.errors.name]);
+  useEffect(
+    () => toastCategoryNameError(formState.errors.name),
+    [formState.errors.name]
+  );
 
   return (
     <form
@@ -45,17 +41,9 @@ export const SubcategoryCreateForm = ({
       onSubmit={handleSubmit(onSubmit)}
     >
       <Stack spacing={3} padding={2}>
-        <Controller
-          name="name"
+        <CategoryFormNameController
           control={control}
-          defaultValue=""
-          render={({ field }) =>
-            <Input
-              placeholder="Category Name"
-              error={!!formState.errors.name}
-              {...field}
-            />
-          }
+          error={!!formState.errors.name}
         />
         <CategoryFormColorController
           control={control}

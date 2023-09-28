@@ -3,19 +3,19 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Input,
   Option,
   Select,
   Stack,
 } from '@mui/joy';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { TRANSACTION_TYPES } from '../../constants';
 import { CategoryCreateRequest } from '../../features/api/types';
+import { toastCategoryNameError } from '../../helpers/forms';
 import { CategoryFormColorController } from './CategoryFormColorController';
+import { CategoryFormNameController } from './CategoryFormNameController';
 import { BaseCategorySchema } from './constants';
 
 export const CategoryCreateSchema = BaseCategorySchema.extend({
@@ -39,30 +39,17 @@ export const CategoryCreateForm = ({
     { resolver: zodResolver(CategoryCreateSchema) }
   );
 
-  useEffect(() => {
-    const error = formState.errors.name;
-    if (error) {
-      toast.error('Category Name', {
-        description: error.message,
-      });
-    }
-  }, [formState.errors.name]);
-
+  useEffect(
+    () => toastCategoryNameError(formState.errors.name),
+    [formState.errors.name]
+  );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3} padding={2}>
-        <Controller
-          name="name"
+        <CategoryFormNameController
           control={control}
-          defaultValue=""
-          render={({ field }) =>
-            <Input
-              placeholder="Category Name"
-              error={!!formState.errors.name}
-              {...field}
-            />
-          }
+          error={!!formState.errors.name}
         />
         <Controller
           name="transactionType"
