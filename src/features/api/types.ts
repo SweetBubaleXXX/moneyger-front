@@ -45,6 +45,8 @@ export type Account = {
   defaultCurrency: CurrencyCode,
 }
 
+export type AccountUpdateRequest = Partial<Pick<Account, 'defaultCurrency'>>
+
 export type Category = {
   id: number,
   parentCategory: number | null,
