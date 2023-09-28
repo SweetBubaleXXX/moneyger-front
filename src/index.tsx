@@ -1,7 +1,7 @@
 import './index.css';
 
-import { GlobalStyles } from '@mui/joy';
-import { CssVarsProvider } from '@mui/joy/styles';
+import { CssBaseline, GlobalStyles } from '@mui/joy';
+import { CssVarsProvider, StyledEngineProvider } from '@mui/joy/styles';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -19,21 +19,24 @@ root.render(
   <React.StrictMode>
     <ErrorBoundary fallback={<div>Something went wrong</div>}>
       <Provider store={store}>
-        <CssVarsProvider>
-          <GlobalStyles
-            styles={{
-              '& .lucide': {
-                color: 'var(--Icon-color)',
-                margin: 'var(--Icon-margin)',
-                fontSize: 'var(--Icon-fontSize, 20px)',
-                width: '1em',
-                height: '1em',
-              },
-            }}
-          />
-          {DefaultToaster}
-          <Router />
-        </CssVarsProvider>
+        <StyledEngineProvider injectFirst>
+          <CssVarsProvider defaultMode="system">
+            <CssBaseline />
+            <GlobalStyles
+              styles={{
+                '& .lucide': {
+                  color: 'var(--Icon-color)',
+                  margin: 'var(--Icon-margin)',
+                  fontSize: 'var(--Icon-fontSize, 20px)',
+                  width: '1em',
+                  height: '1em',
+                },
+              }}
+            />
+            {DefaultToaster}
+            <Router />
+          </CssVarsProvider>
+        </StyledEngineProvider>
       </Provider>
     </ErrorBoundary>
   </React.StrictMode>
