@@ -5,6 +5,7 @@ export const API_PATHS = {
   refreshToken: 'accounts/auth/jwt/refresh/',
   registerAccount: 'accounts/auth/users/',
   getAccount: 'accounts/auth/users/me/',
+  exportCsv: 'export/csv/',
   getAllCategories: 'categories/?limit=99999&ordering=display_order',
   createCategory: 'categories/',
   getTransactionsSummary: 'transactions/summary/',

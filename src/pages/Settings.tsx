@@ -1,6 +1,7 @@
 import {
   List,
   ListDivider,
+  Stack,
 } from '@mui/joy';
 import React from 'react';
 
@@ -11,18 +12,23 @@ import { NavigationBar } from '../components/toolbars/NavigationBar';
 export const Settings = () => {
   return (
     <>
-      <List
-        variant="soft"
-        sx={{
-          maxWidth: 'sm',
-          m: 2,
-          borderRadius: 'md',
-        }}
+      <Stack
+        maxWidth="sm"
+        mx="auto"
+        p={2}
+        spacing={2}
       >
-        <CurrencySetting />
-        <ListDivider />
-        <ThemeSetting />
-      </List>
+        <List
+          variant="soft"
+          sx={{
+            borderRadius: 'md',
+          }}
+        >
+          <CurrencySetting />
+          <ListDivider />
+          <ThemeSetting />
+        </List>
+      </Stack>
       <NavigationBar />
     </>
   );
