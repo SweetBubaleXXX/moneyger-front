@@ -14,6 +14,7 @@ import { REORDER_FORM_ID } from '../components/categories/constants';
 import {
   CategoryListToolbar,
 } from '../components/toolbars/CategoryListToolbar';
+import { NavigationBar } from '../components/toolbars/NavigationBar';
 import { SavingToolbar } from '../components/toolbars/SavingToolbar';
 import {
   TransactionTypeToggle,
@@ -23,7 +24,11 @@ import {
   useUpdateDisplayOrderMutation,
 } from '../features/api/apiSlice';
 import { TransactionType } from '../features/api/types';
-import { CATEGORY_BOTTOM_TOOLBAR_PROPS, ROUTER_PATHS } from './constants';
+import {
+  CATEGORY_BOTTOM_TOOLBAR_PROPS,
+  CATEGORY_LIST_OFFSET_FOR_TOOLBAR,
+  ROUTER_PATHS,
+} from './constants';
 
 export const Categories = () => {
   const navigate = useNavigate();
@@ -87,6 +92,7 @@ export const Categories = () => {
           categoryId =>
             !reorder && navigate(ROUTER_PATHS.getCategoryById(categoryId))
         }
+        sx={CATEGORY_LIST_OFFSET_FOR_TOOLBAR}
       />
       <Box {...CATEGORY_BOTTOM_TOOLBAR_PROPS}>
         {
@@ -105,6 +111,7 @@ export const Categories = () => {
             />
         }
       </Box>
+      <NavigationBar />
       <CategoryModal
         open={categoryCreationModalOpen}
         onClose={setCategoryCreationModalOpen}
