@@ -26,7 +26,7 @@ export const CategorySelector = ({
   return (
     <AccordionGroup>
       {
-        primaryCategories?.sort((a, b) => b.displayOrder - a.displayOrder).map(
+        primaryCategories?.sort((a, b) => a.displayOrder - b.displayOrder).map(
           category =>
             <CategoryAccordion
               key={category.id}
