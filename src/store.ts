@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 import { api } from './features/api/apiSlice';
-import { authSlice } from './features/api/auth';
+import { authSlice } from './features/auth/authSlice';
 
 export const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',

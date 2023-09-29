@@ -15,7 +15,7 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { useLoginMutation } from '../../features/api/apiSlice';
-import { setAccessToken } from '../../features/api/auth';
+import { setAccessToken } from '../../features/auth/authSlice';
 import { LoginRequest } from '../../features/api/types';
 
 export const LoginSchema = z.object({

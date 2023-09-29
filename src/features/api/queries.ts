@@ -5,20 +5,20 @@ import {
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/dist/query';
 import { Mutex } from 'async-mutex';
-import Cookies from 'js-cookie';
 
-import { RootState } from '../../store';
-import { setAccessToken } from './auth';
+import { setAccessToken } from '../auth/authSlice';
+import { getAuthHeaders } from '../auth/headers';
 import { API_PATHS, EXCLUDE_FROM_REAUTH } from './constants';
+import { AuthState } from './types';
 
 
 export const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_API_URL,
   prepareHeaders: (headers, { getState }) => {
-    const csrfToken = Cookies.get('csrftoken');
-    csrfToken && headers.set('x-csrftoken', csrfToken);
-    const token = (getState() as RootState).auth.accessToken;
-    token && headers.set('authorization', `Bearer ${token}`);
+    const authHeaders = getAuthHeaders(getState() as AuthState);
+    for (const [header, value] of Object.entries(authHeaders)) {
+      headers.set(header, value);
+    }
     return headers;
   },
   credentials: 'include',
