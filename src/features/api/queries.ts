@@ -16,7 +16,7 @@ export const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_API_URL,
   prepareHeaders: (headers, { getState }) => {
     const state = getState() as RootState;
-    const authHeaders = getAuthHeaders(state.auth);
+    const authHeaders = state.auth.loggedIn ? getAuthHeaders(state.auth) : {};
     for (const [header, value] of Object.entries(authHeaders)) {
       headers.set(header, value);
     }
@@ -32,8 +32,9 @@ export const baseQueryWithReauth: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   await reauthMutex.waitForUnlock();
   let result = await baseQuery(args, api, extraOptions);
+  const state = api.getState() as RootState;
   const url = typeof args === 'string' ? args : args.url;
-  if (EXCLUDE_FROM_REAUTH.includes(url) || result.error?.status !== 401) {
+  if (!state.auth.loggedIn || EXCLUDE_FROM_REAUTH.includes(url) || result.error?.status !== 401) {
     return result;
   }
   if (!reauthMutex.isLocked()) {
