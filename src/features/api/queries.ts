@@ -6,6 +6,7 @@ import {
 } from '@reduxjs/toolkit/dist/query';
 import { Mutex } from 'async-mutex';
 
+import { ROUTER_PATHS } from '../../pages/constants';
 import { RootState } from '../../store';
 import { setAccessToken } from '../auth/authSlice';
 import { getAuthHeaders } from '../auth/headers';
@@ -45,7 +46,9 @@ export const baseQueryWithReauth: BaseQueryFn<
           method: 'POST',
         }, api, extraOptions
       );
-      if (refreshResult.data) {
+      if (refreshResult.error) {
+        window.location.href = ROUTER_PATHS.login;
+      } else if (refreshResult.data) {
         const {
           access: accessToken,
         } = refreshResult.data as { access: string; };

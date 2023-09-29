@@ -7,12 +7,12 @@ import {
 import React from 'react';
 
 import { CurrencySetting } from '../components/settings/CurrencySetting';
+import { LogoutButton } from '../components/settings/LogoutButton';
 import { ThemeSetting } from '../components/settings/ThemeSetting';
 import { NavigationBar } from '../components/toolbars/NavigationBar';
 import { API_PATHS } from '../features/api/constants';
 import { CSV_EXPORT_FILENAME } from '../features/export/constants';
 import { downloadFile } from '../features/export/downloadFile';
-import { LogoutButton } from '../components/settings/LogoutButton';
 
 export const Settings = () => {
   return (
