@@ -12,14 +12,13 @@ export const authSlice = createSlice({
       return {
         ...state,
         accessToken: payload,
-        loggedIn: true,
       };
     },
-    logout: () => initialState,
+    clearToken: () => initialState,
   },
 });
 
 export const {
   setAccessToken,
-  logout,
+  clearToken,
 } = authSlice.actions;

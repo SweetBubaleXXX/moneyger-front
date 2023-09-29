@@ -236,6 +236,12 @@ export const api = createApi({
         body,
       }),
     }),
+    logout: builder.mutation<void, void>({
+      query: () => ({
+        url: API_PATHS.logout,
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
@@ -270,4 +276,5 @@ export const {
   useDeleteTransactionMutation,
   useLoginMutation,
   useRegisterMutation,
+  useLogoutMutation,
 } = api;

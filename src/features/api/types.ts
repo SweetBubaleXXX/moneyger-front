@@ -2,7 +2,6 @@ import { CURRENCY_CODES } from '../../constants';
 
 export type AuthState = {
   accessToken?: string,
-  loggedIn?: boolean,
 }
 
 export type PaginatedResponse<T> = {

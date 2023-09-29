@@ -3,6 +3,7 @@ import { getPaginationQuery } from '../../helpers/pagination';
 export const API_PATHS = {
   createToken: 'accounts/auth/jwt/create/',
   refreshToken: 'accounts/auth/jwt/refresh/',
+  logout: 'accounts/auth/jwt/logout/',
   registerAccount: 'accounts/auth/users/',
   getAccount: 'accounts/auth/users/me/',
   exportCsv: 'export/csv/',
@@ -25,6 +26,7 @@ export const API_PATHS = {
 
 export const EXCLUDE_FROM_REAUTH: readonly string[] = [
   API_PATHS.createToken,
+  API_PATHS.logout,
 ] as const;
 
 export const PAGE_SIZE = 100;
