@@ -7,6 +7,7 @@ import {
 import React from 'react';
 
 import { CurrencySetting } from '../components/settings/CurrencySetting';
+import { ExportJsonButton } from '../components/settings/ExportJsonButton';
 import { LogoutButton } from '../components/settings/LogoutButton';
 import { ThemeSetting } from '../components/settings/ThemeSetting';
 import { NavigationBar } from '../components/toolbars/NavigationBar';
@@ -40,6 +41,7 @@ export const Settings = () => {
         >
           Export CSV
         </Button>
+        <ExportJsonButton />
         <LogoutButton />
       </Stack>
       <NavigationBar />

@@ -7,6 +7,7 @@ export const API_PATHS = {
   registerAccount: 'accounts/auth/users/',
   getAccount: 'accounts/auth/users/me/',
   exportCsv: 'export/csv/',
+  exportJson: 'export/json/',
   getAllCategories: 'categories/?limit=99999&ordering=display_order',
   createCategory: 'categories/',
   getTransactionsSummary: 'transactions/summary/',
