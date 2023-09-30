@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import { AccountActivation } from './AccountActivation';
 import { Categories } from './Categories';
 import { CategoryView } from './CategoryView';
 import { ROUTER_PATHS } from './constants';
@@ -14,6 +15,10 @@ export const Router = () => {
       <Routes>
         <Route path={ROUTER_PATHS.home} Component={Home} />
         <Route path={ROUTER_PATHS.login} Component={Login} />
+        <Route
+          path={ROUTER_PATHS.activateAccount}
+          Component={AccountActivation}
+        />
         <Route path={ROUTER_PATHS.settings} Component={Settings} />
         <Route path={ROUTER_PATHS.categories} Component={Categories} />
         <Route path={ROUTER_PATHS.categoryById} Component={CategoryView} />

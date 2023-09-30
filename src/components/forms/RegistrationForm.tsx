@@ -40,7 +40,7 @@ export const RegistrationForm = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success('Your account has been successfully registered');
+      toast.success('A verification link has been sent to your email account');
       resetForm();
     }
   }, [isSuccess, resetForm]);

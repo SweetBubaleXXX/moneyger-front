@@ -13,6 +13,7 @@ import { API_PATHS } from './constants';
 import { baseQueryWithReauth } from './queries';
 import {
   Account,
+  AccountActivationRequest,
   AccountUpdateRequest,
   Category,
   CategoryCreateRequest,
@@ -237,6 +238,13 @@ export const api = createApi({
         body,
       }),
     }),
+    activateAccount: builder.mutation<void, AccountActivationRequest>({
+      query: request => ({
+        url: API_PATHS.activateAccount,
+        method: 'POST',
+        body: decamelizeKeys(request),
+      }),
+    }),
     logout: builder.mutation<void, void>({
       query: () => ({
         url: API_PATHS.logout,
@@ -282,6 +290,7 @@ export const {
   useCreateTransactionMutation,
   useUpdateTransactionMutation,
   useDeleteTransactionMutation,
+  useActivateAccountMutation,
   useLoginMutation,
   useRegisterMutation,
   useLogoutMutation,
