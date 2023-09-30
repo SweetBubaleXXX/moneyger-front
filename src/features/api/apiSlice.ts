@@ -24,6 +24,7 @@ import {
   PaginatedTransactionRequest,
   RegistrationRequest,
   RegistrationResponse,
+  SetPasswordRequest,
   SubcategoryCreateRequest,
   Summary,
   Transaction,
@@ -242,6 +243,13 @@ export const api = createApi({
         method: 'POST',
       }),
     }),
+    changePassword: builder.mutation<void, SetPasswordRequest>({
+      query: request => ({
+        url: API_PATHS.setPassword,
+        method: 'POST',
+        body: decamelizeKeys(request),
+      }),
+    }),
   }),
 });
 
@@ -277,4 +285,5 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useLogoutMutation,
+  useChangePasswordMutation,
 } = api;

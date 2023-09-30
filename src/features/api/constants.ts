@@ -4,6 +4,7 @@ export const API_PATHS = {
   createToken: 'accounts/auth/jwt/create/',
   refreshToken: 'accounts/auth/jwt/refresh/',
   logout: 'accounts/auth/jwt/logout/',
+  setPassword: 'accounts/auth/users/set_password/',
   registerAccount: 'accounts/auth/users/',
   getAccount: 'accounts/auth/users/me/',
   exportCsv: 'export/csv/',

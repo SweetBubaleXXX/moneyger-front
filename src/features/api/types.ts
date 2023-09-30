@@ -47,6 +47,11 @@ export type Account = {
 
 export type AccountUpdateRequest = Partial<Pick<Account, 'defaultCurrency'>>
 
+export type SetPasswordRequest = {
+  currentPassword: string,
+  newPassword: string,
+}
+
 export type Category = {
   id: number,
   parentCategory: number | null,

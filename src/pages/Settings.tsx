@@ -1,19 +1,20 @@
 import {
-  Button,
   List,
   ListDivider,
+  ListSubheader,
   Stack,
 } from '@mui/joy';
 import React from 'react';
 
+import {
+  ChangePasswordSetting,
+} from '../components/settings/ChangePasswordSetting';
 import { CurrencySetting } from '../components/settings/CurrencySetting';
+import { ExportCsvButton } from '../components/settings/ExportCsvButton';
 import { ExportJsonButton } from '../components/settings/ExportJsonButton';
 import { LogoutButton } from '../components/settings/LogoutButton';
 import { ThemeSetting } from '../components/settings/ThemeSetting';
 import { NavigationBar } from '../components/toolbars/NavigationBar';
-import { API_PATHS } from '../features/api/constants';
-import { CSV_EXPORT_FILENAME } from '../features/export/constants';
-import { downloadFile } from '../features/export/downloadFile';
 
 export const Settings = () => {
   return (
@@ -30,17 +31,15 @@ export const Settings = () => {
             borderRadius: 'md',
           }}
         >
-          <CurrencySetting />
-          <ListDivider />
+          <ListSubheader>Application</ListSubheader>
           <ThemeSetting />
+          <ListDivider />
+          <ListSubheader>Account</ListSubheader>
+          <CurrencySetting />
+          <ListDivider inset="gutter" />
+          <ChangePasswordSetting />
         </List>
-        <Button
-          variant="soft"
-          color="neutral"
-          onClick={() => downloadFile(API_PATHS.exportCsv, CSV_EXPORT_FILENAME)}
-        >
-          Export CSV
-        </Button>
+        <ExportCsvButton />
         <ExportJsonButton />
         <LogoutButton />
       </Stack>

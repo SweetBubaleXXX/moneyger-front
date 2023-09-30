@@ -10,19 +10,10 @@ import {
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { z } from 'zod';
 
 import { useRegisterMutation } from '../../features/api/apiSlice';
+import { RegistrationSchema } from '../../features/api/schemas';
 import { RegistrationRequest } from '../../features/api/types';
-import { LoginSchema } from './LoginForm';
-
-export const RegistrationSchema = LoginSchema.extend({
-  email: z.string().email(),
-  confirmPassword: z.string(),
-}).refine(data => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ['confirmPassword'],
-});
 
 export const RegistrationForm = () => {
   const {
