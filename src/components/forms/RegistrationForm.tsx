@@ -96,7 +96,7 @@ export const RegistrationForm = () => {
           defaultValue=""
           render={({ field }) => (
             <FormControl error={!!errors.confirmPassword}>
-              <FormLabel>Confirm password</FormLabel>
+              <FormLabel>Confirm Password</FormLabel>
               <Input type="password" {...field} />
               <FormHelperText>
                 {errors.confirmPassword?.message}

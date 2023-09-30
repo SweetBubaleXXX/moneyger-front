@@ -5,12 +5,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-import {
-  CategoryCreateForm,
-} from '../components/categories/CategoryCreateForm';
 import { CategoryList } from '../components/categories/CategoryList';
 import { CategoryModal } from '../components/categories/CategoryModal';
 import { REORDER_FORM_ID } from '../components/categories/constants';
+import {
+  CategoryCreateForm,
+} from '../components/forms/CategoryCreateForm';
 import {
   CategoryListToolbar,
 } from '../components/toolbars/CategoryListToolbar';

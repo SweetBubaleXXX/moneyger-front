@@ -9,8 +9,12 @@ import { useForm } from 'react-hook-form';
 import { BaseCategorySchema } from '../../features/api/schemas';
 import { SubcategoryCreateRequest } from '../../features/api/types';
 import { toastCategoryNameError } from '../../helpers/forms';
-import { CategoryFormColorController } from './CategoryFormColorController';
-import { CategoryFormNameController } from './CategoryFormNameController';
+import {
+  CategoryFormColorController,
+} from '../forms/CategoryFormColorController';
+import {
+  CategoryFormNameController,
+} from '../forms/CategoryFormNameController';
 import { CATEGORY_UPDATE_FORM_ID } from './constants';
 
 export type SubcategoryCreateFormProps = {

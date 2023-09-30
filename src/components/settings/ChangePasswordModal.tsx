@@ -7,7 +7,7 @@ import {
 } from '@mui/joy';
 import React from 'react';
 
-import { ChagnePasswordForm } from './ChangePasswordForm';
+import { ChangePasswordForm } from '../forms/ChangePasswordForm';
 
 export type ChangePasswordModalProps = {
   open: boolean,
@@ -24,7 +24,7 @@ export const ChangePasswordModal = ({
         <ModalClose />
         <DialogTitle>Change Password</DialogTitle>
         <DialogContent>
-          <ChagnePasswordForm />
+          <ChangePasswordForm onSuccess={onClose} />
         </DialogContent>
       </ModalDialog>
     </Modal>

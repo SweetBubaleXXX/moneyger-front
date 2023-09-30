@@ -3,6 +3,11 @@ import { z } from 'zod';
 
 import { CURRENCY_CODES, TRANSACTION_TYPES } from '../../constants';
 
+const CONFIRM_PASSWORD_REFINE_OPTIONS = {
+  message: "Passwords don't match",
+  path: ['confirmPassword'],
+};
+
 export const PasswordField = z.string()
   .min(8, { message: 'Password must contain at least 8 characters' });
 
@@ -17,15 +22,19 @@ export const LoginSchema = z.object({
 export const RegistrationSchema = LoginSchema.extend({
   email: z.string().email(),
   confirmPassword: z.string(),
-}).refine(data => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ['confirmPassword'],
-});
+}).refine(
+  data => data.password === data.confirmPassword,
+  CONFIRM_PASSWORD_REFINE_OPTIONS
+);
 
 export const ChangePasswordSchema = z.object({
   currentPassword: PasswordField,
   newPassword: PasswordField,
-});
+  confirmPassword: z.string(),
+}).refine(
+  data => data.newPassword === data.confirmPassword,
+  CONFIRM_PASSWORD_REFINE_OPTIONS
+);
 
 export const BaseCategorySchema = z.object({
   name: z.string().max(64).nonempty(),

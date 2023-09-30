@@ -1,8 +1,8 @@
 import { Card, Sheet, Tab, TabList, TabPanel, Tabs } from '@mui/joy';
 import React from 'react';
 
-import { LoginForm } from '../components/login/LoginForm';
-import { RegistrationForm } from '../components/login/RegistrationForm';
+import { LoginForm } from '../components/forms/LoginForm';
+import { RegistrationForm } from '../components/forms/RegistrationForm';
 
 export const Login = () => {
   return (

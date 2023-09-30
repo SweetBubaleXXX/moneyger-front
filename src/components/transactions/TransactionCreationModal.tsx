@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 
 import { useCreateTransactionMutation } from '../../features/api/apiSlice';
 import { Transaction } from '../../features/api/types';
-import { TransactionForm } from './TransactionForm';
+import { TransactionForm } from '../forms/TransactionForm';
 import {
   BaseTransactionModalProps,
   TransactionModal,

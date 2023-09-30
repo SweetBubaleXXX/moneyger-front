@@ -2,8 +2,8 @@ import { FormControl, FormLabel, Input } from '@mui/joy';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 
-import { DEFAULT_CATEGORY_COLOR } from './constants';
-import { FormControllerProps } from './types';
+import { DEFAULT_CATEGORY_COLOR } from '../categories/constants';
+import { FormControllerProps } from '../categories/types';
 
 export const CategoryFormColorController = ({
   control,
