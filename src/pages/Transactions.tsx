@@ -9,7 +9,10 @@ import { TransactionList } from '../components/transactions/TransactionList';
 export const Transactions = () => {
   return (
     <>
-      <TransactionListTopbar />
+      <TransactionListTopbar
+        params={{}}
+        onUpdateParams={() => { }}
+      />
       <TransactionList
         filters={{}}
         sx={{
