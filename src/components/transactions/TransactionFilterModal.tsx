@@ -49,11 +49,6 @@ export const TranasctionFilterModal = ({
     dateRangePickerOpen, setDateRangePickerOpen,
   ] = useState<boolean>(false);
 
-  const updateFilters = (updatedFields: Filters) => setFilters({
-    ...filters,
-    ...updatedFields,
-  });
-
   return (
     <Modal open={open} onClose={() => onClose(filters)}>
       <ModalDialog layout="center">
@@ -72,7 +67,8 @@ export const TranasctionFilterModal = ({
               <FormLabel>Currency</FormLabel>
               <Select
                 value={filters.currency ?? ''}
-                onChange={(_, value) => updateFilters({
+                onChange={(_, value) => setFilters({
+                  ...filters,
                   currency: value ?? undefined,
                 })}
               >
@@ -100,7 +96,8 @@ export const TranasctionFilterModal = ({
                   category ?
                     category.transactionType : filters.transactionType ?? ''
                 }
-                onChange={(_, value) => updateFilters({
+                onChange={(_, value) => setFilters({
+                  ...filters,
                   transactionType: value ?? undefined,
                 })}
               >
@@ -138,7 +135,7 @@ export const TranasctionFilterModal = ({
             }}
             onClose={period => {
               setDateRangePickerOpen(false);
-              updateFilters({
+              setFilters({
                 transactionTimeAfter: period.from.toISOString(),
                 transactionTimeBefore: period.to.toISOString(),
               });
@@ -148,7 +145,8 @@ export const TranasctionFilterModal = ({
             onClose={() => setCategorySelectorOpen(false)}
             onChange={value => {
               setCategory(value);
-              updateFilters({
+              setFilters({
+                ...filters,
                 category: value.id,
                 transactionType: value.transactionType,
               });

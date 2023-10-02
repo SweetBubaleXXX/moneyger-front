@@ -8,7 +8,10 @@ import {
   useGetTransactionsQuery,
 } from '../../features/api/apiSlice';
 import { PAGE_SIZE } from '../../features/api/constants';
-import { TransactionRequestParams } from '../../features/api/types';
+import {
+  PaginatedTransactionRequest,
+  TransactionRequestParams,
+} from '../../features/api/types';
 import { TransactionWidget } from './TransactionWidget';
 
 export type TransactionListProps = {
@@ -29,15 +32,17 @@ export const TransactionList = ({
     setTransactionDuplicateModalOpen,
   ] = useState<boolean>(false);
 
-  const getTransactionsRequestParams = {
+  const [
+    requestParams, setRequestParams,
+  ] = useState<PaginatedTransactionRequest>({
     page,
     params: filters,
-  };
+  });
 
   const resetCache = reset || transactionDuplicateModalOpen;
 
   const transactions = useGetTransactionsQuery(
-    resetCache ? skipToken : getTransactionsRequestParams
+    resetCache ? skipToken : requestParams
   );
 
   const totalPages = useMemo(
@@ -55,7 +60,18 @@ export const TransactionList = ({
 
   useEffect(() => {
     setPage(1);
+    setRequestParams({
+      page: 1,
+      params: filters,
+    });
   }, [filters]);
+
+  useEffect(() => {
+    setRequestParams({
+      page,
+      params: requestParams.params,
+    });
+  }, [page, requestParams.params]);
 
   return (
     <Stack spacing={2} padding={2} marginX="auto" sx={{
@@ -71,7 +87,7 @@ export const TransactionList = ({
                 key={index}
                 transaction={transaction}
                 isLoading={transactions.isFetching}
-                requestParams={getTransactionsRequestParams}
+                requestParams={requestParams}
                 onDuplicateModalOpen={setTransactionDuplicateModalOpen}
               />
           )

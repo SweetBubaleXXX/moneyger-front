@@ -1,20 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { NavigationBar } from '../components/toolbars/NavigationBar';
 import {
   TransactionListTopbar,
 } from '../components/toolbars/TransactionListTopbar';
 import { TransactionList } from '../components/transactions/TransactionList';
+import { TransactionRequestParams } from '../features/api/types';
 
 export const Transactions = () => {
+  const [
+    requestParams, setRequestParams,
+  ] = useState<TransactionRequestParams>({});
+
   return (
     <>
       <TransactionListTopbar
-        params={{}}
-        onUpdateParams={() => { }}
+        initialParams={requestParams}
+        onUpdateParams={setRequestParams}
       />
       <TransactionList
-        filters={{}}
+        filters={requestParams}
         sx={{
           marginBottom: '50px',
         }}
