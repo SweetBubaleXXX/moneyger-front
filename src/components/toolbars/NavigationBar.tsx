@@ -31,9 +31,11 @@ export const NavigationBar = ({
             <Home />
           </IconButton>
         </Link>
-        <IconButton>
-          <ScrollText />
-        </IconButton>
+        <Link to={ROUTER_PATHS.transactions}>
+          <IconButton>
+            <ScrollText />
+          </IconButton>
+        </Link>
         {centerSpacing && <Box width={centerSpacing} />}
         <Link to={ROUTER_PATHS.categories}>
           <IconButton>

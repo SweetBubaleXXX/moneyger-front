@@ -8,6 +8,7 @@ import { ROUTER_PATHS } from './constants';
 import { Home } from './Home';
 import { Login } from './Login';
 import { Settings } from './Settings';
+import { Transactions } from './Transactions';
 
 export const Router = () => {
   return (
@@ -22,6 +23,7 @@ export const Router = () => {
         <Route path={ROUTER_PATHS.settings} Component={Settings} />
         <Route path={ROUTER_PATHS.categories} Component={Categories} />
         <Route path={ROUTER_PATHS.categoryById} Component={CategoryView} />
+        <Route path={ROUTER_PATHS.transactions} Component={Transactions} />
       </Routes>
     </BrowserRouter>
   );
