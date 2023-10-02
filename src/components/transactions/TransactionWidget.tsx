@@ -144,7 +144,7 @@ export const TransactionWidget = ({
       />
       <TransactionCreationModal
         open={transactionDuplicateModalOpen}
-        onClose={() => () => setDuplicateModalOpen(false)}
+        onClose={setDuplicateModalOpen}
         initialValue={transaction}
       />
       <Menu placement="bottom-start">
