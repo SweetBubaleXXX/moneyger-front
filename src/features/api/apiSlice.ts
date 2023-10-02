@@ -172,7 +172,7 @@ export const api = createApi({
         url: API_PATHS.getCategoryById(categoryId),
         method: 'DELETE',
       }),
-      invalidatesTags: ['Category'],
+      invalidatesTags: ['Category', 'Transaction'],
     }),
     createTransaction: builder
       .mutation<Transaction, TransactionCreateUpdateRequest>({
