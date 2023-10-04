@@ -2,6 +2,7 @@ import {
   IconButton,
   Input,
 } from '@mui/joy';
+import { useDebounce } from '@uidotdev/usehooks';
 import {
   ArrowDownWideNarrow,
   ArrowUpWideNarrow,
@@ -13,8 +14,12 @@ import React, { useEffect, useState } from 'react';
 import {
   TransactionRequestParams,
 } from '../../features/api/types';
-import { TranasctionFilterModal } from '../transactions/TransactionFilterModal';
+import {
+  Filters,
+  TranasctionFilterModal,
+} from '../transactions/TransactionFilterModal';
 import { BaseTopbar } from './BaseTopbar';
+import { SEARCH_DEBOUNCE_DELAY } from './constants';
 
 export type TransactionListTopbarProps = {
   initialParams: TransactionRequestParams,
@@ -26,23 +31,18 @@ export const TransactionListTopbar = ({
   onUpdateParams,
 }: TransactionListTopbarProps) => {
   const [filtersModalOpen, setFiltersModalOpen] = useState<boolean>(false);
+  const [filters, setFilters] = useState<Filters>(initialParams);
   const [orderingAscending, setOrderingAscending] = useState<boolean>(false);
-
-  const [
-    requestParams, setRequestParams,
-  ] = useState<TransactionRequestParams>(initialParams);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const debouncedSearchTerm = useDebounce(searchTerm, SEARCH_DEBOUNCE_DELAY);
 
   useEffect(() => {
-    setRequestParams({
-      ...requestParams,
+    onUpdateParams({
+      ...filters,
+      search: debouncedSearchTerm,
       ordering: orderingAscending ? 'transaction_time' : '-transaction_time',
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [orderingAscending]);
-
-  useEffect(() => {
-    onUpdateParams(requestParams);
-  }, [onUpdateParams, requestParams]);
+  }, [onUpdateParams, filters, orderingAscending, debouncedSearchTerm]);
 
   return (
     <>
@@ -54,6 +54,7 @@ export const TransactionListTopbar = ({
           variant="soft"
           startDecorator={<Search />}
           placeholder="Search"
+          onChange={e => setSearchTerm(e.target.value.toLowerCase())}
           sx={{
             '--Input-minHeight': '32px',
           }}
@@ -66,10 +67,7 @@ export const TransactionListTopbar = ({
         open={filtersModalOpen}
         onClose={filters => {
           setFiltersModalOpen(false);
-          setRequestParams({
-            ...filters,
-            ordering: requestParams.ordering,
-          });
+          setFilters(filters);
         }}
       />
     </>
