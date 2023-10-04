@@ -39,7 +39,7 @@ export const DateRangeModal = ({
   initialValue,
   onClose,
 }: DateRangeModalProps) => {
-  const [period, setPeriod] = useState<Period>(initialValue);
+  const [period, setPeriod] = useState<Period>(adjustPeriod(initialValue));
   const [allTime, setAllTime] = useState<boolean>(false);
 
   const closeEvent = () => {
@@ -48,7 +48,7 @@ export const DateRangeModal = ({
   };
 
   useEffect(() => {
-    setPeriod(initialValue);
+    setPeriod(adjustPeriod(initialValue));
   }, [initialValue]);
 
   useEffect(() => {
@@ -115,3 +115,8 @@ const parseDate = (value: string) => {
   }
   return parsedValue.toDate();
 };
+
+const adjustPeriod = (period: Period): Period => ({
+  from: moment(period.from).startOf('day').toDate(),
+  to: moment(period.to).endOf('day').toDate(),
+});

@@ -6,7 +6,6 @@ import {
   Stack,
   Typography,
 } from '@mui/joy';
-import { SxProps } from '@mui/system';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import moment from 'moment';
 import React, { useState } from 'react';
@@ -17,7 +16,6 @@ import { Period, PeriodLabel } from './types';
 export type PeriodSelectorProps = {
   value: Period,
   onChange: (val: Period) => void,
-  sx?: SxProps,
 }
 
 const createPeriodFromLabel = (label: Exclude<PeriodLabel, 'custom'>) => {
@@ -36,7 +34,6 @@ export const DEFAULT_PERIOD: Period = createPeriodFromLabel(
 export const PeriodSelector = ({
   value,
   onChange,
-  sx,
 }: PeriodSelectorProps) => {
   const [
     selectedPeriod, setSelectedPeriod,
