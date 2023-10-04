@@ -64,6 +64,25 @@ export const TranasctionFilterModal = ({
               {category?.name || 'Choose category'}
             </Button>
             <FormControl>
+              <FormLabel>Transaction Type</FormLabel>
+              <Select
+                disabled={!!category}
+                value={
+                  category ?
+                    category.transactionType : filters.transactionType ?? ''
+                }
+                onChange={(_, value) => setFilters({
+                  ...filters,
+                  transactionType: value ?? undefined,
+                })}
+              >
+                <Option value="">Any</Option>
+                <Divider />
+                <Option value="OUT">OUTCOME</Option>
+                <Option value="IN">INCOME</Option>
+              </Select>
+            </FormControl>
+            <FormControl>
               <FormLabel>Currency</FormLabel>
               <Select
                 value={filters.currency ?? ''}
@@ -88,31 +107,16 @@ export const TranasctionFilterModal = ({
                 </>
               </Select>
             </FormControl>
-            <FormControl>
-              <FormLabel>Transaction Type</FormLabel>
-              <Select
-                disabled={!!category}
-                value={
-                  category ?
-                    category.transactionType : filters.transactionType ?? ''
-                }
-                onChange={(_, value) => setFilters({
-                  ...filters,
-                  transactionType: value ?? undefined,
-                })}
-              >
-                <Option value="">Any</Option>
-                <Divider />
-                <Option value="OUT">OUTCOME</Option>
-                <Option value="IN">INCOME</Option>
-              </Select>
-            </FormControl>
             <Button
               variant="soft"
               color="neutral"
               onClick={() => setDateRangePickerOpen(true)}
             >
-              Select Period
+              {
+                filters.transactionTimeBefore || filters.transactionTimeAfter ?
+                  'Adjust ' : 'Select '
+              }
+              Period
             </Button>
             <Button
               variant="outlined"
@@ -136,6 +140,7 @@ export const TranasctionFilterModal = ({
             onClose={period => {
               setDateRangePickerOpen(false);
               setFilters({
+                ...filters,
                 transactionTimeAfter: period.from.toISOString(),
                 transactionTimeBefore: period.to.toISOString(),
               });
