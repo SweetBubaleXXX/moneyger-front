@@ -25,8 +25,6 @@ export const TransactionList = ({
   reset,
   sx,
 }: TransactionListProps) => {
-  const [page, setPage] = useState<number>(1);
-
   const [
     transactionDuplicateModalOpen,
     setTransactionDuplicateModalOpen,
@@ -35,7 +33,7 @@ export const TransactionList = ({
   const [
     requestParams, setRequestParams,
   ] = useState<PaginatedTransactionRequest>({
-    page,
+    page: 1,
     params: filters,
   });
 
@@ -50,28 +48,14 @@ export const TransactionList = ({
     [transactions.data?.count]
   );
 
-  const showLoadMoreButton = totalPages > page;
+  const showLoadMoreButton = totalPages > (requestParams.page ?? 1);
 
   useEffect(() => {
-    if (resetCache) {
-      setPage(1);
-    }
-  }, [resetCache]);
-
-  useEffect(() => {
-    setPage(1);
     setRequestParams({
       page: 1,
       params: filters,
     });
   }, [filters]);
-
-  useEffect(() => {
-    setRequestParams({
-      page,
-      params: requestParams.params,
-    });
-  }, [page, requestParams.params]);
 
   return (
     <Stack spacing={2} padding={2} marginX="auto" sx={{
@@ -96,7 +80,10 @@ export const TransactionList = ({
         showLoadMoreButton && <Button
           variant="outlined"
           loading={transactions.isFetching}
-          onClick={() => setPage(page + 1)}
+          onClick={() => setRequestParams({
+            page: requestParams.page && requestParams.page + 1,
+            params: requestParams.params,
+          })}
         >
           Load More
         </Button>
