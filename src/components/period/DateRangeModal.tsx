@@ -1,4 +1,7 @@
 import {
+  Box,
+  Checkbox,
+  FormControl,
   FormLabel,
   Modal,
   Sheet,
@@ -37,39 +40,68 @@ export const DateRangeModal = ({
   onClose,
 }: DateRangeModalProps) => {
   const [period, setPeriod] = useState<Period>(initialValue);
+  const [allTime, setAllTime] = useState<boolean>(false);
+
+  const closeEvent = () => {
+    onClose(period);
+    setAllTime(false);
+  };
 
   useEffect(() => {
     setPeriod(initialValue);
   }, [initialValue]);
 
+  useEffect(() => {
+    setPeriod({
+      from: moment.utc('0001').toDate(),
+      to: moment().toDate(),
+    });
+  }, [allTime]);
+
   return (
     <Modal
       open={open}
-      onClose={() => onClose(period)}
+      onClose={closeEvent}
       sx={MODAL_STYLES}
     >
       <Sheet sx={MODAL_CONTENT_STYLES}>
         <Typography level="h4">Custom date range</Typography>
-        <Stack direction="column" spacing={1} paddingY={1}>
-          <FormLabel>From</FormLabel>
-          <DateInput
-            defaultValue={initialValue.from}
-            max={moment.min(moment(), moment(period.to)).toDate()}
-            onChange={value => setPeriod({
-              from: parseDate(value) ?? period.from,
-              to: period.to,
-            })}
-          />
-          <FormLabel>To</FormLabel>
-          <DateInput
-            defaultValue={initialValue.to}
-            min={period.from}
-            max={moment().toDate()}
-            onChange={value => setPeriod({
-              from: period.from,
-              to: parseDate(value) ?? period.to,
-            })}
-          />
+        <Stack direction="column" spacing={2} paddingY={1}>
+          <FormControl>
+            <FormLabel>From</FormLabel>
+            <DateInput
+              disabled={allTime}
+              value={period.from}
+              max={moment.min(moment(), moment(period.to)).toDate()}
+              onChange={value => setPeriod({
+                from: parseDate(value) ?? period.from,
+                to: period.to,
+              })}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>To</FormLabel>
+            <DateInput
+              disabled={allTime}
+              value={period.to}
+              min={period.from}
+              max={moment().toDate()}
+              onChange={value => setPeriod({
+                from: period.from,
+                to: parseDate(value) ?? period.to,
+              })}
+            />
+          </FormControl>
+          <Box display="flex" justifyContent="center">
+            <Checkbox
+              checked={allTime}
+              onChange={e => setAllTime(e.target.checked)}
+              label="All Time"
+              sx={{
+                p: 1,
+              }}
+            />
+          </Box>
         </Stack>
       </Sheet>
     </Modal>
