@@ -7,7 +7,7 @@ import {
 } from '@mui/joy';
 import { SxProps } from '@mui/joy/styles/types';
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { DateInput } from './DateInput';
 import { Period } from './types';
@@ -37,6 +37,10 @@ export const DateRangeModal = ({
   onClose,
 }: DateRangeModalProps) => {
   const [period, setPeriod] = useState<Period>(initialValue);
+
+  useEffect(() => {
+    setPeriod(initialValue);
+  }, [initialValue]);
 
   return (
     <Modal
