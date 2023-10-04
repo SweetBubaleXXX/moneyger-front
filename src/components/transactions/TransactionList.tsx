@@ -1,4 +1,4 @@
-import { Button, Stack } from '@mui/joy';
+import { Button, CircularProgress, Stack } from '@mui/joy';
 import { SxProps } from '@mui/joy/styles/types';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -48,6 +48,23 @@ export const TransactionList = ({
     [transactions.data?.count]
   );
 
+  const transactionsList = transactions.data && transactionsSelector
+    .selectAll(transactions.data.results)
+    .map(
+      (transaction, index) =>
+        <TransactionWidget
+          key={index}
+          transaction={transaction}
+          isLoading={transactions.isFetching}
+          requestParams={requestParams}
+          onDuplicateModalOpen={setTransactionDuplicateModalOpen}
+        />
+    );
+
+  const showSpinner = !transactionsList || (
+    !transactionsList.length && transactions.isFetching
+  );
+
   const showLoadMoreButton = totalPages > (requestParams.page ?? 1);
 
   useEffect(() => {
@@ -58,23 +75,21 @@ export const TransactionList = ({
   }, [filters]);
 
   return (
-    <Stack spacing={2} padding={2} marginX="auto" sx={{
-      maxWidth: { sm: 'sm' },
-      ...sx,
-    }}>
+    <Stack
+      spacing={2}
+      padding={2}
+      marginX="auto"
+      maxWidth={{ sm: 'sm' }}
+      sx={sx}
+    >
       {
-        transactions.data && transactionsSelector
-          .selectAll(transactions.data.results)
-          .map(
-            (transaction, index) =>
-              <TransactionWidget
-                key={index}
-                transaction={transaction}
-                isLoading={transactions.isFetching}
-                requestParams={requestParams}
-                onDuplicateModalOpen={setTransactionDuplicateModalOpen}
-              />
-          )
+        showSpinner ?
+          <CircularProgress
+            color="neutral"
+            sx={{ alignSelf: 'center' }}
+          />
+          :
+          transactionsList
       }
       {
         showLoadMoreButton && <Button
