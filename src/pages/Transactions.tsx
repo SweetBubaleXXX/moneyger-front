@@ -8,6 +8,8 @@ import { TransactionList } from '../components/transactions/TransactionList';
 import { TransactionRequestParams } from '../features/api/types';
 
 export const Transactions = () => {
+  const [topbarMounted, setTopbarMounted] = useState<boolean>(false);
+
   const [
     requestParams, setRequestParams,
   ] = useState<TransactionRequestParams>({});
@@ -17,13 +19,18 @@ export const Transactions = () => {
       <TransactionListTopbar
         initialParams={requestParams}
         onUpdateParams={setRequestParams}
+        onMount={() => setTopbarMounted(true)}
       />
-      <TransactionList
-        filters={requestParams}
-        sx={{
-          marginBottom: '50px',
-        }}
-      />
+      {
+        <TransactionList
+          filters={requestParams}
+          skip={!topbarMounted}
+          loading={!topbarMounted}
+          sx={{
+            marginBottom: '50px',
+          }}
+        />
+      }
       <NavigationBar />
     </>
   );

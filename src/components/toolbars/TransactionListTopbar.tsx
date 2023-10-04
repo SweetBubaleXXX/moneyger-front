@@ -22,19 +22,25 @@ import { BaseTopbar } from './BaseTopbar';
 import { SEARCH_DEBOUNCE_DELAY } from './constants';
 
 export type TransactionListTopbarProps = {
-  initialParams: TransactionRequestParams,
+  initialParams?: TransactionRequestParams,
   onUpdateParams: (params: TransactionRequestParams) => void,
+  onMount?: () => void,
 }
 
 export const TransactionListTopbar = ({
   initialParams,
   onUpdateParams,
+  onMount,
 }: TransactionListTopbarProps) => {
   const [filtersModalOpen, setFiltersModalOpen] = useState<boolean>(false);
-  const [filters, setFilters] = useState<Filters>(initialParams);
+  const [filters, setFilters] = useState<Filters>(initialParams ?? {});
   const [orderingAscending, setOrderingAscending] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const debouncedSearchTerm = useDebounce(searchTerm, SEARCH_DEBOUNCE_DELAY);
+
+  useEffect(() => {
+    onMount?.();
+  }, [onMount]);
 
   useEffect(() => {
     onUpdateParams({

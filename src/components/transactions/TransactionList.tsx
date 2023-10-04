@@ -16,13 +16,15 @@ import { TransactionWidget } from './TransactionWidget';
 
 export type TransactionListProps = {
   filters: Partial<TransactionRequestParams>,
-  reset?: boolean,
+  skip?: boolean,
+  loading?: boolean,
   sx?: SxProps
 }
 
 export const TransactionList = ({
   filters,
-  reset,
+  skip,
+  loading,
   sx,
 }: TransactionListProps) => {
   const [
@@ -37,10 +39,10 @@ export const TransactionList = ({
     params: filters,
   });
 
-  const resetCache = reset || transactionDuplicateModalOpen;
+  const skipUpdate = skip || transactionDuplicateModalOpen;
 
   const transactions = useGetTransactionsQuery(
-    resetCache ? skipToken : requestParams
+    skipUpdate ? skipToken : requestParams,
   );
 
   const totalPages = useMemo(
@@ -83,25 +85,27 @@ export const TransactionList = ({
       sx={sx}
     >
       {
-        showSpinner ?
+        loading || showSpinner ?
           <CircularProgress
             color="neutral"
             sx={{ alignSelf: 'center' }}
           />
           :
-          transactionsList
-      }
-      {
-        showLoadMoreButton && <Button
-          variant="outlined"
-          loading={transactions.isFetching}
-          onClick={() => setRequestParams({
-            page: requestParams.page && requestParams.page + 1,
-            params: requestParams.params,
-          })}
-        >
-          Load More
-        </Button>
+          <>
+            {transactionsList}
+            {
+              showLoadMoreButton && <Button
+                variant="outlined"
+                loading={transactions.isFetching}
+                onClick={() => setRequestParams({
+                  page: requestParams.page && requestParams.page + 1,
+                  params: requestParams.params,
+                })}
+              >
+                Load More
+              </Button>
+            }
+          </>
       }
     </Stack>
   );

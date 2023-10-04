@@ -38,7 +38,7 @@ export const Home = () => {
       </Box>
       <TransactionList
         filters={periodFilters}
-        reset={transactionCreationModalOpen}
+        skip={transactionCreationModalOpen}
         sx={{
           marginBottom: '75px',
         }}
