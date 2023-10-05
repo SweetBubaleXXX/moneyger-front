@@ -30,7 +30,7 @@ export const CategoryIconSelector = ({
         gap={2}
       >
         {
-          Object.values(icons)
+          open && Object.values(icons)
             .map((Icon, index) => {
               const selected = Icon.displayName === selectedValue;
               return (
