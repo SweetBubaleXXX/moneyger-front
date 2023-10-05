@@ -25,6 +25,8 @@ export const API_PATHS = {
     `transactions/${transactionId}/`,
   createTransaction: (categoryId: number) =>
     `categories/${categoryId}/transactions/`,
+  getCategorySummary: (categoryId: number) =>
+    `categories/${categoryId}/summary/`,
 } as const;
 
 export const EXCLUDE_FROM_REAUTH: readonly string[] = [

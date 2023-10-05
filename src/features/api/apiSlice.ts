@@ -102,12 +102,21 @@ export const api = createApi({
       },
       providesTags: ['Transaction'],
     }),
+    getCategorySummary: builder.query<
+      Summary, TransactionRequestParams & { id: number }
+    >({
+      query: requst => ({
+        url: API_PATHS.getCategorySummary(requst.id),
+        params: decamelizeKeys(requst),
+      }),
+      providesTags: ['Account', 'Category', 'Transaction'],
+    }),
     getTransactionsSummary: builder.query<Summary, TransactionRequestParams>({
       query: request => ({
         url: API_PATHS.getTransactionsSummary,
         params: decamelizeKeys(request),
       }),
-      providesTags: ['Transaction', 'Account'],
+      providesTags: ['Account', 'Category', 'Transaction'],
     }),
     updateAccount: builder.mutation<
       Account, AccountUpdateRequest & { id: number }
@@ -281,6 +290,7 @@ export const {
   useGetCategoryByIdQuery,
   useGetTransactionsQuery,
   useGetTransactionsSummaryQuery,
+  useGetCategorySummaryQuery,
   useUpdateAccountMutation,
   useCreateCategoryMutation,
   useCreateSubcategoryMutation,
