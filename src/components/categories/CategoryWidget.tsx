@@ -12,6 +12,7 @@ import { Grip } from 'lucide-react';
 import React from 'react';
 
 import { Category } from '../../features/api/types';
+import { CategoryIcon } from './CategoryIcon';
 
 export type CategoryWidgetProps = {
   category: Category,
@@ -37,6 +38,7 @@ export const CategoryWidget = ({
     >
       <Button
         variant="outlined"
+        color="neutral"
         fullWidth={true}
         sx={{
           my: 1,
@@ -51,7 +53,7 @@ export const CategoryWidget = ({
         >
           <Avatar>
             <Skeleton loading={isLoading}>
-              {category.icon}
+              <CategoryIcon name={category.icon} color={category.color} />
             </Skeleton>
           </Avatar>
           <Sheet sx={{

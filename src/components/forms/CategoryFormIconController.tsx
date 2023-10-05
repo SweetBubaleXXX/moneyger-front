@@ -3,7 +3,6 @@ import {
   FormControl,
   FormLabel,
 } from '@mui/joy';
-import { icons } from 'lucide-react';
 import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
 
@@ -37,12 +36,7 @@ export const CategoryFormIconController = ({
             variant="outlined"
             onClick={() => setDrawerOpen(true)}
           >
-            {
-              field.value && Object.hasOwn(icons, field.value) ?
-                <CategoryIcon name={field.value} />
-                :
-                'Pick'
-            }
+            {field.value ? <CategoryIcon name={field.value} /> : 'Pick'}
           </Button>
           <CategoryIconSelector
             open={drawerOpen}
