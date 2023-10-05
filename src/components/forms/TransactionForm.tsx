@@ -183,9 +183,11 @@ export const TransactionForm = ({
             <>
               <Button
                 variant="soft"
-                color={formState.errors.category ? 'danger' : 'primary'}
+                color={formState.errors.category ? 'danger' : 'neutral'}
                 startDecorator={
-                  category && <CategoryIcon>{category.icon}</CategoryIcon>
+                  category && <CategoryIcon color={category.color}>
+                    {category.icon}
+                  </CategoryIcon>
                 }
                 loading={initialValue && initialCategory.isLoading}
                 onClick={() => setCategorySelectorOpen(true)}
