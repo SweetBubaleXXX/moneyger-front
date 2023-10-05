@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  Avatar,
   Box,
   Button,
   Divider,
@@ -31,6 +30,7 @@ import {
   Transaction,
   TransactionCreateUpdateRequest,
 } from '../../features/api/types';
+import { CategoryIcon } from '../categories/CategoryIcon';
 import { CategorySelectorDrawer } from '../categories/CategorySelectorDrawer';
 
 
@@ -184,7 +184,9 @@ export const TransactionForm = ({
               <Button
                 variant="soft"
                 color={formState.errors.category ? 'danger' : 'primary'}
-                startDecorator={category && <Avatar>{category.icon}</Avatar>}
+                startDecorator={
+                  category && <CategoryIcon>{category.icon}</CategoryIcon>
+                }
                 loading={initialValue && initialCategory.isLoading}
                 onClick={() => setCategorySelectorOpen(true)}
                 sx={{

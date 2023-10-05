@@ -36,7 +36,7 @@ export const CategoryFormIconController = ({
             variant="outlined"
             onClick={() => setDrawerOpen(true)}
           >
-            {field.value ? <CategoryIcon name={field.value} /> : 'Pick'}
+            {field.value ? <CategoryIcon>{field.value}</CategoryIcon> : 'Pick'}
           </Button>
           <CategoryIconSelector
             open={drawerOpen}

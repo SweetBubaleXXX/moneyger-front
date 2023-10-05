@@ -95,10 +95,9 @@ export const TransactionWidget = ({
           >
             <Avatar>
               <Skeleton loading={loading}>
-                <CategoryIcon
-                  name={category.data?.icon}
-                  color={category.data?.color}
-                />
+                <CategoryIcon color={category.data?.color}>
+                  {category.data?.icon}
+                </CategoryIcon>
               </Skeleton>
             </Avatar>
             <Sheet sx={{ flexGrow: 1, overflow: 'hidden' }}>

@@ -53,7 +53,9 @@ export const CategoryWidget = ({
         >
           <Avatar>
             <Skeleton loading={isLoading}>
-              <CategoryIcon name={category.icon} color={category.color} />
+              <CategoryIcon color={category.color}>
+                {category.icon}
+              </CategoryIcon>
             </Skeleton>
           </Avatar>
           <Sheet sx={{
