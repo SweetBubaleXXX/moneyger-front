@@ -1,4 +1,5 @@
 import {
+  Badge,
   IconButton,
   Input,
 } from '@mui/joy';
@@ -66,7 +67,12 @@ export const TransactionListTopbar = ({
           }}
         />
         <IconButton onClick={() => setFiltersModalOpen(true)}>
-          <Filter />
+          <Badge
+            invisible={!Object.keys(filters).length}
+            size="sm"
+          >
+            <Filter />
+          </Badge >
         </IconButton>
       </BaseTopbar>
       <TranasctionFilterModal

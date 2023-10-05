@@ -22,6 +22,7 @@ import {
   Category,
   TransactionRequestParams,
 } from '../../features/api/types';
+import { CategoryIcon } from '../categories/CategoryIcon';
 import { CategorySelectorDrawer } from '../categories/CategorySelectorDrawer';
 import { DateRangeModal } from '../period/DateRangeModal';
 
@@ -58,7 +59,12 @@ export const TranasctionFilterModal = ({
           <Stack spacing={2} padding={3}>
             <Button
               variant="soft"
-              startDecorator={category && <Avatar>{category.icon}</Avatar>}
+              color="neutral"
+              startDecorator={
+                category && <CategoryIcon color={category.color}>
+                  {category.icon}
+                </CategoryIcon>
+              }
               onClick={() => setCategorySelectorOpen(true)}
             >
               {category?.name || 'Choose category'}
