@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  Divider,
   Stack,
 } from '@mui/joy';
 import React, { useEffect } from 'react';
@@ -8,13 +9,14 @@ import { useForm } from 'react-hook-form';
 import { BaseCategorySchema } from '../../features/api/schemas';
 import { Category, CategoryUpdateRequest } from '../../features/api/types';
 import { toastCategoryNameError } from '../../helpers/forms';
+import { CATEGORY_UPDATE_FORM_ID } from '../categories/constants';
 import {
   CategoryFormColorController,
-} from '../forms/CategoryFormColorController';
+} from './CategoryFormColorController';
+import { CategoryFormIconController } from './CategoryFormIconController';
 import {
   CategoryFormNameController,
-} from '../forms/CategoryFormNameController';
-import { CATEGORY_UPDATE_FORM_ID } from './constants';
+} from './CategoryFormNameController';
 
 export type CategoryUpdateFormProps = {
   onSubmit: (request: CategoryUpdateRequest) => void,
@@ -65,18 +67,23 @@ export const CategoryUpdateForm = ({
       onReset={onReset}
       onChange={() => onEdit?.(true)}
     >
-      <Stack spacing={3} padding={2}>
+      <Stack spacing={2} padding={2}>
         <CategoryFormNameController
           disabled={isDisabled}
           control={control}
           defaultValue={category?.name}
           error={!!formState.errors.name}
         />
+        <Divider/>
         <CategoryFormColorController
           control={control}
           defaultValue={category?.color}
           error={!!formState.errors.color}
           disabled={isDisabled}
+        />
+        <CategoryFormIconController
+          control={control}
+          error={!!formState.errors.icon}
         />
       </Stack>
     </form >

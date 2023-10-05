@@ -58,7 +58,7 @@ export const TransactionListTopbar = ({
         </IconButton>
         <Input
           variant="soft"
-          startDecorator={<Search strokeWidth={1}/>}
+          startDecorator={<Search strokeWidth={1} />}
           placeholder="Search"
           onChange={e => setSearchTerm(e.target.value.toLowerCase())}
           sx={{
