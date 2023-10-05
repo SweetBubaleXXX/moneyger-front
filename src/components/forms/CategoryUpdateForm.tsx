@@ -69,21 +69,24 @@ export const CategoryUpdateForm = ({
     >
       <Stack spacing={2} padding={2}>
         <CategoryFormNameController
-          disabled={isDisabled}
           control={control}
-          defaultValue={category?.name}
           error={!!formState.errors.name}
+          disabled={isDisabled}
+          defaultValue={category?.name}
         />
-        <Divider/>
+        <Divider />
         <CategoryFormColorController
           control={control}
-          defaultValue={category?.color}
           error={!!formState.errors.color}
           disabled={isDisabled}
+          defaultValue={category?.color}
         />
         <CategoryFormIconController
           control={control}
           error={!!formState.errors.icon}
+          disabled={isDisabled}
+          defaultValue={category?.icon}
+          onEdit={() => onEdit?.(true)}
         />
       </Stack>
     </form >

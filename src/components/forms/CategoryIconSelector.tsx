@@ -1,18 +1,19 @@
 import { Drawer, Grid, IconButton } from '@mui/joy';
 import { icons } from 'lucide-react';
 import React from 'react';
-import { ControllerRenderProps } from 'react-hook-form';
 
 export type CategoryIconSelectorProps = {
   open: boolean,
   onClose: () => void,
-  field: ControllerRenderProps<any, any>
+  selectedValue?: string,
+  onSelect: (value: string) => void,
 }
 
 export const CategoryIconSelector = ({
   open,
   onClose,
-  field,
+  selectedValue,
+  onSelect,
 }: CategoryIconSelectorProps) => {
   return (
     <Drawer
@@ -31,7 +32,7 @@ export const CategoryIconSelector = ({
         {
           Object.values(icons)
             .map((Icon, index) => {
-              const selected = Icon.displayName === field.value;
+              const selected = Icon.displayName === selectedValue;
               return (
                 <Grid key={index}>
                   <IconButton
@@ -41,8 +42,8 @@ export const CategoryIconSelector = ({
                     color={
                       selected ? 'primary' : 'neutral'
                     }
-                    onClick={() => field.onChange(
-                      selected ? '' : Icon.displayName
+                    onClick={() => onSelect(
+                      !selected && Icon.displayName || ''
                     )}
                   >
                     <Icon />
