@@ -10,13 +10,15 @@ import {
   PeriodSelector,
 } from '../components/period/PeriodSelector';
 import { Period } from '../components/period/types';
+import {
+  PrimaryCategoriesSummaryWidget,
+} from '../components/summary/PrimaryCategoriesSummaryWidget';
 import { SummaryWidget } from '../components/summary/SummaryWidget';
 import { NavigationBar } from '../components/toolbars/NavigationBar';
 import {
   TransactionCreationModal,
 } from '../components/transactions/TransactionCreationModal';
 import { TransactionList } from '../components/transactions/TransactionList';
-import { PrimaryCategoriesSummaryWidget } from '../components/summary/PrimaryCategoriesSummaryWidget';
 
 export const Home = () => {
   const [
@@ -37,14 +39,14 @@ export const Home = () => {
       <Box display="flex" justifyContent="center" padding={2}>
         <PeriodSelector value={period} onChange={setPeriod} />
       </Box>
-      <PrimaryCategoriesSummaryWidget filters={{
-        transactionType: 'IN',
-        ...periodFilters,
-      }}/>
-      <PrimaryCategoriesSummaryWidget filters={{
-        transactionType: 'OUT',
-        ...periodFilters,
-      }}/>
+      <PrimaryCategoriesSummaryWidget
+        transactionType="OUT"
+        filters={periodFilters}
+      />
+      <PrimaryCategoriesSummaryWidget
+        transactionType="IN"
+        filters={periodFilters}
+      />
       <TransactionList
         filters={periodFilters}
         skip={transactionCreationModalOpen}
