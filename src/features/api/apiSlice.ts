@@ -26,6 +26,8 @@ import {
   RegistrationRequest,
   RegistrationResponse,
   SetPasswordRequest,
+  Stats,
+  StatsRequestParams,
   SubcategoryCreateRequest,
   Summary,
   Transaction,
@@ -114,6 +116,13 @@ export const api = createApi({
     getTransactionsSummary: builder.query<Summary, TransactionRequestParams>({
       query: request => ({
         url: API_PATHS.getTransactionsSummary,
+        params: decamelizeKeys(request),
+      }),
+      providesTags: ['Account', 'Category', 'Transaction'],
+    }),
+    getCategoriesStats: builder.query<Stats, StatsRequestParams>({
+      query: request => ({
+        url: API_PATHS.getCategoriesStats,
         params: decamelizeKeys(request),
       }),
       providesTags: ['Account', 'Category', 'Transaction'],
@@ -291,6 +300,7 @@ export const {
   useGetTransactionsQuery,
   useGetTransactionsSummaryQuery,
   useGetCategorySummaryQuery,
+  useGetCategoriesStatsQuery,
   useUpdateAccountMutation,
   useCreateCategoryMutation,
   useCreateSubcategoryMutation,

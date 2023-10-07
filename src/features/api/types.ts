@@ -71,6 +71,7 @@ export type Category = {
 }
 
 export type CategoryRequestParams = {
+  parent_category?: number,
   transactionType?: TransactionType,
   notSubcategory?: boolean,
   ordering?: string,
@@ -128,3 +129,18 @@ export type Summary = {
   total: number,
   currency: CurrencyCode,
 }
+
+export type CategoryStats = {
+  id: number,
+  total: number,
+}
+
+export type Stats = Summary & {
+  categories: CategoryStats[]
+}
+
+export type StatsRequestParams = Pick<
+  CategoryRequestParams, 'parent_category' | 'transactionType'
+> & Pick<
+  TransactionRequestParams, 'transactionTimeBefore' | 'transactionTimeAfter'
+>

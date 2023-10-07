@@ -12,6 +12,7 @@ export const API_PATHS = {
   exportJson: 'export/json/',
   getAllCategories: 'categories/?limit=99999&ordering=display_order',
   createCategory: 'categories/',
+  getCategoriesStats: 'categories/stats/',
   getTransactionsSummary: 'transactions/summary/',
   getAccountById: (accountId: number) => `accounts/auth/users/${accountId}/`,
   getCategories: (pageNumber: number = 1) =>

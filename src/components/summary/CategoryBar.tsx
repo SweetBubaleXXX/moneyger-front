@@ -1,37 +1,52 @@
 import { LinearProgress, Skeleton, Stack, Typography } from '@mui/joy';
 import React from 'react';
 
-import { useGetCategorySummaryQuery } from '../../features/api/apiSlice';
-import { Category, TransactionRequestParams } from '../../features/api/types';
+import {
+  selectCategoryById,
+  useGetAllCategoriesQuery,
+} from '../../features/api/apiSlice';
+import { CategoryStats, CurrencyCode } from '../../features/api/types';
 import { useContrastColor } from '../../hooks/color';
 import { CategoryIcon } from '../categories/CategoryIcon';
 
 export type CategoryBarProps = {
-  category: Category,
+  stats: CategoryStats,
   total: number,
-  filters?: TransactionRequestParams,
+  currency?: CurrencyCode,
 }
 
 export const CategoryBar = ({
-  category,
+  stats,
   total,
-  filters,
+  currency,
 }: CategoryBarProps) => {
+
   const adjustColor = useContrastColor();
 
-  const summary = useGetCategorySummaryQuery({
-    id: category.id,
-    ...filters,
+  const category = useGetAllCategoriesQuery(undefined, {
+    selectFromResult: result => ({
+      data: selectCategoryById(result.data, stats.id),
+      isLoading: result.isFetching,
+    }),
   });
 
-  const percentage = !!summary.data?.total && (100 * summary.data.total / total).toFixed(2);
+  const percentage = (100 * stats.total / total).toFixed(2);
 
   return (
     <>
-      {!!+percentage &&
-        <Stack direction="row" alignItems="center" gap={1}>
+      {!!category.data &&
+        <Stack
+          direction="row"
+          alignItems="center"
+          py={0.3}
+          gap={1}
+        >
           <Stack>
-            <CategoryIcon color={category.color}>{category.icon}</CategoryIcon>
+            <Skeleton loading={category.isLoading}>
+              <CategoryIcon color={category.data.color}>
+                {category.data.icon}
+              </CategoryIcon>
+            </Skeleton>
           </Stack>
           <Stack flexGrow={1} gap={0.5} overflow="hidden">
             <Stack
@@ -40,19 +55,15 @@ export const CategoryBar = ({
               alignItems="baseline"
             >
               <Typography level="title-md" noWrap>
-                <Skeleton loading={summary.isFetching}>
-                  {category.name}
+                <Skeleton loading={category.isLoading}>
+                  {category.data.name}
                 </Skeleton>
               </Typography>
               <Typography level="body-xs">
-                <Skeleton loading={summary.isFetching}>
-                  {percentage}%
-                </Skeleton>
+                {percentage}%
               </Typography>
               <Typography level="body-sm" textAlign="right" flexGrow={1}>
-                <Skeleton loading={summary.isFetching}>
-                  {summary.data && Math.abs(summary.data.total)} {summary.data?.currency}
-                </Skeleton>
+                {Math.abs(stats.total)} {currency}
               </Typography>
             </Stack>
             <LinearProgress
@@ -60,7 +71,7 @@ export const CategoryBar = ({
               value={+percentage}
               determinate
               sx={{
-                color: adjustColor(category.color),
+                color: adjustColor(category.data.color),
               }}
             />
           </Stack>

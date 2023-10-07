@@ -11,8 +11,8 @@ import {
 } from '../components/period/PeriodSelector';
 import { Period } from '../components/period/types';
 import {
-  PrimaryCategoriesSummaryWidget,
-} from '../components/summary/PrimaryCategoriesSummaryWidget';
+  CategoriesStatsWidget,
+} from '../components/summary/CategoriesStatsWidget';
 import { SummaryWidget } from '../components/summary/SummaryWidget';
 import { NavigationBar } from '../components/toolbars/NavigationBar';
 import {
@@ -39,11 +39,11 @@ export const Home = () => {
       <Box display="flex" justifyContent="center" padding={2}>
         <PeriodSelector value={period} onChange={setPeriod} />
       </Box>
-      <PrimaryCategoriesSummaryWidget
+      <CategoriesStatsWidget
         transactionType="OUT"
         filters={periodFilters}
       />
-      <PrimaryCategoriesSummaryWidget
+      <CategoriesStatsWidget
         transactionType="IN"
         filters={periodFilters}
       />
