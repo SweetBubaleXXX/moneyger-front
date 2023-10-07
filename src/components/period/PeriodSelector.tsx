@@ -61,7 +61,12 @@ export const PeriodSelector = ({
 
   return (
     <>
-      <Stack direction="column" spacing={1} alignItems="center">
+      <Stack
+        direction="column"
+        p={2}
+        alignItems="center"
+        spacing={1}
+      >
         <Stack direction="row" spacing={2} justifyContent="space-between">
           <Button
             variant="plain"

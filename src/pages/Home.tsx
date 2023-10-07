@@ -1,7 +1,4 @@
-import {
-  Box,
-  IconButton,
-} from '@mui/joy';
+import { Box, Divider, IconButton } from '@mui/joy';
 import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -19,6 +16,7 @@ import {
   TransactionCreationModal,
 } from '../components/transactions/TransactionCreationModal';
 import { TransactionList } from '../components/transactions/TransactionList';
+import { parsePeriodFilters } from '../helpers/period';
 
 export const Home = () => {
   const [
@@ -28,17 +26,12 @@ export const Home = () => {
 
   const [period, setPeriod] = useState<Period>(DEFAULT_PERIOD);
 
-  const periodFilters = {
-    transactionTimeAfter: period.from.toISOString(),
-    transactionTimeBefore: period.to.toISOString(),
-  };
+  const periodFilters = parsePeriodFilters(period);
 
   return (
     <>
       <SummaryWidget filters={periodFilters} />
-      <Box display="flex" justifyContent="center" padding={2}>
-        <PeriodSelector value={period} onChange={setPeriod} />
-      </Box>
+      <PeriodSelector value={period} onChange={setPeriod} />
       <CategoriesStatsWidget
         transactionType="OUT"
         filters={periodFilters}
@@ -47,6 +40,13 @@ export const Home = () => {
         transactionType="IN"
         filters={periodFilters}
       />
+      <Box
+        maxWidth={250}
+        mx="auto"
+        pt={2}
+      >
+        <Divider>Transactions</Divider>
+      </Box>
       <TransactionList
         filters={periodFilters}
         skip={transactionCreationModalOpen}
