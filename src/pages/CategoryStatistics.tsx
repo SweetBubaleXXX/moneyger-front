@@ -1,6 +1,7 @@
-import { Box } from '@mui/joy';
+import { Box, Stack, Typography } from '@mui/joy';
 import React, { useState } from 'react';
 
+import { CategoryIcon } from '../components/categories/CategoryIcon';
 import {
   DEFAULT_PERIOD,
   PeriodSelector,
@@ -9,6 +10,7 @@ import { Period } from '../components/period/types';
 import {
   CategoriesStatsWidget,
 } from '../components/summary/CategoriesStatsWidget';
+import { BaseTopbar } from '../components/toolbars/BaseTopbar';
 import { NavigationBar } from '../components/toolbars/NavigationBar';
 import {
   selectCategoryById,
@@ -32,6 +34,23 @@ export const CategoryStatistics = () => {
 
   return (
     <>
+      <BaseTopbar justifyContent="center">
+        <Stack
+          direction="row"
+          alignItems="center"
+          p={0.5}
+          gap={1}
+        >
+          {
+            category.data && <CategoryIcon color={category.data.color}>
+              {category.data.icon}
+            </CategoryIcon>
+          }
+          <Typography level="title-md">
+            {category.data?.name}
+          </Typography>
+        </Stack>
+      </BaseTopbar>
       <PeriodSelector value={period} onChange={setPeriod} />
       <Box mb="50px">
         {
