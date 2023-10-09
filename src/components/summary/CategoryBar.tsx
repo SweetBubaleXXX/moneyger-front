@@ -1,5 +1,5 @@
 import { LinearProgress, Skeleton, Stack, Typography } from '@mui/joy';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import {
   selectCategoryById,
@@ -20,7 +20,6 @@ export const CategoryBar = ({
   total,
   currency,
 }: CategoryBarProps) => {
-
   const adjustColor = useContrastColor();
 
   const category = useGetAllCategoriesQuery(undefined, {
@@ -30,7 +29,10 @@ export const CategoryBar = ({
     }),
   });
 
-  const percentage = (100 * stats.total / total).toFixed(2);
+  const percentage = useMemo(
+    () => (100 * stats.total / total).toFixed(2),
+    [stats.total, total]
+  );
 
   return (
     <>
