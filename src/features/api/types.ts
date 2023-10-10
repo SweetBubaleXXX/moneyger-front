@@ -144,3 +144,14 @@ export type StatsRequestParams = Pick<
 > & Pick<
   TransactionRequestParams, 'transactionTimeBefore' | 'transactionTimeAfter'
 >
+
+export type CategoryImportRequest = Pick<
+  Category, 'transactionType' | 'name' | 'displayOrder' | 'icon' | 'color'
+> & {
+  transactions: Pick<
+    Transaction, 'currency' | 'amount' | 'transactionTime' | 'comment'
+  >[],
+  subcategories: CategoryImportRequest[],
+}
+
+export type ImportJsonRequest = CategoryImportRequest[]

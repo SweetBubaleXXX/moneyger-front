@@ -1,4 +1,11 @@
-import { Button } from '@mui/joy';
+import {
+  CircularProgress,
+  ListItem,
+  ListItemButton,
+  ListItemContent,
+  ListItemDecorator,
+} from '@mui/joy';
+import { FileJson } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
 import { API_PATHS } from '../../features/api/constants';
@@ -12,7 +19,7 @@ import {
   FileNotReadyError,
 } from '../../features/export/downloadFile';
 
-export const ExportJsonButton = () => {
+export const ExportJsonSetting = () => {
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
 
   // eslint-disable-next-line consistent-return
@@ -31,7 +38,10 @@ export const ExportJsonButton = () => {
               return clearInterval(interval);
             }
             poll()
-              .then(() => setIsGenerating(false))
+              .then(() => {
+                setIsGenerating(false);
+                clearInterval(interval);
+              })
               .catch(e => {
                 if (!(e instanceof FileNotReadyError)) {
                   setIsGenerating(false);
@@ -47,13 +57,19 @@ export const ExportJsonButton = () => {
   }, [isGenerating]);
 
   return (
-    <Button
-      loading={isGenerating}
-      variant="soft"
-      color="neutral"
-      onClick={() => setIsGenerating(true)}
-    >
-      Export JSON
-    </Button>
+    <ListItem>
+      <ListItemButton
+        disabled={isGenerating}
+        // loading={isGenerating}
+        onClick={() => setIsGenerating(true)}
+      >
+        <ListItemDecorator>
+          {isGenerating ? <CircularProgress size="sm" /> : <FileJson />}
+        </ListItemDecorator>
+        <ListItemContent>
+          Export JSON
+        </ListItemContent>
+      </ListItemButton>
+    </ListItem>
   );
 };
