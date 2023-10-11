@@ -18,7 +18,6 @@ import {
   Category,
   CategoryCreateRequest,
   CategoryUpdateRequest,
-  ImportJsonRequest,
   JwtToken,
   LoginRequest,
   PaginatedCategoryRequest,
@@ -242,7 +241,7 @@ export const api = createApi({
           }
         },
       }),
-    importJson: builder.mutation<void, ImportJsonRequest>({
+    importJson: builder.mutation<void, object>({
       query: request => ({
         url: API_PATHS.importJson,
         method: 'POST',
