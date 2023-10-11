@@ -9,13 +9,13 @@ import React from 'react';
 
 import { API_PATHS } from '../../features/api/constants';
 import { CSV_EXPORT_FILENAME } from '../../features/export/constants';
-import { downloadFile } from '../../features/export/downloadFile';
+import { fetchFile } from '../../features/export/fetchFile';
 
 export const ExportCsvSetting = () => {
   return (
     <ListItem>
       <ListItemButton
-        onClick={() => downloadFile(API_PATHS.exportCsv, CSV_EXPORT_FILENAME)}
+        onClick={() => fetchFile(API_PATHS.exportCsv, CSV_EXPORT_FILENAME)}
       >
         <ListItemDecorator>
           <Sheet />
