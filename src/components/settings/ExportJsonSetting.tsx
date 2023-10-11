@@ -7,7 +7,7 @@ import {
 } from '@mui/joy';
 import { Mutex } from 'async-mutex';
 import { FileJson } from 'lucide-react';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { API_PATHS } from '../../features/api/constants';
 import {
@@ -19,18 +19,18 @@ import { fetchFile } from '../../features/export/fetchFile';
 
 export const ExportJsonSetting = () => {
   const [isPolling, setIsPolling] = useState<boolean>(false);
-  const pollingMutex = useMemo(() => new Mutex(), []);
+  const pollingMutex = useRef(new Mutex());
 
   useEffect(() => {
     let interval: any;
-    const poll = () => pollingMutex.runExclusive(
+    const poll = () => pollingMutex.current.runExclusive(
       () => fetchFile(API_PATHS.exportJson, JSON_EXPORT_FILENAME)
     );
     const stopPolling = () => {
       setIsPolling(false);
       return clearInterval(interval);
     };
-    if (isPolling && !pollingMutex.isLocked()) {
+    if (isPolling && !pollingMutex.current.isLocked()) {
       poll()
         .then(stopPolling)
         .catch(() => {
@@ -39,7 +39,7 @@ export const ExportJsonSetting = () => {
             if (retries > MAX_RETRIES) {
               return stopPolling();
             }
-            return !pollingMutex.isLocked() && poll()
+            return !pollingMutex.current.isLocked() && poll()
               .then(stopPolling)
               .catch(() => { })
               .finally(() => retries++);
