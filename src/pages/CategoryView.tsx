@@ -4,6 +4,7 @@ import {
   CardContent,
   Divider,
 } from '@mui/joy';
+import { usePrevious } from '@uidotdev/usehooks';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -48,6 +49,7 @@ export type CategoryViewParams = {
 export const CategoryView = () => {
   const navigate = useNavigate();
   const categoryId = useCategoryIdParam();
+  const previousCategoryId = usePrevious(categoryId);
   const [reorder, setReorder] = useState<boolean>(false);
   const [editing, setEditing] = useState<boolean>(false);
 
@@ -76,6 +78,13 @@ export const CategoryView = () => {
   const [updateCategory, updateResult] = useUpdateCategoryMutation();
 
   const [deleteCategory, deletionResult] = useDeleteCategoryMutation();
+
+  useEffect(() => {
+    if (categoryId !== previousCategoryId) {
+      setReorder(false);
+      setEditing(false);
+    }
+  }, [categoryId, previousCategoryId]);
 
   useEffect(() => {
     if (subcategoryCreationResult.isError) {
@@ -162,8 +171,8 @@ export const CategoryView = () => {
           updateDisplayOrder(orderedCategories);
           setReorder(false);
         }}
-        onItemClick={
-          subcategoryId => navigate(ROUTER_PATHS.getCategoryById(subcategoryId))
+        onItemClick={subcategoryId =>
+          !reorder && navigate(ROUTER_PATHS.getCategoryById(subcategoryId))
         }
         sx={CATEGORY_LIST_OFFSET_FOR_TOOLBAR}
       />
