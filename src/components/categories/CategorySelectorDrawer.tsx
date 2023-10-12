@@ -28,10 +28,10 @@ export const CategorySelectorDrawer = ({
       size={greaterThanMd ? 'sm' : 'lg'}
       onClose={() => onClose()}
     >
-      <Tabs defaultValue="OUT">
+      <Tabs defaultValue="OUT" sx={{ overflowX: 'hidden' }}>
         <TabList tabFlex={1}>
-          <Tab value="OUT">Outcome</Tab>
-          <Tab value="IN">Income</Tab>
+          <Tab value="OUT">OUTCOME</Tab>
+          <Tab value="IN">INCOME</Tab>
         </TabList>
         {
           ['OUT', 'IN'].map(value =>

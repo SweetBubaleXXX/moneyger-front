@@ -2,6 +2,8 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Stack,
+  Typography,
 } from '@mui/joy';
 import React from 'react';
 
@@ -26,12 +28,18 @@ export const CategoryAccordion = ({
       onChange={() => onChange?.(category)}
     >
       <AccordionSummary
-        color={
-          category.id === selected?.id ? 'primary' : 'neutral'
-        }
+        color={category.id === selected?.id ? 'primary' : 'neutral'}
       >
-        <CategoryIcon color={category.color}>{category.icon}</CategoryIcon>
-        {category.name}
+        <Stack>
+          <CategoryIcon color={category.color}>
+            {category.icon}
+          </CategoryIcon>
+        </Stack>
+        <Typography noWrap sx={{
+          color: 'inherit',
+        }}>
+          {category.name}
+        </Typography>
       </AccordionSummary>
       <AccordionDetails>
         <CategorySelector
