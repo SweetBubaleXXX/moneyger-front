@@ -1,7 +1,11 @@
 import './index.css';
 
 import { CssBaseline, GlobalStyles } from '@mui/joy';
-import { CssVarsProvider, StyledEngineProvider } from '@mui/joy/styles';
+import {
+  CssVarsProvider,
+  extendTheme,
+  StyledEngineProvider,
+} from '@mui/joy/styles';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -12,6 +16,16 @@ import { Router } from './pages/Router';
 import reportWebVitals from './reportWebVitals';
 import { store } from './store';
 
+const theme = extendTheme({
+  components: {
+    JoySkeleton: {
+      defaultProps: {
+        animation: 'wave',
+      },
+    },
+  },
+});
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -20,7 +34,7 @@ root.render(
     <ErrorBoundary fallback={<div>Something went wrong</div>}>
       <Provider store={store}>
         <StyledEngineProvider injectFirst>
-          <CssVarsProvider defaultMode="system">
+          <CssVarsProvider theme={theme} defaultMode="system">
             <CssBaseline />
             <GlobalStyles
               styles={{
