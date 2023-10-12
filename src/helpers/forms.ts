@@ -1,4 +1,4 @@
-import { FieldError } from 'react-hook-form';
+import { FieldError, FieldErrors } from 'react-hook-form';
 import { toast } from 'sonner';
 
 export const toastCategoryNameError = (error?: FieldError) => {
@@ -8,3 +8,6 @@ export const toastCategoryNameError = (error?: FieldError) => {
     });
   }
 };
+
+export const hasErrors = (errors: FieldErrors) =>
+  Object.values(errors).some(fieldError => !!fieldError);

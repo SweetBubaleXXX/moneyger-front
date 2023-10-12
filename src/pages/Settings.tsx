@@ -2,6 +2,7 @@ import {
   List,
   ListDivider,
   ListSubheader,
+  Skeleton,
   Stack,
   Typography,
 } from '@mui/joy';
@@ -31,7 +32,9 @@ export const Settings = () => {
         spacing={2}
       >
         <Typography level="title-lg" textAlign="center" noWrap>
-          {account.data?.username}
+          <Skeleton loading={account.isFetching}>
+            {account.data?.username || 'Settings'}
+          </Skeleton>
         </Typography>
         <List
           variant="soft"

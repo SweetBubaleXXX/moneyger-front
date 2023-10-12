@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 import { useRegisterMutation } from '../../features/api/apiSlice';
 import { RegistrationSchema } from '../../features/api/schemas';
 import { RegistrationRequest } from '../../features/api/types';
+import { hasErrors } from '../../helpers/forms';
 
 export const RegistrationForm = () => {
   const {
@@ -104,7 +105,11 @@ export const RegistrationForm = () => {
             </FormControl>
           )}
         />
-        <Button type="submit" loading={isLoading}>
+        <Button
+          type="submit"
+          disabled={hasErrors(errors)}
+          loading={isLoading}
+        >
           Register
         </Button>
       </Stack>

@@ -34,6 +34,7 @@ export const CategoryFormIconController = ({
           <Button
             disabled={disabled}
             variant="outlined"
+            color="neutral"
             onClick={() => setDrawerOpen(true)}
           >
             {field.value ? <CategoryIcon>{field.value}</CategoryIcon> : 'Pick'}

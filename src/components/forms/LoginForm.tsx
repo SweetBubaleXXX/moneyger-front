@@ -17,6 +17,7 @@ import { useLoginMutation } from '../../features/api/apiSlice';
 import { LoginSchema } from '../../features/api/schemas';
 import { LoginRequest } from '../../features/api/types';
 import { setAccessToken } from '../../features/auth/authSlice';
+import { hasErrors } from '../../helpers/forms';
 
 export const LoginForm = () => {
   const navigate = useNavigate();
@@ -88,7 +89,11 @@ export const LoginForm = () => {
             </FormControl>
           )}
         />
-        <Button type="submit" loading={isLoading}>
+        <Button
+          type="submit"
+          disabled={hasErrors(errors)}
+          loading={isLoading}
+        >
           Login
         </Button>
       </Stack>
