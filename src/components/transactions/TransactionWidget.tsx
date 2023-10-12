@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/joy';
 import { Stack } from '@mui/system';
-import { Copy, MoreVertical, Pencil, Trash } from 'lucide-react';
+import { CopyPlus, MoreVertical, Pencil, Trash } from 'lucide-react';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 
@@ -159,7 +159,7 @@ export const TransactionWidget = ({
         </MenuItem>
         <MenuItem onClick={() => setDuplicateModalOpen(true)}>
           <ListItemDecorator>
-            <Copy />
+            <CopyPlus />
           </ListItemDecorator>
           Duplicate
         </MenuItem>
