@@ -10,6 +10,7 @@ import {
   Select,
   Stack,
   Textarea,
+  Typography,
 } from '@mui/joy';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -115,7 +116,7 @@ export const TransactionForm = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={4} padding={3}>
+      <Stack spacing={4} padding={3} overflow="hidden">
         <Controller
           name="amount"
           control={control}
@@ -193,10 +194,13 @@ export const TransactionForm = ({
                 onClick={() => setCategorySelectorOpen(true)}
                 sx={{
                   alignSelf: 'center',
+                  maxWidth: '100%',
                 }}
                 {...field}
               >
-                {category?.name || 'Choose category'}
+                <Typography fontSize="inherit" noWrap>
+                  {category?.name || 'Choose category'}
+                </Typography>
               </Button>
               <CategorySelectorDrawer
                 open={categorySelectorOpen}
