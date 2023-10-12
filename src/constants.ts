@@ -6,6 +6,8 @@ export const DATE_INPUT_FORMAT = 'YYYY-MM-DD';
 
 export const DATETIME_INPUT_FORMAT = 'YYYY-MM-DDTHH:mm';
 
+export const DEFAULT_THROTTLING_DELAY = 500;
+
 export const PRESET_CATEGORIES = [
   {
     'transaction_type': 'OUT',

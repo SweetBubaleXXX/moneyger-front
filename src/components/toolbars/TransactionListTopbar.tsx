@@ -3,7 +3,7 @@ import {
   IconButton,
   Input,
 } from '@mui/joy';
-import { useDebounce } from '@uidotdev/usehooks';
+import { useDebounce, useThrottle } from '@uidotdev/usehooks';
 import {
   ArrowDownWideNarrow,
   ArrowUpWideNarrow,
@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
+import { DEFAULT_THROTTLING_DELAY } from '../../constants';
 import {
   TransactionRequestParams,
 } from '../../features/api/types';
@@ -38,6 +39,12 @@ export const TransactionListTopbar = ({
   const [filters, setFilters] = useState<Filters>(initialParams ?? {});
   const [orderingAscending, setOrderingAscending] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
+
+  const throttledOrderingAscending = useThrottle(
+    orderingAscending, 
+    DEFAULT_THROTTLING_DELAY,
+  );
+
   const debouncedSearchTerm = useDebounce(searchTerm, SEARCH_DEBOUNCE_DELAY);
 
   useEffect(() => {
@@ -48,9 +55,15 @@ export const TransactionListTopbar = ({
     onUpdateParams({
       ...filters,
       search: debouncedSearchTerm,
-      ordering: orderingAscending ? 'transaction_time' : '-transaction_time',
+      ordering: throttledOrderingAscending ?
+        'transaction_time' : '-transaction_time',
     });
-  }, [onUpdateParams, filters, orderingAscending, debouncedSearchTerm]);
+  }, [
+    onUpdateParams,
+    filters,
+    throttledOrderingAscending,
+    debouncedSearchTerm,
+  ]);
 
   return (
     <>

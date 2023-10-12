@@ -1,4 +1,5 @@
 import { Box, Divider, IconButton } from '@mui/joy';
+import { useThrottle } from '@uidotdev/usehooks';
 import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -16,6 +17,7 @@ import {
   TransactionCreationModal,
 } from '../components/transactions/TransactionCreationModal';
 import { TransactionList } from '../components/transactions/TransactionList';
+import { DEFAULT_THROTTLING_DELAY } from '../constants';
 import { parsePeriodFilters } from '../helpers/period';
 
 export const Home = () => {
@@ -25,8 +27,9 @@ export const Home = () => {
   ] = useState<boolean>(false);
 
   const [period, setPeriod] = useState<Period>(DEFAULT_PERIOD);
+  const throttledPeriod = useThrottle(period, DEFAULT_THROTTLING_DELAY);
 
-  const periodFilters = parsePeriodFilters(period);
+  const periodFilters = parsePeriodFilters(throttledPeriod);
 
   return (
     <>
