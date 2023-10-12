@@ -96,6 +96,7 @@ export const TransactionList = ({
             {
               showLoadMoreButton && <Button
                 variant="outlined"
+                color="neutral"
                 loading={transactions.isFetching}
                 onClick={() => setRequestParams({
                   page: requestParams.page && requestParams.page + 1,
