@@ -24,6 +24,42 @@ const theme = extendTheme({
       },
     },
   },
+  colorSchemes: {
+    dark: {
+      palette: {
+        primary: {
+          50: '#c0d7d9',
+          100: '#a5cfcb',
+          200: '#6acabc',
+          300: '#3eb3a1',
+          400: '#1ba6a1',
+          500: '#0aa391',
+          600: '#14807d',
+          700: '#268078',
+          800: '#2f6868',
+          900: '#2f4547',
+          plainHoverBg: 'var(--joy-palette-primary-900)',
+        },
+      },
+    },
+    light: {
+      palette: {
+        primary: {
+          50: '#d5e7e8',
+          100: '#aed4d0',
+          200: '#6acabc',
+          300: '#3eb3a1',
+          400: '#1ba6a1',
+          500: '#0aa391',
+          600: '#14807d',
+          700: '#268078',
+          800: '#2f6868',
+          900: '#2f4547',
+          plainHoverBg: 'var(--joy-palette-primary-50)',
+        },
+      },
+    },
+  },
 });
 
 const root = ReactDOM.createRoot(
