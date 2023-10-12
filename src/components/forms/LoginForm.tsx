@@ -45,7 +45,9 @@ export const LoginForm = () => {
   useEffect(() => {
     const loginFailed = isError && 'data' in loginError!;
     if (loginFailed) {
-      const errorDetail = (loginError.data as { detail?: string }).detail;
+      const errorDetail = (
+        loginError.data as { detail?: string } | undefined
+      )?.detail;
       const toastMessage = errorDetail || loginError.status;
       toast.error(toastMessage);
     }
