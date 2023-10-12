@@ -9,6 +9,7 @@ import {
   ArrowUpWideNarrow,
   Filter,
   Search,
+  X,
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
@@ -60,7 +61,13 @@ export const TransactionListTopbar = ({
         <Input
           variant="outlined"
           startDecorator={<Search strokeWidth={1} />}
+          endDecorator={searchTerm &&
+            <IconButton onClick={() => setSearchTerm('')}>
+              <X />
+            </IconButton>
+          }
           placeholder="Search"
+          value={searchTerm}
           onChange={e => setSearchTerm(e.target.value.toLowerCase())}
           sx={{
             '--Input-minHeight': '32px',
