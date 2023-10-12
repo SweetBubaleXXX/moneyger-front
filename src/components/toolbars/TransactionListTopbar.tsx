@@ -58,7 +58,7 @@ export const TransactionListTopbar = ({
           {orderingAscending ? <ArrowUpWideNarrow /> : <ArrowDownWideNarrow />}
         </IconButton>
         <Input
-          variant="soft"
+          variant="outlined"
           startDecorator={<Search strokeWidth={1} />}
           placeholder="Search"
           onChange={e => setSearchTerm(e.target.value.toLowerCase())}
