@@ -3,6 +3,7 @@ import {
   ListDivider,
   ListSubheader,
   Stack,
+  Typography,
 } from '@mui/joy';
 import React from 'react';
 
@@ -16,8 +17,11 @@ import { ImportJsonSetting } from '../components/settings/ImportJsonSetting';
 import { LogoutButton } from '../components/settings/LogoutButton';
 import { ThemeSetting } from '../components/settings/ThemeSetting';
 import { NavigationBar } from '../components/toolbars/NavigationBar';
+import { useGetAccountQuery } from '../features/api/apiSlice';
 
 export const Settings = () => {
+  const account = useGetAccountQuery();
+
   return (
     <>
       <Stack
@@ -26,6 +30,9 @@ export const Settings = () => {
         p={2}
         spacing={2}
       >
+        <Typography level="title-lg" textAlign="center" noWrap>
+          {account.data?.username}
+        </Typography>
         <List
           variant="soft"
           sx={{
