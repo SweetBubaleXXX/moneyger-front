@@ -1,4 +1,14 @@
-import { Drawer, Tab, TabList, TabPanel, Tabs, useTheme } from '@mui/joy';
+import {
+  Box,
+  Button,
+  Drawer,
+  Stack,
+  Tab,
+  TabList,
+  TabPanel,
+  Tabs,
+  useTheme,
+} from '@mui/joy';
 import { useMediaQuery } from '@mui/material';
 import React from 'react';
 
@@ -28,26 +38,38 @@ export const CategorySelectorDrawer = ({
       size={greaterThanMd ? 'sm' : 'lg'}
       onClose={() => onClose()}
     >
-      <Tabs defaultValue="OUT" sx={{ overflowX: 'hidden' }}>
-        <TabList tabFlex={1}>
-          <Tab value="OUT">OUTCOME</Tab>
-          <Tab value="IN">INCOME</Tab>
-        </TabList>
-        {
-          ['OUT', 'IN'].map(value =>
-            <TabPanel key={value} value={value}>
-              <CategorySelector
-                selected={category}
-                onChange={onChange}
-                filter={
-                  category =>
-                    !category.parentCategory
-                    && category.transactionType === value
-                } />
-            </TabPanel>
-          )
-        }
-      </Tabs>
+      <Stack justifyContent="space-between" height="100%">
+        <Tabs defaultValue="OUT" sx={{ overflowX: 'hidden' }}>
+          <TabList tabFlex={1}>
+            <Tab value="OUT">OUTCOME</Tab>
+            <Tab value="IN">INCOME</Tab>
+          </TabList>
+          {
+            ['OUT', 'IN'].map(value =>
+              <TabPanel key={value} value={value}>
+                <CategorySelector
+                  selected={category}
+                  onChange={onChange}
+                  filter={
+                    category =>
+                      !category.parentCategory
+                      && category.transactionType === value
+                  } />
+              </TabPanel>
+            )
+          }
+        </Tabs>
+        <Box padding={2}>
+          <Button
+            variant="outlined"
+            color="neutral"
+            fullWidth
+            onClick={onClose}
+          >
+            OK
+          </Button>
+        </Box>
+      </Stack>
     </Drawer>
   );
 };
