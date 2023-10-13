@@ -11,6 +11,7 @@ import {
   MenuItem,
   Sheet,
   Skeleton,
+  Tooltip,
   Typography,
 } from '@mui/joy';
 import { Stack } from '@mui/system';
@@ -106,11 +107,19 @@ export const TransactionWidget = ({
                   {category.data?.name}
                 </Skeleton>
               </Typography>
-              <Typography level="body-sm" noWrap>
-                <Skeleton loading={loading}>
-                  {transaction.comment}
-                </Skeleton>
-              </Typography>
+              <Tooltip
+                title={transaction.comment}
+                variant="soft"
+                size="sm"
+                placement="bottom-start"
+                arrow
+              >
+                <Typography level="body-sm" noWrap>
+                  <Skeleton loading={loading}>
+                    {transaction.comment}
+                  </Skeleton>
+                </Typography>
+              </Tooltip>
               <Typography level="body-xs" noWrap>
                 <Skeleton loading={loading}>
                   {moment(transaction.transactionTime).format('llll')}
