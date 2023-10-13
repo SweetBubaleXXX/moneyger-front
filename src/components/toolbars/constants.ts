@@ -9,7 +9,7 @@ export const BAR_SHEET_STYLES: SxProps = {
   borderLeft: 'unset',
   borderRight: 'unset',
   backgroundColor: theme =>
-    theme.palette.mode === 'light' ? '#ffffff80' : '#16181d90',
+    theme.palette.mode === 'light' ? '#ffffff80' : '#1b1d1d90',
   backdropFilter: 'blur(8px)',
 };
 
