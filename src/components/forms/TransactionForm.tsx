@@ -128,7 +128,12 @@ export const TransactionForm = ({
                 size="lg"
                 allowNegative={false}
                 customInput={Input}
-                sx={{ input: { textAlign: 'center' } }}
+                slotProps={{
+                  input: { inputMode: 'decimal' },
+                }}
+                sx={{
+                  input: { textAlign: 'center' },
+                }}
                 error={!!formState.errors.amount}
                 {...field}
                 endDecorator={
