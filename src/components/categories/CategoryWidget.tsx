@@ -42,6 +42,8 @@ export const CategoryWidget = ({
         fullWidth={true}
         sx={{
           my: 1,
+          py: 0.5,
+          px: 1,
         }}
         onClick={() => onClick?.(category.id)}
       >
@@ -49,7 +51,7 @@ export const CategoryWidget = ({
           width="100%"
           direction="row"
           alignItems="center"
-          gap={2}
+          gap={1}
         >
           <Avatar>
             <Skeleton loading={isLoading}>

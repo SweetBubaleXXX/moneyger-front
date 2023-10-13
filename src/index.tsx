@@ -23,6 +23,13 @@ const theme = extendTheme({
         animation: 'wave',
       },
     },
+    JoyAvatar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'transparent',
+        },
+      },
+    },
   },
   colorSchemes: {
     dark: {
