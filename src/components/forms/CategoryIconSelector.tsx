@@ -1,5 +1,5 @@
-import { Drawer, Grid, IconButton } from '@mui/joy';
-import { icons } from 'lucide-react';
+import { Box, Drawer, Grid, IconButton } from '@mui/joy';
+import { icons, X } from 'lucide-react';
 import React from 'react';
 
 export type CategoryIconSelectorProps = {
@@ -21,12 +21,23 @@ export const CategoryIconSelector = ({
       anchor="bottom"
       onClose={onClose}
     >
+      <Box
+        position="sticky"
+        top={0}
+        display="flex"
+        justifyContent="flex-end"
+      >
+        <IconButton size="sm" onClick={onClose}>
+          <X />
+        </IconButton>
+      </Box>
       <Grid
         container
         justifyContent="center"
         maxWidth="md"
         mx="auto"
-        p={2}
+        px={3}
+        pb={2}
         gap={2}
       >
         {
