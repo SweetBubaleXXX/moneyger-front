@@ -73,9 +73,7 @@ export const CategoriesStatsWidget = ({
               {
                 stats.isFetching ?
                   <Box mx="auto">
-                    <CircularProgress
-                      color="neutral"
-                    />
+                    <CircularProgress />
                   </Box>
                   :
                   categories

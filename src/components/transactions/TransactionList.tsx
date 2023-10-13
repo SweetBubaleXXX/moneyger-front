@@ -87,7 +87,6 @@ export const TransactionList = ({
       {
         loading || showSpinner ?
           <CircularProgress
-            color="neutral"
             sx={{ alignSelf: 'center' }}
           />
           :

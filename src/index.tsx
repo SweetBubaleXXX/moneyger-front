@@ -46,6 +46,7 @@ const theme = extendTheme({
           800: '#2f6868',
           900: '#2f4547',
           plainHoverBg: 'var(--joy-palette-primary-900)',
+          softBg: 'var(--joy-palette-primary-900)',
         },
         neutral: {
           50: '#ffffff',
