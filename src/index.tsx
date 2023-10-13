@@ -12,6 +12,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { Provider } from 'react-redux';
 
 import { DefaultToaster } from './components/Toast';
+import { ErrorPage } from './pages/ErrorPage';
 import { Router } from './pages/Router';
 import reportWebVitals from './reportWebVitals';
 import { store } from './store';
@@ -99,7 +100,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <ErrorBoundary fallback={<div>Something went wrong</div>}>
+    <ErrorBoundary fallback={<ErrorPage />}>
       <Provider store={store}>
         <StyledEngineProvider injectFirst>
           <CssVarsProvider theme={theme} defaultMode="system">

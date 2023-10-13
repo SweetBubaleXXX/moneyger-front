@@ -6,6 +6,7 @@ import { Categories } from './Categories';
 import { CategoryStatistics } from './CategoryStatistics';
 import { CategoryView } from './CategoryView';
 import { ROUTER_PATHS } from './constants';
+import { ErrorPage } from './ErrorPage';
 import { Home } from './Home';
 import { Login } from './Login';
 import { Settings } from './Settings';
@@ -29,6 +30,7 @@ export const Router = () => {
           path={ROUTER_PATHS.categoryStatsById}
           Component={CategoryStatistics}
         />
+        <Route path="*" element={<ErrorPage>Page Not Found</ErrorPage>} />
       </Routes>
     </BrowserRouter>
   );
