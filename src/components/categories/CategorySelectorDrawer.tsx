@@ -35,7 +35,7 @@ export const CategorySelectorDrawer = ({
     <Drawer
       open={open}
       anchor={greaterThanMd ? 'left' : 'bottom'}
-      size={greaterThanMd ? 'sm' : 'lg'}
+      size={greaterThanMd ? 'md' : 'lg'}
       onClose={() => onClose()}
     >
       <Stack justifyContent="space-between" height="100%">
