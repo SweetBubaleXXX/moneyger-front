@@ -6,6 +6,8 @@ export const BAR_SHEET_STYLES: SxProps = {
   px: 1,
   py: 0.5,
   zIndex: 1100,
+  borderLeft: 'unset',
+  borderRight: 'unset',
   backgroundColor: theme =>
     theme.palette.mode === 'light' ? '#ffffff80' : '#16181d90',
   backdropFilter: 'blur(8px)',
