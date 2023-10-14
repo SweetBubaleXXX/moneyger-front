@@ -22,7 +22,7 @@ import { CURRENCY_CODES, DATETIME_INPUT_FORMAT } from '../../constants';
 import {
   selectCategoryById,
   useGetAccountQuery,
-  useGetAllCategoriesQuery,
+  useGetCategoriesQuery,
 } from '../../features/api/apiSlice';
 import { TransactionSchema } from '../../features/api/schemas';
 import {
@@ -54,7 +54,7 @@ export const TransactionForm = ({
 
   const account = useGetAccountQuery();
 
-  const initialCategory = useGetAllCategoriesQuery(undefined, {
+  const initialCategory = useGetCategoriesQuery(undefined, {
     selectFromResult: ({ data, isLoading }) => ({
       data: selectCategoryById(data, initialValue?.category),
       isLoading,

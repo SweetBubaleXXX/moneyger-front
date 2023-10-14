@@ -3,7 +3,7 @@ import {
 } from '@mui/joy';
 import React from 'react';
 
-import { useGetAllCategoriesQuery } from '../../features/api/apiSlice';
+import { useGetCategoriesQuery } from '../../features/api/apiSlice';
 import { Category } from '../../features/api/types';
 import { CategoryAccordion, CategoryAccordionProps } from './CategoryAccordion';
 
@@ -16,7 +16,7 @@ export const CategorySelector = ({
   onChange,
   filter,
 }: CategorySelectorProps) => {
-  const { primaryCategories } = useGetAllCategoriesQuery(undefined, {
+  const { primaryCategories } = useGetCategoriesQuery(undefined, {
     selectFromResult: result => ({
       primaryCategories: result.data?.filter(category =>
         filter?.(category) ?? true),

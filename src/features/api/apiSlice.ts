@@ -20,7 +20,6 @@ import {
   CategoryUpdateRequest,
   JwtToken,
   LoginRequest,
-  PaginatedCategoryRequest,
   PaginatedResponse,
   PaginatedTransactionRequest,
   RegistrationRequest,
@@ -51,20 +50,11 @@ export const api = createApi({
       providesTags: ['Account'],
       transformResponse: (response: Account) => camelcaseKeys(response),
     }),
-    getAllCategories: builder.query<Category[], void>({
-      query: () => API_PATHS.getAllCategories,
+    getCategories: builder.query<Category[], void>({
+      query: () => API_PATHS.getCategories,
       providesTags: ['Category'],
-      transformResponse: (response: PaginatedResponse<Category[]>) =>
-        camelcaseKeys(response.results),
+      transformResponse: (response: Category[]) => camelcaseKeys(response),
     }),
-    getCategories: builder
-      .query<PaginatedResponse<Category>, PaginatedCategoryRequest>({
-        query: request => ({
-          url: API_PATHS.getCategories(request.page),
-          params: request.params,
-        }),
-        providesTags: ['Category'],
-      }),
     getCategoryById: builder.query<Category, number>({
       query: API_PATHS.getCategoryById,
       providesTags: ['Category'],
@@ -302,7 +292,6 @@ export const filterCategoriesSelector = createSelector(
 
 export const {
   useGetAccountQuery,
-  useGetAllCategoriesQuery,
   useGetCategoriesQuery,
   useGetCategoryByIdQuery,
   useGetTransactionsQuery,

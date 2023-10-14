@@ -78,9 +78,6 @@ export type CategoryRequestParams = {
   search?: string,
 }
 
-export type PaginatedCategoryRequest =
-  PaginatedParamsRequest<CategoryRequestParams>
-
 export type CategoryCreateRequest = Omit<
   Category, 'id' | 'parentCategory' | 'displayOrder' | 'icon' | 'color'
 > & Partial<Pick<Category, 'icon' | 'color'>>

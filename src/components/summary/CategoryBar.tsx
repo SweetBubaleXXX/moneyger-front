@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 
 import {
   selectCategoryById,
-  useGetAllCategoriesQuery,
+  useGetCategoriesQuery,
 } from '../../features/api/apiSlice';
 import { CategoryStats, CurrencyCode } from '../../features/api/types';
 import { useContrastColor } from '../../hooks/color';
@@ -22,7 +22,7 @@ export const CategoryBar = ({
 }: CategoryBarProps) => {
   const adjustColor = useContrastColor();
 
-  const category = useGetAllCategoriesQuery(undefined, {
+  const category = useGetCategoriesQuery(undefined, {
     selectFromResult: result => ({
       data: selectCategoryById(result.data, stats.id),
       isLoading: result.isFetching,

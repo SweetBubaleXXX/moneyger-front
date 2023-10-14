@@ -31,7 +31,7 @@ import {
   selectCategoryById,
   useCreateSubcategoryMutation,
   useDeleteCategoryMutation,
-  useGetAllCategoriesQuery,
+  useGetCategoriesQuery,
   useUpdateCategoryMutation,
   useUpdateDisplayOrderMutation,
 } from '../features/api/apiSlice';
@@ -58,7 +58,7 @@ export const CategoryView = () => {
     setSubcategoryCreationModalOpen,
   ] = useState<boolean>(false);
 
-  const category = useGetAllCategoriesQuery(undefined, {
+  const category = useGetCategoriesQuery(undefined, {
     selectFromResult: result => ({
       data: selectCategoryById(result.data, categoryId),
       isLoading: result.isFetching,
