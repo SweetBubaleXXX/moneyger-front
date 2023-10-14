@@ -52,12 +52,8 @@ export const api = createApi({
     }),
     getCategories: builder.query<Category[], void>({
       query: () => API_PATHS.getCategories,
-      providesTags: ['Category'],
+      providesTags: ['Account', 'Category'],
       transformResponse: (response: Category[]) => camelcaseKeys(response),
-    }),
-    getCategoryById: builder.query<Category, number>({
-      query: API_PATHS.getCategoryById,
-      providesTags: ['Category'],
     }),
     getTransactions: builder.query<
       PaginatedResponse<EntityState<Transaction>>,
@@ -92,15 +88,6 @@ export const api = createApi({
       forceRefetch({ currentArg, previousArg }) {
         return currentArg?.page !== previousArg?.page;
       },
-      providesTags: ['Transaction'],
-    }),
-    getCategorySummary: builder.query<
-      Summary, TransactionRequestParams & { id: number }
-    >({
-      query: requst => ({
-        url: API_PATHS.getCategorySummary(requst.id),
-        params: decamelizeKeys(requst),
-      }),
       providesTags: ['Account', 'Category', 'Transaction'],
     }),
     getTransactionsSummary: builder.query<Summary, TransactionRequestParams>({
@@ -125,7 +112,7 @@ export const api = createApi({
         method: 'PATCH',
         body: decamelizeKeys(request),
       }),
-      invalidatesTags: ['Account'],
+      invalidatesTags: ['Account', 'Category', 'Transaction'],
     }),
     createCategory: builder.mutation<Category, CategoryCreateRequest>({
       query: request => ({
@@ -293,10 +280,8 @@ export const filterCategoriesSelector = createSelector(
 export const {
   useGetAccountQuery,
   useGetCategoriesQuery,
-  useGetCategoryByIdQuery,
   useGetTransactionsQuery,
   useGetTransactionsSummaryQuery,
-  useGetCategorySummaryQuery,
   useGetCategoriesStatsQuery,
   useUpdateAccountMutation,
   useCreateCategoryMutation,

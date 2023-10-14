@@ -10,11 +10,11 @@ import { ROUTER_PATHS } from '../../pages/constants';
 import { RootState } from '../../store';
 import { setAccessToken } from '../auth/authSlice';
 import { getAuthHeaders } from '../auth/headers';
-import { API_PATHS, EXCLUDE_FROM_REAUTH } from './constants';
+import { API_PATHS, BASE_URL, EXCLUDE_FROM_REAUTH } from './constants';
 
 
 export const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.REACT_APP_API_URL,
+  baseUrl: BASE_URL,
   prepareHeaders: (headers, { getState }) => {
     const state = getState() as RootState;
     const authHeaders = getAuthHeaders(state.auth);
