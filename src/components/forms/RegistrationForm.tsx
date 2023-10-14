@@ -56,7 +56,10 @@ export const RegistrationForm = () => {
           render={({ field }) => (
             <FormControl error={!!errors.username}>
               <FormLabel>Username</FormLabel>
-              <Input {...field} />
+              <Input
+                slotProps={{ input: { autoCapitalize: 'none' } }}
+                {...field}
+              />
               <FormHelperText>
                 {errors.username?.message}
               </FormHelperText>
