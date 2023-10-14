@@ -10,6 +10,7 @@ export const API_PATHS = {
   registerAccount: 'accounts/auth/users/',
   activateAccount: 'accounts/auth/users/activation/',
   resetPassword: 'accounts/auth/users/reset_password/',
+  resetPasswordConfirm: 'accounts/auth/users/reset_password_confirm/',
   setPassword: 'accounts/auth/users/set_password/',
   logout: 'accounts/auth/jwt/logout/',
   getAccount: 'accounts/auth/users/me/',

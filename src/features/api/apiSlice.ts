@@ -23,6 +23,7 @@ import {
   LoginRequest,
   PaginatedResponse,
   PaginatedTransactionRequest,
+  PasswordResetRequest,
   RegistrationRequest,
   RegistrationResponse,
   SetPasswordRequest,
@@ -275,6 +276,13 @@ export const api = createApi({
         body: decamelizeKeys(request),
       }),
     }),
+    resetPasswordConfirm: builder.mutation<void, PasswordResetRequest>({
+      query: request => ({
+        url: API_PATHS.resetPasswordConfirm,
+        method: 'POST',
+        body: decamelizeKeys(request),
+      }),
+    }),
   }),
 });
 
@@ -313,4 +321,5 @@ export const {
   useLogoutMutation,
   useChangePasswordMutation,
   useResetPasswordMutation,
+  useResetPasswordConfirmMutation,
 } = api;

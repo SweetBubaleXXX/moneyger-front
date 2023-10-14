@@ -64,6 +64,11 @@ export type ForgotPasswordRequest = {
   email: string,
 }
 
+export type PasswordResetRequest = {
+  uid: string,
+  token: string,
+  newPassword: string,
+}
 
 export type Category = {
   id: number,
