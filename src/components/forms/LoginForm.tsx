@@ -5,12 +5,14 @@ import {
   FormHelperText,
   FormLabel,
   Input,
+  Link,
   Stack,
 } from '@mui/joy';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { useLoginMutation } from '../../features/api/apiSlice';
@@ -18,6 +20,7 @@ import { LoginSchema } from '../../features/api/schemas';
 import { LoginRequest } from '../../features/api/types';
 import { setAccessToken } from '../../features/auth/authSlice';
 import { hasErrors } from '../../helpers/forms';
+import { ROUTER_PATHS } from '../../pages/constants';
 
 export const LoginForm = () => {
   const navigate = useNavigate();
@@ -91,6 +94,15 @@ export const LoginForm = () => {
               <FormHelperText>
                 {errors.password?.message}
               </FormHelperText>
+              <Link
+                to={ROUTER_PATHS.forgotPassword}
+                component={RouterLink}
+                color="neutral"
+                level="body-sm"
+                mb={1.5}
+              >
+                Forgot password?
+              </Link>
             </FormControl>
           )}
         />

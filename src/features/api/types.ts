@@ -60,6 +60,11 @@ export type SetPasswordRequest = {
   newPassword: string,
 }
 
+export type ForgotPasswordRequest = {
+  email: string,
+}
+
+
 export type Category = {
   id: number,
   parentCategory: number | null,

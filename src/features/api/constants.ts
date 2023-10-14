@@ -9,6 +9,7 @@ export const API_PATHS = {
   refreshToken: 'accounts/auth/jwt/refresh/',
   registerAccount: 'accounts/auth/users/',
   activateAccount: 'accounts/auth/users/activation/',
+  resetPassword: 'accounts/auth/users/reset_password/',
   setPassword: 'accounts/auth/users/set_password/',
   logout: 'accounts/auth/jwt/logout/',
   getAccount: 'accounts/auth/users/me/',

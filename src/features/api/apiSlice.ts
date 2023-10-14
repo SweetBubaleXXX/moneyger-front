@@ -18,6 +18,7 @@ import {
   Category,
   CategoryCreateRequest,
   CategoryUpdateRequest,
+  ForgotPasswordRequest,
   JwtToken,
   LoginRequest,
   PaginatedResponse,
@@ -267,6 +268,13 @@ export const api = createApi({
         body: decamelizeKeys(request),
       }),
     }),
+    resetPassword: builder.mutation<void, ForgotPasswordRequest>({
+      query: request => ({
+        url: API_PATHS.resetPassword,
+        method: 'POST',
+        body: decamelizeKeys(request),
+      }),
+    }),
   }),
 });
 
@@ -304,4 +312,5 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useChangePasswordMutation,
+  useResetPasswordMutation,
 } = api;

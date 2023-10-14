@@ -27,6 +27,10 @@ export const RegistrationSchema = LoginSchema.extend({
   CONFIRM_PASSWORD_REFINE_OPTIONS
 );
 
+export const ForgotPasswordSchema = z.object({
+  email: z.string().email(),
+});
+
 export const ChangePasswordSchema = z.object({
   currentPassword: PasswordField,
   newPassword: PasswordField,
