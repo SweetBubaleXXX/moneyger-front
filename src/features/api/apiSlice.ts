@@ -102,6 +102,12 @@ export const api = createApi({
         url: API_PATHS.getCategoriesStats,
         params: decamelizeKeys(request),
       }),
+      transformResponse: (response: Stats) => ({
+        ...response,
+        categories: response.categories.sort(
+          (a, b) => Math.abs(b.total) - Math.abs(a.total)
+        ),
+      }),
       providesTags: ['Account', 'Category', 'Transaction'],
     }),
     updateAccount: builder.mutation<
