@@ -17,6 +17,7 @@ import { ExportJsonSetting } from '../components/settings/ExportJsonSetting';
 import { ImportJsonSetting } from '../components/settings/ImportJsonSetting';
 import { LogoutButton } from '../components/settings/LogoutButton';
 import { ThemeSetting } from '../components/settings/ThemeSetting';
+import { WebauthnSetting } from '../components/settings/WebauthnSetting';
 import { NavigationBar } from '../components/toolbars/NavigationBar';
 import { useGetAccountQuery } from '../features/api/apiSlice';
 
@@ -49,6 +50,8 @@ export const Settings = () => {
           <CurrencySetting />
           <ListDivider inset="gutter" />
           <ChangePasswordSetting />
+          <ListDivider inset="gutter" />
+          <WebauthnSetting />
           <ListDivider />
           <ListSubheader>Data Management</ListSubheader>
           <ExportCsvSetting />

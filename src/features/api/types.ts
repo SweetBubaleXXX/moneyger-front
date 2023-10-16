@@ -34,12 +34,33 @@ export type JwtToken = {
   refresh: string,
 }
 
+export type GetWebauthnSignupOptionsRequest = {
+  username: string,
+}
+
+export type WebauthnSignupRequest = {
+  username: string, 
+  clientData: ArrayBuffer,
+  attObj: ArrayBuffer,
+}
+
+export type GetWebauthnLoginOptionsRequest = {
+  username: string,
+}
+
+export type WebauthnLoginRequest = {
+  username: string,
+  signature: ArrayBuffer,
+  authData: ArrayBuffer,
+  clientData: ArrayBuffer,
+}
+
 export type CurrencyCode = typeof CURRENCY_CODES[number]
 
 export type TransactionType = 'IN' | 'OUT'
 
 export type TransactionOrdering =
-  'transaction_time' | '-transaction_time'
+'transaction_time' | '-transaction_time'
 
 export type Account = {
   id: number,
