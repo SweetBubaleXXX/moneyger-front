@@ -5,6 +5,9 @@ export const BASE_URL = new URL(
 ).toString();
 
 export const API_PATHS = {
+  webauthnSignupRequest: 'accounts/webauthn/signup_request/',
+  webauthnLoginRequest: 'accounts/webauthn/login_request/',
+  webauthnLogin: 'accounts/webauthn/login/',
   createToken: 'accounts/auth/jwt/create/',
   refreshToken: 'accounts/auth/jwt/refresh/',
   registerAccount: 'accounts/auth/users/',
@@ -21,6 +24,7 @@ export const API_PATHS = {
   createCategory: 'categories/',
   getCategoriesStats: 'categories/stats/',
   getTransactionsSummary: 'transactions/summary/',
+  webauthnSignup: (userId: string) => `accounts/webauthn/signup/${userId}/`,
   getAccountById: (accountId: number) => `accounts/auth/users/${accountId}/`,
   getCategoryById: (categoryId: number) => `categories/${categoryId}/`,
   getSubcategories: (categoryId: number) =>

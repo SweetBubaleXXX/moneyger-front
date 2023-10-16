@@ -1,12 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,
+  Divider,
   FormControl,
   FormHelperText,
   FormLabel,
   Input,
   Stack,
 } from '@mui/joy';
+import { Fingerprint } from 'lucide-react';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -15,6 +17,7 @@ import { useRegisterMutation } from '../../features/api/apiSlice';
 import { RegistrationSchema } from '../../features/api/schemas';
 import { RegistrationRequest } from '../../features/api/types';
 import { hasErrors } from '../../helpers/forms';
+import { WebauthnRegistrationButton } from './WebauthnRegistrationButton';
 
 export const RegistrationForm = () => {
   const {
@@ -115,6 +118,8 @@ export const RegistrationForm = () => {
         >
           Register
         </Button>
+        <Divider>OR</Divider>
+        <WebauthnRegistrationButton />
       </Stack>
     </form>
   );

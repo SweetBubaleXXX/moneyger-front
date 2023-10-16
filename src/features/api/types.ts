@@ -1,3 +1,4 @@
+import { AttestationConveyancePreference, AuthenticatorAttestationResponseJSON } from '@simplewebauthn/typescript-types';
 import { CURRENCY_CODES } from '../../constants';
 
 export type AuthState = {
@@ -38,10 +39,14 @@ export type GetWebauthnSignupOptionsRequest = {
   username: string,
 }
 
-export type WebauthnSignupRequest = {
-  username: string, 
-  clientData: ArrayBuffer,
-  attObj: ArrayBuffer,
+export type WebauthnSignupRequest = AuthenticatorAttestationResponseJSON & {
+  userId: string,
+  username: string,
+}
+
+export type WebauthnSignupResponse = {
+  username: string,
+  id: string,
 }
 
 export type GetWebauthnLoginOptionsRequest = {
@@ -60,7 +65,7 @@ export type CurrencyCode = typeof CURRENCY_CODES[number]
 export type TransactionType = 'IN' | 'OUT'
 
 export type TransactionOrdering =
-'transaction_time' | '-transaction_time'
+  'transaction_time' | '-transaction_time'
 
 export type Account = {
   id: number,

@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,
+  Divider,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -8,6 +9,7 @@ import {
   Link,
   Stack,
 } from '@mui/joy';
+import { Fingerprint } from 'lucide-react';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -112,6 +114,13 @@ export const LoginForm = () => {
           loading={isLoading}
         >
           Login
+        </Button>
+        <Divider>OR</Divider>
+        <Button
+          variant="outlined"
+          startDecorator={<Fingerprint />}
+        >
+          Login with WebAuthn
         </Button>
       </Stack>
     </form>

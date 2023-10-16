@@ -8,6 +8,7 @@ import {
 } from '@reduxjs/toolkit/query/react';
 import camelcaseKeys from 'camelcase-keys';
 import decamelizeKeys from 'decamelize-keys';
+import { AuthenticatorAttestationResponse, AuthenticatorAttestationResponseJSON, PublicKeyCredential, PublicKeyCredentialCreationOptionsJSON } from '@simplewebauthn/typescript-types'
 
 import { API_PATHS } from './constants';
 import { baseQueryWithReauth } from './queries';
@@ -19,6 +20,7 @@ import {
   CategoryCreateRequest,
   CategoryUpdateRequest,
   ForgotPasswordRequest,
+  GetWebauthnSignupOptionsRequest,
   JwtToken,
   LoginRequest,
   PaginatedResponse,
@@ -35,7 +37,10 @@ import {
   TransactionCreateUpdateRequest,
   TransactionMutationParams,
   TransactionRequestParams,
+  WebauthnSignupRequest,
+  WebauthnSignupResponse,
 } from './types';
+import { startRegistration } from '@simplewebauthn/browser';
 
 export const transactionsAdapter = createEntityAdapter<Transaction>({
   selectId: transaction => transaction.id,
@@ -249,17 +254,42 @@ export const api = createApi({
         body,
       }),
     }),
+    logout: builder.mutation<void, void>({
+      query: () => ({
+        url: API_PATHS.logout,
+        method: 'POST',
+      }),
+    }),
+    getWebauthnSignupOptions: builder.mutation<
+      PublicKeyCredentialCreationOptionsJSON, GetWebauthnSignupOptionsRequest
+    >({
+      query: request => ({
+        url: API_PATHS.webauthnSignupRequest,
+        method: 'POST',
+        body: {
+          username: request.username,
+          displayName: request.username,
+        },
+      }),
+    }),
+    webauthnSignup: builder.mutation<
+      WebauthnSignupResponse, WebauthnSignupRequest
+    >({
+      query: request => ({
+        url: API_PATHS.webauthnSignup(request.userId),
+        method: 'POST',
+        body: {
+          username: request.username,
+          attObj: request.attestationObject,
+          clientData: request.clientDataJSON,
+        }
+      })
+    }),
     activateAccount: builder.mutation<void, AccountActivationRequest>({
       query: request => ({
         url: API_PATHS.activateAccount,
         method: 'POST',
         body: decamelizeKeys(request),
-      }),
-    }),
-    logout: builder.mutation<void, void>({
-      query: () => ({
-        url: API_PATHS.logout,
-        method: 'POST',
       }),
     }),
     changePassword: builder.mutation<void, SetPasswordRequest>({
@@ -298,7 +328,6 @@ export const filterCategoriesSelector = createSelector(
   (_: any, filter?: (category: Category) => boolean) => filter || (() => true),
   (data, filter) => data?.filter(filter)
 );
-
 export const {
   useGetAccountQuery,
   useGetCategoriesQuery,
@@ -314,6 +343,8 @@ export const {
   useCreateTransactionMutation,
   useUpdateTransactionMutation,
   useDeleteTransactionMutation,
+  useGetWebauthnSignupOptionsMutation,
+  useWebauthnSignupMutation,
   useActivateAccountMutation,
   useImportJsonMutation,
   useLoginMutation,

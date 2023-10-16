@@ -11,11 +11,13 @@ const CONFIRM_PASSWORD_REFINE_OPTIONS = {
 export const PasswordField = z.string()
   .min(8, { message: 'Password must contain at least 8 characters' });
 
+export const UsernameField = z.string()
+  .nonempty('Username is required')
+  .regex(/^[\w.@+-]+$/, 'Letters, digits and @/./+/-/_ only')
+  .max(150);
+
 export const LoginSchema = z.object({
-  username: z.string()
-    .nonempty('Username is required')
-    .regex(/^[\w.@+-]+$/, 'Letters, digits and @/./+/-/_ only')
-    .max(150),
+  username: UsernameField,
   password: PasswordField,
 });
 
@@ -26,6 +28,10 @@ export const RegistrationSchema = LoginSchema.extend({
   data => data.password === data.confirmPassword,
   CONFIRM_PASSWORD_REFINE_OPTIONS
 );
+
+export const WebauthnRegistrationSchema = z.object({
+  username: UsernameField,
+});
 
 export const ForgotPasswordSchema = z.object({
   email: z.string().email(),
