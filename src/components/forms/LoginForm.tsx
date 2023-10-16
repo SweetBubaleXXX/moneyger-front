@@ -29,7 +29,7 @@ export const LoginForm = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState,
   } = useForm<LoginRequest>(
     { resolver: zodResolver(LoginSchema) }
   );
@@ -71,14 +71,14 @@ export const LoginForm = () => {
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <FormControl error={!!errors.username}>
+            <FormControl error={!!formState.errors.username}>
               <FormLabel>Username</FormLabel>
               <Input
                 slotProps={{ input: { autoCapitalize: 'none' } }}
                 {...field}
               />
               <FormHelperText>
-                {errors.username?.message}
+                {formState.errors.username?.message}
               </FormHelperText>
             </FormControl>
           )}
@@ -88,11 +88,11 @@ export const LoginForm = () => {
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <FormControl error={!!errors.password}>
+            <FormControl error={!!formState.errors.password}>
               <FormLabel>Password</FormLabel>
               <Input type="password" {...field} />
               <FormHelperText>
-                {errors.password?.message}
+                {formState.errors.password?.message}
               </FormHelperText>
               <Link
                 to={ROUTER_PATHS.forgotPassword}
@@ -108,7 +108,7 @@ export const LoginForm = () => {
         />
         <Button
           type="submit"
-          disabled={hasErrors(errors)}
+          disabled={hasErrors(formState)}
           loading={isLoading}
         >
           Login

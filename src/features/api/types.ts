@@ -70,6 +70,10 @@ export type PasswordResetRequest = {
   newPassword: string,
 }
 
+export type PasswordResetForm = Pick<
+  PasswordResetRequest, 'newPassword'
+> & { confirmPassword: string }
+
 export type Category = {
   id: number,
   parentCategory: number | null,

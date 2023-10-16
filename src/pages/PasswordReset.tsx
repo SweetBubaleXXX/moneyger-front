@@ -71,6 +71,7 @@ export const PasswordReset = () => {
                       endDecorator={
                         <Button
                           type="submit"
+                          loading={result.isLoading}
                           disabled={!!formState.errors.email}
                         >
                           Send

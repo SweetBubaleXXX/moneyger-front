@@ -31,6 +31,14 @@ export const ForgotPasswordSchema = z.object({
   email: z.string().email(),
 });
 
+export const PasswordResetSchema = z.object({
+  newPassword: PasswordField,
+  confirmPassword: z.string(),
+}).refine(
+  data => data.newPassword === data.confirmPassword,
+  CONFIRM_PASSWORD_REFINE_OPTIONS
+);
+
 export const ChangePasswordSchema = z.object({
   currentPassword: PasswordField,
   newPassword: PasswordField,
