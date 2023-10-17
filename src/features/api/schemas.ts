@@ -31,6 +31,7 @@ export const RegistrationSchema = LoginSchema.extend({
 
 export const WebauthnRegistrationSchema = z.object({
   username: UsernameField,
+  email: z.string().email(),
 });
 
 export const ForgotPasswordSchema = z.object({

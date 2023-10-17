@@ -1,4 +1,5 @@
 import { AttestationConveyancePreference, AuthenticatorAttestationResponseJSON } from '@simplewebauthn/typescript-types';
+
 import { CURRENCY_CODES } from '../../constants';
 
 export type AuthState = {
@@ -37,11 +38,15 @@ export type JwtToken = {
 
 export type GetWebauthnSignupOptionsRequest = {
   username: string,
+  email: string,
 }
 
-export type WebauthnSignupRequest = AuthenticatorAttestationResponseJSON & {
+export type WebauthnSignupRequest = Pick<
+  AuthenticatorAttestationResponseJSON, 'attestationObject' | 'clientDataJSON'
+> & {
   userId: string,
   username: string,
+  email: string,
 }
 
 export type WebauthnSignupResponse = {

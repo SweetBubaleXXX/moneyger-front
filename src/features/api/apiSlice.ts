@@ -6,9 +6,11 @@ import {
 import {
   createApi,
 } from '@reduxjs/toolkit/query/react';
+import {
+  PublicKeyCredentialCreationOptionsJSON,
+} from '@simplewebauthn/typescript-types';
 import camelcaseKeys from 'camelcase-keys';
 import decamelizeKeys from 'decamelize-keys';
-import { AuthenticatorAttestationResponse, AuthenticatorAttestationResponseJSON, PublicKeyCredential, PublicKeyCredentialCreationOptionsJSON } from '@simplewebauthn/typescript-types'
 
 import { API_PATHS } from './constants';
 import { baseQueryWithReauth } from './queries';
@@ -40,7 +42,6 @@ import {
   WebauthnSignupRequest,
   WebauthnSignupResponse,
 } from './types';
-import { startRegistration } from '@simplewebauthn/browser';
 
 export const transactionsAdapter = createEntityAdapter<Transaction>({
   selectId: transaction => transaction.id,
@@ -266,10 +267,10 @@ export const api = createApi({
       query: request => ({
         url: API_PATHS.webauthnSignupRequest,
         method: 'POST',
-        body: {
+        body: decamelizeKeys({
           username: request.username,
           displayName: request.username,
-        },
+        }),
       }),
     }),
     webauthnSignup: builder.mutation<
@@ -280,10 +281,11 @@ export const api = createApi({
         method: 'POST',
         body: {
           username: request.username,
+          email: request.email,
           attObj: request.attestationObject,
           clientData: request.clientDataJSON,
-        }
-      })
+        },
+      }),
     }),
     activateAccount: builder.mutation<void, AccountActivationRequest>({
       query: request => ({
