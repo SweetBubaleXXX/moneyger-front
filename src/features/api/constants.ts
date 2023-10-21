@@ -1,6 +1,6 @@
 import { getPaginationQuery } from '../../helpers/pagination';
 
-export const BASE_URL = process.env.REACT_APP_API_URL || 'api/';
+export const BASE_URL = process.env.REACT_APP_API_URL || '/api/';
 
 export const API_PATHS = {
   createToken: 'accounts/auth/jwt/create/',
