@@ -63,6 +63,7 @@ export const ForgotPasswordForm = () => {
                   Send
                 </Button>
               }
+              sx={{ '--Input-decoratorChildHeight': '33px' }}
             />
             <FormHelperText>
               {formState.errors.email?.message}
