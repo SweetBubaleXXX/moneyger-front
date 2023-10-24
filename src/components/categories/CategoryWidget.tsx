@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Box,
   Button,
   Sheet,
   Skeleton,
@@ -77,7 +76,7 @@ export const CategoryWidget = ({
           </Sheet>
           {
             draggable &&
-            <Box
+            <Stack
               padding={1}
               style={{
                 cursor: 'move',
@@ -86,7 +85,7 @@ export const CategoryWidget = ({
               onPointerDown={e => dragControls.start(e)}
             >
               <Grip />
-            </Box>
+            </Stack>
           }
         </Stack>
       </Button>
