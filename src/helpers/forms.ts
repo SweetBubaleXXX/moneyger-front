@@ -1,4 +1,4 @@
-import { FieldError, FieldErrors } from 'react-hook-form';
+import { FieldError, FormState } from 'react-hook-form';
 import { toast } from 'sonner';
 
 export const toastCategoryNameError = (error?: FieldError) => {
@@ -9,5 +9,5 @@ export const toastCategoryNameError = (error?: FieldError) => {
   }
 };
 
-export const hasErrors = (errors: FieldErrors) =>
-  Object.values(errors).some(fieldError => !!fieldError);
+export const hasErrors = (form: FormState<any>) =>
+  Object.values(form.errors).some(fieldError => !!fieldError);

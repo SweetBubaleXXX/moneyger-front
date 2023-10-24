@@ -3,13 +3,13 @@ import { toast } from 'sonner';
 
 import { PRESET_CATEGORIES } from '../constants';
 import {
-  useGetAllCategoriesQuery,
+  useGetCategoriesQuery,
   useImportJsonMutation,
 } from '../features/api/apiSlice';
 
 export const usePromptForPresetCategoriesCreation = () => {
   const [importCategories, results] = useImportJsonMutation();
-  const categories = useGetAllCategoriesQuery();
+  const categories = useGetCategoriesQuery();
   const [noCategories, setNoCategories] = useState(false);
 
   useEffect(() => {

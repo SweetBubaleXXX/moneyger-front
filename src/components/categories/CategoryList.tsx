@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 
 import {
   filterCategoriesSelector,
-  useGetAllCategoriesQuery,
+  useGetCategoriesQuery,
 } from '../../features/api/apiSlice';
 import { Category } from '../../features/api/types';
 import { CategoryWidget } from './CategoryWidget';
@@ -28,7 +28,7 @@ export const CategoryList = ({
   onItemClick,
   sx,
 }: CategoryListProps) => {
-  const categories = useGetAllCategoriesQuery(undefined, {
+  const categories = useGetCategoriesQuery(undefined, {
     selectFromResult: result => ({
       data: filterCategoriesSelector(result.data, filter),
       isLoading: result.isFetching,

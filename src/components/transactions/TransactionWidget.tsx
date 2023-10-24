@@ -22,7 +22,7 @@ import React, { useEffect, useState } from 'react';
 import {
   selectCategoryById,
   useDeleteTransactionMutation,
-  useGetAllCategoriesQuery,
+  useGetCategoriesQuery,
 } from '../../features/api/apiSlice';
 import {
   PaginatedTransactionRequest,
@@ -62,7 +62,7 @@ export const TransactionWidget = ({
 
   const [deleteTransaction, deletionResult] = useDeleteTransactionMutation();
 
-  const category = useGetAllCategoriesQuery(undefined, {
+  const category = useGetCategoriesQuery(undefined, {
     selectFromResult: ({ data, isLoading }) => ({
       data: selectCategoryById(data, transaction.category),
       isLoading,

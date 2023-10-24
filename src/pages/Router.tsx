@@ -9,6 +9,8 @@ import { ROUTER_PATHS } from './constants';
 import { ErrorPage } from './ErrorPage';
 import { Home } from './Home';
 import { Login } from './Login';
+import { PasswordReset } from './PasswordReset';
+import { PasswordResetConfirm } from './PasswordResetConfirm';
 import { Settings } from './Settings';
 import { Transactions } from './Transactions';
 
@@ -18,6 +20,11 @@ export const Router = () => {
       <Routes>
         <Route path={ROUTER_PATHS.home} Component={Home} />
         <Route path={ROUTER_PATHS.login} Component={Login} />
+        <Route path={ROUTER_PATHS.forgotPassword} Component={PasswordReset} />
+        <Route
+          path={ROUTER_PATHS.passwordReset}
+          Component={PasswordResetConfirm}
+        />
         <Route
           path={ROUTER_PATHS.activateAccount}
           Component={AccountActivation}
