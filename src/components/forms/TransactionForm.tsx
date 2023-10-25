@@ -20,9 +20,7 @@ import { toast } from 'sonner';
 
 import { CURRENCY_CODES, DATETIME_INPUT_FORMAT } from '../../constants';
 import {
-  selectCategoryById,
   useGetAccountQuery,
-  useGetCategoriesQuery,
 } from '../../features/api/apiSlice';
 import { TransactionSchema } from '../../features/api/schemas';
 import {
@@ -31,6 +29,7 @@ import {
   Transaction,
   TransactionCreateUpdateRequest,
 } from '../../features/api/types';
+import { useCategoryById } from '../../hooks/category';
 import { CategoryIcon } from '../categories/CategoryIcon';
 import { CategorySelectorDrawer } from '../categories/CategorySelectorDrawer';
 
@@ -54,12 +53,7 @@ export const TransactionForm = ({
 
   const account = useGetAccountQuery();
 
-  const initialCategory = useGetCategoriesQuery(undefined, {
-    selectFromResult: ({ data, isLoading }) => ({
-      data: selectCategoryById(data, initialValue?.category),
-      isLoading,
-    }),
-  });
+  const initialCategory = useCategoryById(initialValue?.category);
 
   const [category, setCategory] = useState<Category | undefined>();
 

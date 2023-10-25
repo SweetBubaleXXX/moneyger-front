@@ -1,14 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Stack } from '@mui/joy';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'sonner';
 
 import { useResetPasswordConfirmMutation } from '../../features/api/apiSlice';
 import { PasswordResetSchema } from '../../features/api/schemas';
 import { PasswordResetForm } from '../../features/api/types';
 import { hasErrors } from '../../helpers/forms';
+import {
+  useErrorSnackbar,
+  useFormErrorsSnackbar,
+  useSuccessSnackbar,
+} from '../../hooks/snackbar';
 import { ROUTER_PATHS } from '../../pages/constants';
 import { PasswordField } from './PasswordField';
 
@@ -31,24 +35,15 @@ export const ResetPasswordForm = () => {
     newPassword: formData.newPassword,
   }));
 
-  useEffect(() => {
-    for (const error of Object.values(formState.errors)) {
-      toast.error(error.message);
-    }
-  }, [formState.errors]);
+  useFormErrorsSnackbar(formState);
 
-  useEffect(() => {
-    if (result.isError) {
-      toast.error('Failed to change password');
-    }
-  }, [result.isError]);
+  useErrorSnackbar('Failed to change password', result);
 
-  useEffect(() => {
-    if (result.isSuccess) {
-      toast.success('Password changed');
-      navigate(ROUTER_PATHS.login);
-    }
-  }, [result.isSuccess, navigate]);
+  useSuccessSnackbar(
+    'Password changed',
+    result,
+    () => navigate(ROUTER_PATHS.login)
+  );
 
   return (
     <form onSubmit={onSubmit}>

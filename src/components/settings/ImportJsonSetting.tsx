@@ -9,6 +9,8 @@ import React, { useEffect } from 'react';
 import { toast } from 'sonner';
 
 import { useImportJsonMutation } from '../../features/api/apiSlice';
+import { createFileReader } from '../../features/export/fileReader';
+import { useSuccessSnackbar } from '../../hooks/snackbar';
 
 export const ImportJsonSetting = () => {
   const [importData, result] = useImportJsonMutation();
@@ -17,23 +19,15 @@ export const ImportJsonSetting = () => {
     description: message,
   });
 
-  const fileReader = new FileReader();
+  const fileReader = createFileReader(
+    importData,
+    () => onError('Failed to parse file content'),
+  );
 
-  fileReader.onload = e => {
-    if (!e.target?.result) { return; }
-    let fileContent: string;
-    if (e.target.result instanceof ArrayBuffer) {
-      const decoder = new TextDecoder();
-      fileContent = decoder.decode(e.target.result);
-    } else {
-      fileContent = e.target.result;
-    }
-    try {
-      const parsedContent = JSON.parse(fileContent);
-      importData(parsedContent);
-    } catch {
-      onError('Failed to parse file content');
-    }
+  const onFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    file && fileReader.readAsText(file);
+    e.target.value = '';
   };
 
   useEffect(() => {
@@ -42,11 +36,7 @@ export const ImportJsonSetting = () => {
     }
   }, [result.isError]);
 
-  useEffect(() => {
-    if (result.isSuccess) {
-      toast.success('Successfully imported');
-    }
-  }, [result.isSuccess]);
+  useSuccessSnackbar('Successfully imported', result);
 
   return (
     <ListItem endAction={
@@ -63,11 +53,7 @@ export const ImportJsonSetting = () => {
           slotProps={{
             input: { accept: 'application/json' },
           }}
-          onChange={e => {
-            const file = e.target.files?.[0];
-            file && fileReader.readAsText(file);
-            e.target.value = '';
-          }}
+          onChange={onFileSelected}
           sx={{
             clip: 'rect(0 0 0 0)',
             clipPath: 'inset(50%)',

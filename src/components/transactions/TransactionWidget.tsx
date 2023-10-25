@@ -20,14 +20,13 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 
 import {
-  selectCategoryById,
   useDeleteTransactionMutation,
-  useGetCategoriesQuery,
 } from '../../features/api/apiSlice';
 import {
   PaginatedTransactionRequest,
   Transaction,
 } from '../../features/api/types';
+import { useCategoryById } from '../../hooks/category';
 import { CategoryIcon } from '../categories/CategoryIcon';
 import { ConfirmationModal } from '../ConfirmationModal';
 import { TransactionCreationModal } from './TransactionCreationModal';
@@ -62,12 +61,7 @@ export const TransactionWidget = ({
 
   const [deleteTransaction, deletionResult] = useDeleteTransactionMutation();
 
-  const category = useGetCategoriesQuery(undefined, {
-    selectFromResult: ({ data, isLoading }) => ({
-      data: selectCategoryById(data, transaction.category),
-      isLoading,
-    }),
-  });
+  const category = useCategoryById(transaction.category);
 
   const loading = isLoading || category.isLoading;
 

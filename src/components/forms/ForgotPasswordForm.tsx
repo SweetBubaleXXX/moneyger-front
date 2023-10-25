@@ -6,20 +6,20 @@ import {
   FormHelperText,
   Input,
 } from '@mui/joy';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
 
 import { useResetPasswordMutation } from '../../features/api/apiSlice';
 import { ForgotPasswordSchema } from '../../features/api/schemas';
 import { ForgotPasswordRequest } from '../../features/api/types';
+import { useErrorSnackbar, useSuccessSnackbar } from '../../hooks/snackbar';
 import { ROUTER_PATHS } from '../../pages/constants';
 
 
 export const ForgotPasswordForm = () => {
   const navigate = useNavigate();
-  const [resetPasword, result] = useResetPasswordMutation();
+  const [resetPassword, result] = useResetPasswordMutation();
 
   const {
     control,
@@ -29,21 +29,16 @@ export const ForgotPasswordForm = () => {
     { resolver: zodResolver(ForgotPasswordSchema) }
   );
 
-  useEffect(() => {
-    if (result.isError) {
-      toast.error('Failed to send email');
-    }
-  }, [result.isError]);
+  useErrorSnackbar('Failed to send email', result);
 
-  useEffect(() => {
-    if (result.isSuccess) {
-      toast.success('Check email for reset link');
-      navigate(ROUTER_PATHS.login);
-    }
-  }, [result.isSuccess, navigate]);
+  useSuccessSnackbar(
+    'Check email for reset link',
+    result,
+    () => navigate(ROUTER_PATHS.login),
+  );
 
   return (
-    <form onSubmit={handleSubmit(resetPasword)}>
+    <form onSubmit={handleSubmit(resetPassword)}>
       <Controller
         name="email"
         control={control}

@@ -1,9 +1,9 @@
 import { Button, Stack } from '@mui/joy';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'sonner';
 
 import { useActivateAccountMutation } from '../features/api/apiSlice';
+import { useErrorSnackbar, useSuccessSnackbar } from '../hooks/snackbar';
 import { ROUTER_PATHS } from './constants';
 
 export const AccountActivation = () => {
@@ -11,18 +11,13 @@ export const AccountActivation = () => {
   const [activateAccount, result] = useActivateAccountMutation();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (result.isError) {
-      toast.error('Failed to activate account');
-    }
-  }, [result.isError]);
+  useErrorSnackbar('Failed to activate account', result);
 
-  useEffect(() => {
-    if (result.isSuccess) {
-      toast.success('Account activated');
-      navigate(ROUTER_PATHS.login);
-    }
-  }, [result.isSuccess, navigate]);
+  useSuccessSnackbar(
+    'Account activated',
+    result,
+    () => navigate(ROUTER_PATHS.login)
+  );
 
   return (
     <Stack

@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { toast } from 'sonner';
+import React from 'react';
 
 import { useCreateTransactionMutation } from '../../features/api/apiSlice';
 import { Transaction } from '../../features/api/types';
+import { useErrorSnackbar, useSuccessSnackbar } from '../../hooks/snackbar';
 import { TransactionForm } from '../forms/TransactionForm';
 import {
   BaseTransactionModalProps,
@@ -19,19 +19,9 @@ export const TransactionCreationModal = ({
 }: TransactionCreationModalProps) => {
   const [createTransaction, result] = useCreateTransactionMutation();
 
-  useEffect(() => {
-    if (result.isError) {
-      toast.error('Failed to add transaction');
-    }
-  }, [result.isError]);
+  useErrorSnackbar('Failed to add transaction', result);
 
-  useEffect(() => {
-    if (result.isSuccess) {
-      toast.success('Transaction added');
-      onClose(false);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [result.isSuccess]);
+  useSuccessSnackbar('Transaction added', result);
 
   return (
     <TransactionModal

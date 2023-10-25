@@ -167,7 +167,7 @@ export const PRESET_CATEGORIES = [
   },
   {
     'transaction_type': 'OUT',
-    'name': 'Clothing & Appearence',
+    'name': 'Clothing & Appearance',
     'display_order': 4,
     'icon': 'Shirt',
     'color': '#4400ff',

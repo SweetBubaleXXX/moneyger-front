@@ -39,23 +39,6 @@ export const CategoriesStatsWidget = ({
     return null;
   }
 
-  const categories = stats.data?.categories.map((categoryStats, index) =>
-    !!categoryStats.total &&
-    <ListItem key={index}>
-      <ListItemButton onClick={() => navigate(
-        ROUTER_PATHS.getCategoryStatsById(categoryStats.id)
-      )}>
-        <ListItemContent>
-          <CategoryBar
-            stats={categoryStats}
-            total={stats.data!.total}
-            currency={stats.data?.currency}
-          />
-        </ListItemContent>
-      </ListItemButton>
-    </ListItem>
-  );
-
   return (
     <>
       <Box
@@ -76,7 +59,22 @@ export const CategoriesStatsWidget = ({
                     <CircularProgress />
                   </Box>
                   :
-                  categories
+                  stats.data?.categories.map((categoryStats, index) =>
+                    !!categoryStats.total &&
+                    <ListItem key={index}>
+                      <ListItemButton onClick={() => navigate(
+                        ROUTER_PATHS.getCategoryStatsById(categoryStats.id)
+                      )}>
+                        <ListItemContent>
+                          <CategoryBar
+                            stats={categoryStats}
+                            total={stats.data!.total}
+                            currency={stats.data?.currency}
+                          />
+                        </ListItemContent>
+                      </ListItemButton>
+                    </ListItem>
+                  )
               }
             </List>
           </CardContent>

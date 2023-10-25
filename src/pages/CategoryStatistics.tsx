@@ -13,23 +13,15 @@ import {
   CategoryStatsTopbar,
 } from '../components/toolbars/CategoryStatsTopbar';
 import { NavigationBar } from '../components/toolbars/NavigationBar';
-import {
-  selectCategoryById,
-  useGetCategoriesQuery,
-} from '../features/api/apiSlice';
 import { parsePeriodFilters } from '../helpers/period';
+import { useCategoryById } from '../hooks/category';
 import { useCategoryIdParam } from '../hooks/params';
 
 export const CategoryStatistics = () => {
   const categoryId = useCategoryIdParam();
   const [period, setPeriod] = useState<Period>(DEFAULT_PERIOD);
 
-  const category = useGetCategoriesQuery(undefined, {
-    selectFromResult: ({ data, isLoading }) => ({
-      data: selectCategoryById(data, categoryId),
-      isLoading,
-    }),
-  });
+  const category = useCategoryById(categoryId);
 
   const periodFilters = parsePeriodFilters(period);
 

@@ -12,6 +12,7 @@ import {
 import { useMediaQuery } from '@mui/material';
 import React from 'react';
 
+import { TRANSACTION_TYPES } from '../../constants';
 import { Category } from '../../features/api/types';
 import { CategorySelector } from './CategorySelector';
 
@@ -45,7 +46,7 @@ export const CategorySelectorDrawer = ({
             <Tab value="IN">INCOME</Tab>
           </TabList>
           {
-            ['OUT', 'IN'].map(value =>
+            TRANSACTION_TYPES.map(value =>
               <TabPanel key={value} value={value}>
                 <CategorySelector
                   selected={category}

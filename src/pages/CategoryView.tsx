@@ -7,7 +7,6 @@ import {
 import { usePrevious } from '@uidotdev/usehooks';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
 
 import { CategoryList } from '../components/categories/CategoryList';
 import { CategoryModal } from '../components/categories/CategoryModal';
@@ -28,14 +27,14 @@ import { CategoryViewTopbar } from '../components/toolbars/CategoryViewTopbar';
 import { NavigationBar } from '../components/toolbars/NavigationBar';
 import { SavingToolbar } from '../components/toolbars/SavingToolbar';
 import {
-  selectCategoryById,
   useCreateSubcategoryMutation,
   useDeleteCategoryMutation,
-  useGetCategoriesQuery,
   useUpdateCategoryMutation,
   useUpdateDisplayOrderMutation,
 } from '../features/api/apiSlice';
+import { useCategoryById } from '../hooks/category';
 import { useCategoryIdParam } from '../hooks/params';
+import { useErrorSnackbar, useSuccessSnackbar } from '../hooks/snackbar';
 import {
   CATEGORY_BOTTOM_TOOLBAR_PROPS,
   CATEGORY_LIST_OFFSET_FOR_TOOLBAR,
@@ -58,12 +57,7 @@ export const CategoryView = () => {
     setSubcategoryCreationModalOpen,
   ] = useState<boolean>(false);
 
-  const category = useGetCategoriesQuery(undefined, {
-    selectFromResult: result => ({
-      data: selectCategoryById(result.data, categoryId),
-      isLoading: result.isFetching,
-    }),
-  });
+  const category = useCategoryById(categoryId);
 
   const [
     updateDisplayOrder,
@@ -86,50 +80,31 @@ export const CategoryView = () => {
     }
   }, [categoryId, previousCategoryId]);
 
-  useEffect(() => {
-    if (subcategoryCreationResult.isError) {
-      toast.error('Failed to add subcategory');
-    }
-  }, [subcategoryCreationResult.isError]);
+  useErrorSnackbar('Failed to add subcategory', subcategoryCreationResult);
 
-  useEffect(() => {
-    if (subcategoryCreationResult.isSuccess) {
-      toast.success('Subcategory added');
-      setSubcategoryCreationModalOpen(false);
-    }
-  }, [subcategoryCreationResult.isSuccess]);
+  useSuccessSnackbar(
+    'Subcategory added',
+    subcategoryCreationResult,
+    () => setSubcategoryCreationModalOpen(false)
+  );
 
-  useEffect(() => {
-    if (updateResult.isSuccess) {
-      toast.success('Category updated');
-      setEditing(false);
-    }
-  }, [updateResult.isSuccess]);
+  useSuccessSnackbar(
+    'Category updated',
+    updateResult,
+    () => setEditing(false)
+  );
 
-  useEffect(() => {
-    if (updateResult.isError) {
-      toast.error('Failed to update category');
-    }
-  }, [updateResult.isError]);
+  useErrorSnackbar('Failed to update category', updateResult);
 
-  useEffect(() => {
-    if (displayOrderUpdateResult.isSuccess) {
-      toast.success('Saved');
-    }
-  }, [displayOrderUpdateResult.isSuccess]);
+  useSuccessSnackbar('Saved', displayOrderUpdateResult);
 
-  useEffect(() => {
-    if (deletionResult.isError) {
-      toast.error('Failed to delete category');
-    }
-  }, [deletionResult.isError]);
+  useErrorSnackbar('Failed to delete category', deletionResult);
 
-  useEffect(() => {
-    if (deletionResult.isSuccess) {
-      toast.success('Category deleted');
-      navigate(-1);
-    }
-  }, [deletionResult.isSuccess, navigate]);
+  useSuccessSnackbar(
+    'Category deleted',
+    deletionResult,
+    () => navigate(-1),
+  );
 
   return (
     <>

@@ -4,8 +4,7 @@ import {
   Option,
   Select,
 } from '@mui/joy';
-import React, { useEffect } from 'react';
-import { toast } from 'sonner';
+import React from 'react';
 
 import { CURRENCY_CODES } from '../../constants';
 import {
@@ -13,6 +12,7 @@ import {
   useUpdateAccountMutation,
 } from '../../features/api/apiSlice';
 import { CurrencyCode } from '../../features/api/types';
+import { useErrorSnackbar } from '../../hooks/snackbar';
 
 export const CurrencySetting = () => {
   const account = useGetAccountQuery();
@@ -26,11 +26,7 @@ export const CurrencySetting = () => {
     });
   };
 
-  useEffect(() => {
-    if (result.isError) {
-      toast.error('Failed to update account');
-    }
-  }, [result.isError]);
+  useErrorSnackbar('Failed to update account', result);
 
   return (
     <ListItem endAction={

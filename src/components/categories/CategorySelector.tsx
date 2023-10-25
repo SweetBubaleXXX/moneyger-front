@@ -3,8 +3,8 @@ import {
 } from '@mui/joy';
 import React from 'react';
 
-import { useGetCategoriesQuery } from '../../features/api/apiSlice';
 import { Category } from '../../features/api/types';
+import { useCategories } from '../../hooks/category';
 import { CategoryAccordion, CategoryAccordionProps } from './CategoryAccordion';
 
 export type CategorySelectorProps = Omit<CategoryAccordionProps, 'category'> & {
@@ -16,17 +16,12 @@ export const CategorySelector = ({
   onChange,
   filter,
 }: CategorySelectorProps) => {
-  const { primaryCategories } = useGetCategoriesQuery(undefined, {
-    selectFromResult: result => ({
-      primaryCategories: result.data?.filter(category =>
-        filter?.(category) ?? true),
-    }),
-  });
+  const categories = useCategories(filter);
 
   return (
     <AccordionGroup>
       {
-        primaryCategories?.sort((a, b) => a.displayOrder - b.displayOrder).map(
+        categories.data?.sort((a, b) => a.displayOrder - b.displayOrder).map(
           category =>
             <CategoryAccordion
               key={category.id}

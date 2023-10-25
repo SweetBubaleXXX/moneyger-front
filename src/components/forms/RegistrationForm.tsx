@@ -15,6 +15,7 @@ import { useRegisterMutation } from '../../features/api/apiSlice';
 import { RegistrationSchema } from '../../features/api/schemas';
 import { RegistrationRequest } from '../../features/api/types';
 import { hasErrors } from '../../helpers/forms';
+import { useSuccessSnackbar } from '../../hooks/snackbar';
 
 export const RegistrationForm = () => {
   const {
@@ -39,12 +40,11 @@ export const RegistrationForm = () => {
     }
   }, [isError, registrationError]);
 
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success('A verification link has been sent to your email address');
-      resetForm();
-    }
-  }, [isSuccess, resetForm]);
+  useSuccessSnackbar(
+    'A verification link has been sent to your email address',
+    { isSuccess },
+    resetForm
+  );
 
   return (
     <form onSubmit={handleSubmit(register)}>
