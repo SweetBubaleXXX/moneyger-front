@@ -60,6 +60,20 @@ export type SetPasswordRequest = {
   newPassword: string,
 }
 
+export type ForgotPasswordRequest = {
+  email: string,
+}
+
+export type PasswordResetRequest = {
+  uid: string,
+  token: string,
+  newPassword: string,
+}
+
+export type PasswordResetForm = Pick<
+  PasswordResetRequest, 'newPassword'
+> & { confirmPassword: string }
+
 export type Category = {
   id: number,
   parentCategory: number | null,
@@ -77,9 +91,6 @@ export type CategoryRequestParams = {
   ordering?: string,
   search?: string,
 }
-
-export type PaginatedCategoryRequest =
-  PaginatedParamsRequest<CategoryRequestParams>
 
 export type CategoryCreateRequest = Omit<
   Category, 'id' | 'parentCategory' | 'displayOrder' | 'icon' | 'color'

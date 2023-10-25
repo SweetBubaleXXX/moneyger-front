@@ -3,11 +3,8 @@ import { SxProps } from '@mui/joy/styles/types';
 import { Reorder } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 
-import {
-  filterCategoriesSelector,
-  useGetAllCategoriesQuery,
-} from '../../features/api/apiSlice';
 import { Category } from '../../features/api/types';
+import { useCategories } from '../../hooks/category';
 import { CategoryWidget } from './CategoryWidget';
 import { REORDER_FORM_ID } from './constants';
 
@@ -28,12 +25,7 @@ export const CategoryList = ({
   onItemClick,
   sx,
 }: CategoryListProps) => {
-  const categories = useGetAllCategoriesQuery(undefined, {
-    selectFromResult: result => ({
-      data: filterCategoriesSelector(result.data, filter),
-      isLoading: result.isFetching,
-    }),
-  });
+  const categories = useCategories(filter);
 
   const [orderedCategories, setOrderedCategories] = useState<Category[]>([]);
 

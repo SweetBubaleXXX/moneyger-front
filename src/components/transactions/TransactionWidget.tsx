@@ -11,22 +11,22 @@ import {
   MenuItem,
   Sheet,
   Skeleton,
+  Tooltip,
   Typography,
 } from '@mui/joy';
 import { Stack } from '@mui/system';
-import { Copy, MoreVertical, Pencil, Trash } from 'lucide-react';
+import { CopyPlus, MoreVertical, Pencil, Trash } from 'lucide-react';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 
 import {
-  selectCategoryById,
   useDeleteTransactionMutation,
-  useGetAllCategoriesQuery,
 } from '../../features/api/apiSlice';
 import {
   PaginatedTransactionRequest,
   Transaction,
 } from '../../features/api/types';
+import { useCategoryById } from '../../hooks/category';
 import { CategoryIcon } from '../categories/CategoryIcon';
 import { ConfirmationModal } from '../ConfirmationModal';
 import { TransactionCreationModal } from './TransactionCreationModal';
@@ -61,12 +61,7 @@ export const TransactionWidget = ({
 
   const [deleteTransaction, deletionResult] = useDeleteTransactionMutation();
 
-  const category = useGetAllCategoriesQuery(undefined, {
-    selectFromResult: ({ data, isLoading }) => ({
-      data: selectCategoryById(data, transaction.category),
-      isLoading,
-    }),
-  });
+  const category = useCategoryById(transaction.category);
 
   const loading = isLoading || category.isLoading;
 
@@ -106,11 +101,19 @@ export const TransactionWidget = ({
                   {category.data?.name}
                 </Skeleton>
               </Typography>
-              <Typography level="body-sm" noWrap>
-                <Skeleton loading={loading}>
-                  {transaction.comment}
-                </Skeleton>
-              </Typography>
+              <Tooltip
+                title={transaction.comment}
+                variant="soft"
+                size="sm"
+                placement="bottom-start"
+                arrow
+              >
+                <Typography level="body-sm" noWrap>
+                  <Skeleton loading={loading}>
+                    {transaction.comment}
+                  </Skeleton>
+                </Typography>
+              </Tooltip>
               <Typography level="body-xs" noWrap>
                 <Skeleton loading={loading}>
                   {moment(transaction.transactionTime).format('llll')}
@@ -159,7 +162,7 @@ export const TransactionWidget = ({
         </MenuItem>
         <MenuItem onClick={() => setDuplicateModalOpen(true)}>
           <ListItemDecorator>
-            <Copy />
+            <CopyPlus />
           </ListItemDecorator>
           Duplicate
         </MenuItem>

@@ -7,6 +7,10 @@ import { toast } from 'sonner';
 import { useChangePasswordMutation } from '../../features/api/apiSlice';
 import { ChangePasswordSchema } from '../../features/api/schemas';
 import { SetPasswordRequest } from '../../features/api/types';
+import {
+  useFormErrorsSnackbar,
+  useSuccessSnackbar,
+} from '../../hooks/snackbar';
 import { PasswordField } from './PasswordField';
 
 export type ChangePasswordFormProps = {
@@ -26,11 +30,7 @@ export const ChangePasswordForm = ({
 
   const [changePassword, result] = useChangePasswordMutation();
 
-  useEffect(() => {
-    for (const error of Object.values(formState.errors)) {
-      toast.error(error.message);
-    }
-  }, [formState.errors]);
+  useFormErrorsSnackbar(formState);
 
   useEffect(() => {
     if (!result.isError) { return; }
@@ -43,12 +43,7 @@ export const ChangePasswordForm = ({
     }
   }, [result.isError, result.error]);
 
-  useEffect(() => {
-    if (result.isSuccess) {
-      toast.success('Password changed');
-      onSuccess?.();
-    }
-  }, [result.isSuccess, onSuccess]);
+  useSuccessSnackbar('Password changed', result, onSuccess);
 
   return (
     <form onSubmit={handleSubmit(changePassword)}>

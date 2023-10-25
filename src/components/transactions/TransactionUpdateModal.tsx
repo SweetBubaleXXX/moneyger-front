@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import { toast } from 'sonner';
+import React from 'react';
 
 import { useUpdateTransactionMutation } from '../../features/api/apiSlice';
 import {
   PaginatedTransactionRequest,
   Transaction,
 } from '../../features/api/types';
+import { useErrorSnackbar, useSuccessSnackbar } from '../../hooks/snackbar';
 import { TransactionForm } from '../forms/TransactionForm';
 import {
   BaseTransactionModalProps,
@@ -26,18 +26,13 @@ export const TransactionUpdateModal = ({
 }: TransactionUpdateModalProps) => {
   const [updateTransaction, result] = useUpdateTransactionMutation();
 
-  useEffect(() => {
-    if (result.isError) {
-      toast.error('Failed to update transaction');
-    }
-  }, [result.isError]);
+  useErrorSnackbar('Failed to update transaction', result);
 
-  useEffect(() => {
-    if (result.isSuccess) {
-      toast.success('Transaction updated');
-      onClose(false);
-    }
-  }, [result.isSuccess, onClose]);
+  useSuccessSnackbar(
+    'Transaction updated',
+    result,
+    () => onClose(false)
+  );
 
   return (
     <TransactionModal

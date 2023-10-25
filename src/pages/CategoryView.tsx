@@ -4,9 +4,9 @@ import {
   CardContent,
   Divider,
 } from '@mui/joy';
+import { usePrevious } from '@uidotdev/usehooks';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
 
 import { CategoryList } from '../components/categories/CategoryList';
 import { CategoryModal } from '../components/categories/CategoryModal';
@@ -27,14 +27,14 @@ import { CategoryViewTopbar } from '../components/toolbars/CategoryViewTopbar';
 import { NavigationBar } from '../components/toolbars/NavigationBar';
 import { SavingToolbar } from '../components/toolbars/SavingToolbar';
 import {
-  selectCategoryById,
   useCreateSubcategoryMutation,
   useDeleteCategoryMutation,
-  useGetAllCategoriesQuery,
   useUpdateCategoryMutation,
   useUpdateDisplayOrderMutation,
 } from '../features/api/apiSlice';
+import { useCategoryById } from '../hooks/category';
 import { useCategoryIdParam } from '../hooks/params';
+import { useErrorSnackbar, useSuccessSnackbar } from '../hooks/snackbar';
 import {
   CATEGORY_BOTTOM_TOOLBAR_PROPS,
   CATEGORY_LIST_OFFSET_FOR_TOOLBAR,
@@ -48,6 +48,7 @@ export type CategoryViewParams = {
 export const CategoryView = () => {
   const navigate = useNavigate();
   const categoryId = useCategoryIdParam();
+  const previousCategoryId = usePrevious(categoryId);
   const [reorder, setReorder] = useState<boolean>(false);
   const [editing, setEditing] = useState<boolean>(false);
 
@@ -56,12 +57,7 @@ export const CategoryView = () => {
     setSubcategoryCreationModalOpen,
   ] = useState<boolean>(false);
 
-  const category = useGetAllCategoriesQuery(undefined, {
-    selectFromResult: result => ({
-      data: selectCategoryById(result.data, categoryId),
-      isLoading: result.isFetching,
-    }),
-  });
+  const category = useCategoryById(categoryId);
 
   const [
     updateDisplayOrder,
@@ -78,49 +74,37 @@ export const CategoryView = () => {
   const [deleteCategory, deletionResult] = useDeleteCategoryMutation();
 
   useEffect(() => {
-    if (subcategoryCreationResult.isError) {
-      toast.error('Failed to add subcategory');
-    }
-  }, [subcategoryCreationResult.isError]);
-
-  useEffect(() => {
-    if (subcategoryCreationResult.isSuccess) {
-      toast.success('Subcategory added');
-      setSubcategoryCreationModalOpen(false);
-    }
-  }, [subcategoryCreationResult.isSuccess]);
-
-  useEffect(() => {
-    if (updateResult.isSuccess) {
-      toast.success('Category updated');
+    if (categoryId !== previousCategoryId) {
+      setReorder(false);
       setEditing(false);
     }
-  }, [updateResult.isSuccess]);
+  }, [categoryId, previousCategoryId]);
 
-  useEffect(() => {
-    if (updateResult.isError) {
-      toast.error('Failed to update category');
-    }
-  }, [updateResult.isError]);
+  useErrorSnackbar('Failed to add subcategory', subcategoryCreationResult);
 
-  useEffect(() => {
-    if (displayOrderUpdateResult.isSuccess) {
-      toast.success('Saved');
-    }
-  }, [displayOrderUpdateResult.isSuccess]);
+  useSuccessSnackbar(
+    'Subcategory added',
+    subcategoryCreationResult,
+    () => setSubcategoryCreationModalOpen(false)
+  );
 
-  useEffect(() => {
-    if (deletionResult.isError) {
-      toast.error('Failed to delete category');
-    }
-  }, [deletionResult.isError]);
+  useSuccessSnackbar(
+    'Category updated',
+    updateResult,
+    () => setEditing(false)
+  );
 
-  useEffect(() => {
-    if (deletionResult.isSuccess) {
-      toast.success('Category deleted');
-      navigate(-1);
-    }
-  }, [deletionResult.isSuccess, navigate]);
+  useErrorSnackbar('Failed to update category', updateResult);
+
+  useSuccessSnackbar('Saved', displayOrderUpdateResult);
+
+  useErrorSnackbar('Failed to delete category', deletionResult);
+
+  useSuccessSnackbar(
+    'Category deleted',
+    deletionResult,
+    () => navigate(-1),
+  );
 
   return (
     <>
@@ -162,8 +146,8 @@ export const CategoryView = () => {
           updateDisplayOrder(orderedCategories);
           setReorder(false);
         }}
-        onItemClick={
-          subcategoryId => navigate(ROUTER_PATHS.getCategoryById(subcategoryId))
+        onItemClick={subcategoryId =>
+          !reorder && navigate(ROUTER_PATHS.getCategoryById(subcategoryId))
         }
         sx={CATEGORY_LIST_OFFSET_FOR_TOOLBAR}
       />

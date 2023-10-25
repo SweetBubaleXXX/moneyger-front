@@ -4,7 +4,7 @@ import {
   FormLabel,
 } from '@mui/joy';
 import React, { useState } from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, ControllerRenderProps } from 'react-hook-form';
 
 import { CategoryIcon } from '../categories/CategoryIcon';
 import { FormControllerProps } from '../categories/types';
@@ -23,6 +23,12 @@ export const CategoryFormIconController = ({
 }: CategoryFormIconControllerProps) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
+  const onSelect = (field: ControllerRenderProps<any, 'icon'>) =>
+    (iconName: string) => {
+      field.onChange(iconName);
+      onEdit?.();
+    };
+
   return (
     <Controller
       name="icon"
@@ -34,6 +40,7 @@ export const CategoryFormIconController = ({
           <Button
             disabled={disabled}
             variant="outlined"
+            color="neutral"
             onClick={() => setDrawerOpen(true)}
           >
             {field.value ? <CategoryIcon>{field.value}</CategoryIcon> : 'Pick'}
@@ -42,10 +49,7 @@ export const CategoryFormIconController = ({
             open={drawerOpen}
             onClose={() => setDrawerOpen(false)}
             selectedValue={field.value}
-            onSelect={value => {
-              field.onChange(value);
-              onEdit?.();
-            }}
+            onSelect={onSelect(field)}
           />
         </FormControl>
       }

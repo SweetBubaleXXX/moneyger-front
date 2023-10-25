@@ -4,7 +4,9 @@ import { SxProps } from '@mui/joy/styles/types';
 export const ROUTER_PATHS = {
   home: '/',
   login: '/login',
-  activateAccount: 'actions/activate/:uid/:token',
+  forgotPassword: '/password-reset',
+  activateAccount: '/actions/activate/:uid/:token',
+  passwordReset: '/actions/password-reset/:uid/:token',
   settings: '/settings',
   categories: '/categories',
   categoryById: '/categories/:categoryId',

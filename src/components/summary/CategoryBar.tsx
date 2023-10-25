@@ -1,11 +1,8 @@
 import { LinearProgress, Skeleton, Stack, Typography } from '@mui/joy';
-import React, { useMemo } from 'react';
+import React from 'react';
 
-import {
-  selectCategoryById,
-  useGetAllCategoriesQuery,
-} from '../../features/api/apiSlice';
 import { CategoryStats, CurrencyCode } from '../../features/api/types';
+import { useCategoryById } from '../../hooks/category';
 import { useContrastColor } from '../../hooks/color';
 import { CategoryIcon } from '../categories/CategoryIcon';
 
@@ -22,17 +19,9 @@ export const CategoryBar = ({
 }: CategoryBarProps) => {
   const adjustColor = useContrastColor();
 
-  const category = useGetAllCategoriesQuery(undefined, {
-    selectFromResult: result => ({
-      data: selectCategoryById(result.data, stats.id),
-      isLoading: result.isFetching,
-    }),
-  });
+  const category = useCategoryById(stats.id);
 
-  const percentage = useMemo(
-    () => (100 * stats.total / total).toFixed(2),
-    [stats.total, total]
-  );
+  const percentage = (100 * stats.total / total).toFixed(2);
 
   return (
     <>

@@ -5,7 +5,7 @@ import {
   Typography,
 } from '@mui/joy';
 import Decimal from 'decimal.js';
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { useGetTransactionsSummaryQuery } from '../../features/api/apiSlice';
 import { TransactionRequestParams } from '../../features/api/types';
@@ -31,10 +31,7 @@ export const SummaryWidget = ({ filters }: SummaryWidgetProps) => {
   const income = incomeSummary.data?.total || 0;
   const outcome = outcomeSummary.data?.total || 0;
 
-  const total = useMemo(
-    () => new Decimal(income).add(outcome).toString(),
-    [income, outcome]
-  );
+  const total = new Decimal(income).add(outcome).toString();
 
   return (
     <Stack mx="auto" my={2} width="min-content" textAlign="center">

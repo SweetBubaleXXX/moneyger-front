@@ -6,6 +6,11 @@ export const BAR_SHEET_STYLES: SxProps = {
   px: 1,
   py: 0.5,
   zIndex: 1100,
+  borderLeft: 'unset',
+  borderRight: 'unset',
+  backgroundColor: theme =>
+    theme.palette.mode === 'light' ? '#ffffff80' : '#1b1d1d90',
+  backdropFilter: 'blur(8px)',
 };
 
 export const TOP_BAR_SHEET_STYLES: SxProps = {

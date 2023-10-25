@@ -14,13 +14,15 @@ import { toast } from 'sonner';
 import { useRegisterMutation } from '../../features/api/apiSlice';
 import { RegistrationSchema } from '../../features/api/schemas';
 import { RegistrationRequest } from '../../features/api/types';
+import { hasErrors } from '../../helpers/forms';
+import { useSuccessSnackbar } from '../../hooks/snackbar';
 
 export const RegistrationForm = () => {
   const {
     control,
     handleSubmit,
     reset: resetForm,
-    formState: { errors },
+    formState,
   } = useForm<RegistrationRequest & { confirmPassword: string }>(
     { resolver: zodResolver(RegistrationSchema) }
   );
@@ -38,12 +40,11 @@ export const RegistrationForm = () => {
     }
   }, [isError, registrationError]);
 
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success('A verification link has been sent to your email account');
-      resetForm();
-    }
-  }, [isSuccess, resetForm]);
+  useSuccessSnackbar(
+    'A verification link has been sent to your email address',
+    { isSuccess },
+    resetForm
+  );
 
   return (
     <form onSubmit={handleSubmit(register)}>
@@ -53,11 +54,14 @@ export const RegistrationForm = () => {
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <FormControl error={!!errors.username}>
+            <FormControl error={!!formState.errors.username}>
               <FormLabel>Username</FormLabel>
-              <Input {...field} />
+              <Input
+                slotProps={{ input: { autoCapitalize: 'none' } }}
+                {...field}
+              />
               <FormHelperText>
-                {errors.username?.message}
+                {formState.errors.username?.message}
               </FormHelperText>
             </FormControl>
           )}
@@ -67,11 +71,11 @@ export const RegistrationForm = () => {
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <FormControl error={!!errors.email}>
+            <FormControl error={!!formState.errors.email}>
               <FormLabel>Email</FormLabel>
               <Input type="email" {...field} />
               <FormHelperText>
-                {errors.email?.message}
+                {formState.errors.email?.message}
               </FormHelperText>
             </FormControl>
           )}
@@ -81,11 +85,11 @@ export const RegistrationForm = () => {
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <FormControl error={!!errors.password}>
+            <FormControl error={!!formState.errors.password}>
               <FormLabel>Password</FormLabel>
               <Input type="password" {...field} />
               <FormHelperText>
-                {errors.password?.message}
+                {formState.errors.password?.message}
               </FormHelperText>
             </FormControl>
           )}
@@ -95,16 +99,20 @@ export const RegistrationForm = () => {
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <FormControl error={!!errors.confirmPassword}>
+            <FormControl error={!!formState.errors.confirmPassword}>
               <FormLabel>Confirm Password</FormLabel>
               <Input type="password" {...field} />
               <FormHelperText>
-                {errors.confirmPassword?.message}
+                {formState.errors.confirmPassword?.message}
               </FormHelperText>
             </FormControl>
           )}
         />
-        <Button type="submit" loading={isLoading}>
+        <Button
+          type="submit"
+          disabled={hasErrors(formState)}
+          loading={isLoading}
+        >
           Register
         </Button>
       </Stack>

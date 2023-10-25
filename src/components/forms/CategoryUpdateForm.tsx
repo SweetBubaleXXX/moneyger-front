@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 
 import { BaseCategorySchema } from '../../features/api/schemas';
 import { Category, CategoryUpdateRequest } from '../../features/api/types';
-import { toastCategoryNameError } from '../../helpers/forms';
+import { useCategoryNameErrorSnackbar } from '../../hooks/snackbar';
 import { CATEGORY_UPDATE_FORM_ID } from '../categories/constants';
 import {
   CategoryFormColorController,
@@ -55,10 +55,7 @@ export const CategoryUpdateForm = ({
     }
   }, [category, reset]);
 
-  useEffect(
-    () => toastCategoryNameError(formState.errors.name),
-    [formState.errors.name]
-  );
+  useCategoryNameErrorSnackbar(formState.errors.name);
 
   return (
     <form

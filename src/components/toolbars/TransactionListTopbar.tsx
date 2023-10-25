@@ -3,15 +3,17 @@ import {
   IconButton,
   Input,
 } from '@mui/joy';
-import { useDebounce } from '@uidotdev/usehooks';
+import { useDebounce, useThrottle } from '@uidotdev/usehooks';
 import {
   ArrowDownWideNarrow,
   ArrowUpWideNarrow,
   Filter,
   Search,
+  X,
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
+import { DEFAULT_THROTTLING_DELAY } from '../../constants';
 import {
   TransactionRequestParams,
 } from '../../features/api/types';
@@ -37,6 +39,12 @@ export const TransactionListTopbar = ({
   const [filters, setFilters] = useState<Filters>(initialParams ?? {});
   const [orderingAscending, setOrderingAscending] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
+
+  const throttledOrderingAscending = useThrottle(
+    orderingAscending, 
+    DEFAULT_THROTTLING_DELAY,
+  );
+
   const debouncedSearchTerm = useDebounce(searchTerm, SEARCH_DEBOUNCE_DELAY);
 
   useEffect(() => {
@@ -47,9 +55,15 @@ export const TransactionListTopbar = ({
     onUpdateParams({
       ...filters,
       search: debouncedSearchTerm,
-      ordering: orderingAscending ? 'transaction_time' : '-transaction_time',
+      ordering: throttledOrderingAscending ?
+        'transaction_time' : '-transaction_time',
     });
-  }, [onUpdateParams, filters, orderingAscending, debouncedSearchTerm]);
+  }, [
+    onUpdateParams,
+    filters,
+    throttledOrderingAscending,
+    debouncedSearchTerm,
+  ]);
 
   return (
     <>
@@ -58,9 +72,15 @@ export const TransactionListTopbar = ({
           {orderingAscending ? <ArrowUpWideNarrow /> : <ArrowDownWideNarrow />}
         </IconButton>
         <Input
-          variant="soft"
+          variant="outlined"
           startDecorator={<Search strokeWidth={1} />}
+          endDecorator={searchTerm &&
+            <IconButton onClick={() => setSearchTerm('')}>
+              <X />
+            </IconButton>
+          }
           placeholder="Search"
+          value={searchTerm}
           onChange={e => setSearchTerm(e.target.value.toLowerCase())}
           sx={{
             '--Input-minHeight': '32px',

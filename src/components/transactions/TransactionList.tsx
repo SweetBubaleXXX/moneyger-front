@@ -1,7 +1,7 @@
 import { Button, CircularProgress, Stack } from '@mui/joy';
 import { SxProps } from '@mui/joy/styles/types';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   transactionsSelector,
@@ -45,10 +45,7 @@ export const TransactionList = ({
     skipUpdate ? skipToken : requestParams,
   );
 
-  const totalPages = useMemo(
-    () => (transactions.data?.count || 0) / PAGE_SIZE,
-    [transactions.data?.count]
-  );
+  const totalPages = (transactions.data?.count || 0) / PAGE_SIZE;
 
   const transactionsList = transactions.data && transactionsSelector
     .selectAll(transactions.data.results)
@@ -87,7 +84,6 @@ export const TransactionList = ({
       {
         loading || showSpinner ?
           <CircularProgress
-            color="neutral"
             sx={{ alignSelf: 'center' }}
           />
           :
@@ -96,6 +92,7 @@ export const TransactionList = ({
             {
               showLoadMoreButton && <Button
                 variant="outlined"
+                color="neutral"
                 loading={transactions.isFetching}
                 onClick={() => setRequestParams({
                   page: requestParams.page && requestParams.page + 1,

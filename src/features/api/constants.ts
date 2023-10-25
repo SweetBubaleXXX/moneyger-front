@@ -1,23 +1,27 @@
 import { getPaginationQuery } from '../../helpers/pagination';
 
+export const BASE_URL = new URL(
+  'api/', process.env.REACT_APP_API_URL
+).toString();
+
 export const API_PATHS = {
   createToken: 'accounts/auth/jwt/create/',
   refreshToken: 'accounts/auth/jwt/refresh/',
   registerAccount: 'accounts/auth/users/',
   activateAccount: 'accounts/auth/users/activation/',
+  resetPassword: 'accounts/auth/users/reset_password/',
+  resetPasswordConfirm: 'accounts/auth/users/reset_password_confirm/',
   setPassword: 'accounts/auth/users/set_password/',
   logout: 'accounts/auth/jwt/logout/',
   getAccount: 'accounts/auth/users/me/',
   importJson: 'import/json/',
   exportCsv: 'export/csv/',
   exportJson: 'export/json/',
-  getAllCategories: 'categories/?limit=99999&ordering=display_order',
+  getCategories: 'categories/?all',
   createCategory: 'categories/',
   getCategoriesStats: 'categories/stats/',
   getTransactionsSummary: 'transactions/summary/',
   getAccountById: (accountId: number) => `accounts/auth/users/${accountId}/`,
-  getCategories: (pageNumber: number = 1) =>
-    `categories/?${getPaginationQuery(pageNumber)}`,
   getCategoryById: (categoryId: number) => `categories/${categoryId}/`,
   getSubcategories: (categoryId: number) =>
     `categories/${categoryId}/subcategories/`,

@@ -5,18 +5,22 @@ import {
   FormHelperText,
   FormLabel,
   Input,
+  Link,
   Stack,
 } from '@mui/joy';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { useLoginMutation } from '../../features/api/apiSlice';
 import { LoginSchema } from '../../features/api/schemas';
 import { LoginRequest } from '../../features/api/types';
 import { setAccessToken } from '../../features/auth/authSlice';
+import { hasErrors } from '../../helpers/forms';
+import { ROUTER_PATHS } from '../../pages/constants';
 
 export const LoginForm = () => {
   const navigate = useNavigate();
@@ -25,7 +29,7 @@ export const LoginForm = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState,
   } = useForm<LoginRequest>(
     { resolver: zodResolver(LoginSchema) }
   );
@@ -44,7 +48,9 @@ export const LoginForm = () => {
   useEffect(() => {
     const loginFailed = isError && 'data' in loginError!;
     if (loginFailed) {
-      const errorDetail = (loginError.data as { detail?: string }).detail;
+      const errorDetail = (
+        loginError.data as { detail?: string } | undefined
+      )?.detail;
       const toastMessage = errorDetail || loginError.status;
       toast.error(toastMessage);
     }
@@ -65,11 +71,14 @@ export const LoginForm = () => {
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <FormControl error={!!errors.username}>
+            <FormControl error={!!formState.errors.username}>
               <FormLabel>Username</FormLabel>
-              <Input {...field} />
+              <Input
+                slotProps={{ input: { autoCapitalize: 'none' } }}
+                {...field}
+              />
               <FormHelperText>
-                {errors.username?.message}
+                {formState.errors.username?.message}
               </FormHelperText>
             </FormControl>
           )}
@@ -79,16 +88,29 @@ export const LoginForm = () => {
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <FormControl error={!!errors.password}>
+            <FormControl error={!!formState.errors.password}>
               <FormLabel>Password</FormLabel>
               <Input type="password" {...field} />
               <FormHelperText>
-                {errors.password?.message}
+                {formState.errors.password?.message}
               </FormHelperText>
+              <Link
+                to={ROUTER_PATHS.forgotPassword}
+                component={RouterLink}
+                color="neutral"
+                level="body-sm"
+                mb={1.5}
+              >
+                Forgot password?
+              </Link>
             </FormControl>
           )}
         />
-        <Button type="submit" loading={isLoading}>
+        <Button
+          type="submit"
+          disabled={hasErrors(formState)}
+          loading={isLoading}
+        >
           Login
         </Button>
       </Stack>

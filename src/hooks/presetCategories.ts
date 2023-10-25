@@ -3,30 +3,23 @@ import { toast } from 'sonner';
 
 import { PRESET_CATEGORIES } from '../constants';
 import {
-  useGetAllCategoriesQuery,
+  useGetCategoriesQuery,
   useImportJsonMutation,
 } from '../features/api/apiSlice';
+import { useErrorSnackbar, useSuccessSnackbar } from './snackbar';
 
 export const usePromptForPresetCategoriesCreation = () => {
-  const [importCategories, results] = useImportJsonMutation();
-  const categories = useGetAllCategoriesQuery();
+  const [importCategories, result] = useImportJsonMutation();
+  const categories = useGetCategoriesQuery();
   const [noCategories, setNoCategories] = useState(false);
 
   useEffect(() => {
     setNoCategories(categories.data?.length === 0);
   }, [categories.data?.length]);
 
-  useEffect(() => {
-    if (results.isError) {
-      toast.error('Failed to create categories');
-    }
-  }, [results.isError]);
+  useErrorSnackbar('Failed to create categories', result);
 
-  useEffect(() => {
-    if (results.isSuccess) {
-      toast.success('Categories created');
-    }
-  }, [results.isSuccess]);
+  useSuccessSnackbar('Categories created', result);
 
   useEffect(() => {
     if (noCategories) {
@@ -35,7 +28,7 @@ export const usePromptForPresetCategoriesCreation = () => {
         action: {
           label: 'Yes',
           onClick: () =>
-            !results.isLoading && importCategories(PRESET_CATEGORIES),
+            !result.isLoading && importCategories(PRESET_CATEGORIES),
         },
       });
     }

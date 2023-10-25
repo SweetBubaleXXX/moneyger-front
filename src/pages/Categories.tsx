@@ -1,9 +1,8 @@
 import {
   Box,
 } from '@mui/joy';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
 
 import { CategoryList } from '../components/categories/CategoryList';
 import { CategoryModal } from '../components/categories/CategoryModal';
@@ -27,6 +26,7 @@ import { TransactionType } from '../features/api/types';
 import {
   usePromptForPresetCategoriesCreation,
 } from '../hooks/presetCategories';
+import { useErrorSnackbar, useSuccessSnackbar } from '../hooks/snackbar';
 import {
   CATEGORY_BOTTOM_TOOLBAR_PROPS,
   CATEGORY_LIST_OFFSET_FOR_TOOLBAR,
@@ -56,24 +56,15 @@ export const Categories = () => {
 
   usePromptForPresetCategoriesCreation();
 
-  useEffect(() => {
-    if (categoryCreationResult.isError) {
-      toast.error('Failed to add category');
-    }
-  }, [categoryCreationResult.isError]);
+  useErrorSnackbar('Failed to add category', categoryCreationResult);
 
-  useEffect(() => {
-    if (categoryCreationResult.isSuccess) {
-      toast.success('Category added');
-      setCategoryCreationModalOpen(false);
-    }
-  }, [categoryCreationResult.isSuccess]);
+  useSuccessSnackbar(
+    'Category added',
+    categoryCreationResult,
+    () => setCategoryCreationModalOpen(false),
+  );
 
-  useEffect(() => {
-    if (displayOrderUpdateResult.isSuccess) {
-      toast.success('Saved');
-    }
-  }, [displayOrderUpdateResult.isSuccess]);
+  useSuccessSnackbar('Saved', displayOrderUpdateResult);
 
   return (
     <>

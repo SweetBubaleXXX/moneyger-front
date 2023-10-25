@@ -18,11 +18,12 @@ import {
   Category,
   CategoryCreateRequest,
   CategoryUpdateRequest,
+  ForgotPasswordRequest,
   JwtToken,
   LoginRequest,
-  PaginatedCategoryRequest,
   PaginatedResponse,
   PaginatedTransactionRequest,
+  PasswordResetRequest,
   RegistrationRequest,
   RegistrationResponse,
   SetPasswordRequest,
@@ -51,23 +52,10 @@ export const api = createApi({
       providesTags: ['Account'],
       transformResponse: (response: Account) => camelcaseKeys(response),
     }),
-    getAllCategories: builder.query<Category[], void>({
-      query: () => API_PATHS.getAllCategories,
-      providesTags: ['Category'],
-      transformResponse: (response: PaginatedResponse<Category[]>) =>
-        camelcaseKeys(response.results),
-    }),
-    getCategories: builder
-      .query<PaginatedResponse<Category>, PaginatedCategoryRequest>({
-        query: request => ({
-          url: API_PATHS.getCategories(request.page),
-          params: request.params,
-        }),
-        providesTags: ['Category'],
-      }),
-    getCategoryById: builder.query<Category, number>({
-      query: API_PATHS.getCategoryById,
-      providesTags: ['Category'],
+    getCategories: builder.query<Category[], void>({
+      query: () => API_PATHS.getCategories,
+      providesTags: ['Account', 'Category'],
+      transformResponse: (response: Category[]) => camelcaseKeys(response),
     }),
     getTransactions: builder.query<
       PaginatedResponse<EntityState<Transaction>>,
@@ -102,15 +90,6 @@ export const api = createApi({
       forceRefetch({ currentArg, previousArg }) {
         return currentArg?.page !== previousArg?.page;
       },
-      providesTags: ['Transaction'],
-    }),
-    getCategorySummary: builder.query<
-      Summary, TransactionRequestParams & { id: number }
-    >({
-      query: requst => ({
-        url: API_PATHS.getCategorySummary(requst.id),
-        params: decamelizeKeys(requst),
-      }),
       providesTags: ['Account', 'Category', 'Transaction'],
     }),
     getTransactionsSummary: builder.query<Summary, TransactionRequestParams>({
@@ -125,6 +104,12 @@ export const api = createApi({
         url: API_PATHS.getCategoriesStats,
         params: decamelizeKeys(request),
       }),
+      transformResponse: (response: Stats) => ({
+        ...response,
+        categories: response.categories.sort(
+          (a, b) => Math.abs(b.total) - Math.abs(a.total)
+        ),
+      }),
       providesTags: ['Account', 'Category', 'Transaction'],
     }),
     updateAccount: builder.mutation<
@@ -135,7 +120,7 @@ export const api = createApi({
         method: 'PATCH',
         body: decamelizeKeys(request),
       }),
-      invalidatesTags: ['Account'],
+      invalidatesTags: ['Account', 'Category', 'Transaction'],
     }),
     createCategory: builder.mutation<Category, CategoryCreateRequest>({
       query: request => ({
@@ -284,6 +269,20 @@ export const api = createApi({
         body: decamelizeKeys(request),
       }),
     }),
+    resetPassword: builder.mutation<void, ForgotPasswordRequest>({
+      query: request => ({
+        url: API_PATHS.resetPassword,
+        method: 'POST',
+        body: decamelizeKeys(request),
+      }),
+    }),
+    resetPasswordConfirm: builder.mutation<void, PasswordResetRequest>({
+      query: request => ({
+        url: API_PATHS.resetPasswordConfirm,
+        method: 'POST',
+        body: decamelizeKeys(request),
+      }),
+    }),
   }),
 });
 
@@ -302,12 +301,9 @@ export const filterCategoriesSelector = createSelector(
 
 export const {
   useGetAccountQuery,
-  useGetAllCategoriesQuery,
   useGetCategoriesQuery,
-  useGetCategoryByIdQuery,
   useGetTransactionsQuery,
   useGetTransactionsSummaryQuery,
-  useGetCategorySummaryQuery,
   useGetCategoriesStatsQuery,
   useUpdateAccountMutation,
   useCreateCategoryMutation,
@@ -324,4 +320,6 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useChangePasswordMutation,
+  useResetPasswordMutation,
+  useResetPasswordConfirmMutation,
 } = api;
