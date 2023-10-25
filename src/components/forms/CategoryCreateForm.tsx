@@ -9,18 +9,12 @@ import {
 } from '@mui/joy';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { z } from 'zod';
 
-import { TRANSACTION_TYPES } from '../../constants';
+import { CategoryCreateSchema } from '../../features/api/schemas';
 import { CategoryCreateRequest } from '../../features/api/types';
 import { toastCategoryNameError } from '../../helpers/forms';
 import { CategoryFormColorController } from './CategoryFormColorController';
 import { CategoryFormNameController } from './CategoryFormNameController';
-import { BaseCategorySchema } from './constants';
-
-export const CategoryCreateSchema = BaseCategorySchema.extend({
-  transactionType: z.enum(TRANSACTION_TYPES),
-});
 
 export type CategoryCreateFormProps = {
   onSubmit: (request: CategoryCreateRequest) => void,

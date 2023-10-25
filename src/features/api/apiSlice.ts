@@ -13,6 +13,7 @@ import { API_PATHS } from './constants';
 import { baseQueryWithReauth } from './queries';
 import {
   Account,
+  AccountUpdateRequest,
   Category,
   CategoryCreateRequest,
   CategoryUpdateRequest,
@@ -23,6 +24,7 @@ import {
   PaginatedTransactionRequest,
   RegistrationRequest,
   RegistrationResponse,
+  SetPasswordRequest,
   SubcategoryCreateRequest,
   Summary,
   Transaction,
@@ -104,7 +106,17 @@ export const api = createApi({
         url: API_PATHS.getTransactionsSummary,
         params: decamelizeKeys(request),
       }),
-      providesTags: ['Transaction'],
+      providesTags: ['Transaction', 'Account'],
+    }),
+    updateAccount: builder.mutation<
+      Account, AccountUpdateRequest & { id: number }
+    >({
+      query: request => ({
+        url: API_PATHS.getAccountById(request.id),
+        method: 'PATCH',
+        body: decamelizeKeys(request),
+      }),
+      invalidatesTags: ['Account'],
     }),
     createCategory: builder.mutation<Category, CategoryCreateRequest>({
       query: request => ({
@@ -225,6 +237,19 @@ export const api = createApi({
         body,
       }),
     }),
+    logout: builder.mutation<void, void>({
+      query: () => ({
+        url: API_PATHS.logout,
+        method: 'POST',
+      }),
+    }),
+    changePassword: builder.mutation<void, SetPasswordRequest>({
+      query: request => ({
+        url: API_PATHS.setPassword,
+        method: 'POST',
+        body: decamelizeKeys(request),
+      }),
+    }),
   }),
 });
 
@@ -248,6 +273,7 @@ export const {
   useGetCategoryByIdQuery,
   useGetTransactionsQuery,
   useGetTransactionsSummaryQuery,
+  useUpdateAccountMutation,
   useCreateCategoryMutation,
   useCreateSubcategoryMutation,
   useUpdateCategoryMutation,
@@ -258,4 +284,6 @@ export const {
   useDeleteTransactionMutation,
   useLoginMutation,
   useRegisterMutation,
+  useLogoutMutation,
+  useChangePasswordMutation,
 } = api;

@@ -5,20 +5,22 @@ import {
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/dist/query';
 import { Mutex } from 'async-mutex';
-import Cookies from 'js-cookie';
 
+import { ROUTER_PATHS } from '../../pages/constants';
 import { RootState } from '../../store';
-import { setAccessToken } from './auth';
+import { setAccessToken } from '../auth/authSlice';
+import { getAuthHeaders } from '../auth/headers';
 import { API_PATHS, EXCLUDE_FROM_REAUTH } from './constants';
 
 
 export const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_API_URL,
   prepareHeaders: (headers, { getState }) => {
-    const csrfToken = Cookies.get('csrftoken');
-    csrfToken && headers.set('x-csrftoken', csrfToken);
-    const token = (getState() as RootState).auth.accessToken;
-    token && headers.set('authorization', `Bearer ${token}`);
+    const state = getState() as RootState;
+    const authHeaders = getAuthHeaders(state.auth);
+    for (const [header, value] of Object.entries(authHeaders)) {
+      headers.set(header, value);
+    }
     return headers;
   },
   credentials: 'include',
@@ -44,7 +46,9 @@ export const baseQueryWithReauth: BaseQueryFn<
           method: 'POST',
         }, api, extraOptions
       );
-      if (refreshResult.data) {
+      if (refreshResult.error) {
+        window.location.href = ROUTER_PATHS.login;
+      } else if (refreshResult.data) {
         const {
           access: accessToken,
         } = refreshResult.data as { access: string; };

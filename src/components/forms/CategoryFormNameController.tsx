@@ -2,7 +2,7 @@ import { Input } from '@mui/joy';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 
-import { FormControllerProps } from './types';
+import { FormControllerProps } from '../categories/types';
 
 export const CategoryFormNameController = ({
   control,

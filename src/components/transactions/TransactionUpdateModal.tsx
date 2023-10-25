@@ -6,7 +6,7 @@ import {
   PaginatedTransactionRequest,
   Transaction,
 } from '../../features/api/types';
-import { TransactionForm } from './TransactionForm';
+import { TransactionForm } from '../forms/TransactionForm';
 import {
   BaseTransactionModalProps,
   TransactionModal,

@@ -40,9 +40,11 @@ export const NavigationBar = ({
             <LayoutPanelLeft />
           </IconButton>
         </Link>
-        <IconButton>
-          <Settings />
-        </IconButton>
+        <Link to={ROUTER_PATHS.settings}>
+          <IconButton>
+            <Settings />
+          </IconButton>
+        </Link>
       </Stack>
     </Sheet>
   );

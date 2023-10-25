@@ -24,7 +24,6 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 import { toast } from 'sonner';
-import { z } from 'zod';
 
 import { CURRENCY_CODES, DATETIME_INPUT_FORMAT } from '../../constants';
 import {
@@ -32,6 +31,7 @@ import {
   useGetAccountQuery,
   useGetAllCategoriesQuery,
 } from '../../features/api/apiSlice';
+import { TransactionSchema } from '../../features/api/schemas';
 import {
   Category,
   CurrencyCode,
@@ -40,16 +40,6 @@ import {
 } from '../../features/api/types';
 import { CategorySelector } from '../categories/CategorySelector';
 
-export const TransactionSchema = z.object({
-  amount: z.preprocess(Number, z.number().positive().finite()),
-  category: z.number().int().positive(),
-  currency: z.enum(CURRENCY_CODES),
-  transactionTime: z.coerce.date().refine(
-    value => value < moment().toDate(),
-    'Enter valid date'
-  ),
-  comment: z.string().max(255).optional(),
-});
 
 export type TransactionFormProps = {
   onSubmit: (request: TransactionCreateUpdateRequest) => void,
@@ -85,7 +75,7 @@ export const TransactionForm = ({
   const [currency, setCurrency] = useState<CurrencyCode>(
     initialValue?.currency || CURRENCY_CODES[0]
   );
-  
+
   const {
     handleSubmit,
     resetField,

@@ -5,11 +5,16 @@ import {
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { BaseCategorySchema } from '../../features/api/schemas';
 import { Category, CategoryUpdateRequest } from '../../features/api/types';
 import { toastCategoryNameError } from '../../helpers/forms';
-import { CategoryFormColorController } from './CategoryFormColorController';
-import { CategoryFormNameController } from './CategoryFormNameController';
-import { BaseCategorySchema, CATEGORY_UPDATE_FORM_ID } from './constants';
+import {
+  CategoryFormColorController,
+} from '../forms/CategoryFormColorController';
+import {
+  CategoryFormNameController,
+} from '../forms/CategoryFormNameController';
+import { CATEGORY_UPDATE_FORM_ID } from './constants';
 
 export type CategoryUpdateFormProps = {
   onSubmit: (request: CategoryUpdateRequest) => void,

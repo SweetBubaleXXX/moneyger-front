@@ -12,20 +12,11 @@ import { Controller, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { z } from 'zod';
 
 import { useLoginMutation } from '../../features/api/apiSlice';
-import { setAccessToken } from '../../features/api/auth';
+import { LoginSchema } from '../../features/api/schemas';
 import { LoginRequest } from '../../features/api/types';
-
-export const LoginSchema = z.object({
-  username: z.string()
-    .nonempty('Username is required')
-    .regex(/^[\w.@+-]+$/, 'Letters, digits and @/./+/-/_ only')
-    .max(150),
-  password: z.string()
-    .min(8, { message: 'Password must contain at least 8 characters' }),
-});
+import { setAccessToken } from '../../features/auth/authSlice';
 
 export const LoginForm = () => {
   const navigate = useNavigate();
