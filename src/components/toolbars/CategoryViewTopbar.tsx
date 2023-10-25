@@ -3,7 +3,7 @@ import { ChevronLeft, Trash } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { ConfirmationModal } from '../ConfirmationModal';
-import { TOPBAR_SHEET_STYLES } from './constants';
+import { TOP_BAR_SHEET_STYLES } from './constants';
 
 export type CategoryViewTopbarProps = {
   onGoBack: () => void,
@@ -24,7 +24,7 @@ export const CategoryViewTopbar = ({
   return (
     <Sheet
       variant="outlined"
-      sx={TOPBAR_SHEET_STYLES}
+      sx={TOP_BAR_SHEET_STYLES}
     >
       <Box
         width="100%"

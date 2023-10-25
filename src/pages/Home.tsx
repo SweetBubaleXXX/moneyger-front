@@ -2,7 +2,7 @@ import {
   Box,
   IconButton,
 } from '@mui/joy';
-import { Cross } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
 
 import {
@@ -11,6 +11,7 @@ import {
 } from '../components/period/PeriodSelector';
 import { Period } from '../components/period/types';
 import { SummaryWidget } from '../components/summary/SummaryWidget';
+import { NavigationBar } from '../components/toolbars/NavigationBar';
 import {
   TransactionCreationModal,
 } from '../components/transactions/TransactionCreationModal';
@@ -42,26 +43,25 @@ export const Home = () => {
           marginBottom: '75px',
         }}
       />
-      <Box
-        zIndex={1250}
-        position="fixed"
-        bottom={0}
-        paddingBottom={1.5}
-        width="100%"
-        display="flex"
-        justifyContent="center"
+      <IconButton
+        variant="solid"
+        color="danger"
+        onClick={() => setTransactionCreationModalOpen(true)}
+        sx={{
+          '--IconButton-size': '60px',
+          position: 'fixed',
+          bottom: 15,
+          left: '50%',
+          right: '50%',
+          transform: 'translate(-50%, 0)',
+          zIndex: 1250,
+          borderRadius: '100%',
+          boxShadow: 'lg',
+        }}
       >
-        <IconButton
-          variant="solid"
-          onClick={() => setTransactionCreationModalOpen(true)}
-          sx={{
-            '--IconButton-size': '70px',
-            borderRadius: '100%',
-          }}
-        >
-          <Cross />
-        </IconButton>
-      </Box>
+        <Plus />
+      </IconButton>
+      <NavigationBar centerSpacing={15} />
       <TransactionCreationModal
         open={transactionCreationModalOpen}
         onClose={setTransactionCreationModalOpen}
