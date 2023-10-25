@@ -1,5 +1,7 @@
 import { SxProps } from '@mui/joy/styles/types';
 
+export const SEARCH_DEBOUNCE_DELAY = 600;
+
 export const BAR_SHEET_STYLES: SxProps = {
   px: 1,
   py: 0.5,

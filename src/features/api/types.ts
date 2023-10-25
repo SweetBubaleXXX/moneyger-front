@@ -38,6 +38,9 @@ export type CurrencyCode = typeof CURRENCY_CODES[number]
 
 export type TransactionType = 'IN' | 'OUT'
 
+export type TransactionOrdering =
+  'transaction_time' | '-transaction_time'
+
 export type Account = {
   id: number,
   username: string,
@@ -105,11 +108,11 @@ export type TransactionCreateUpdateRequest = Omit<
 
 export type TransactionRequestParams = {
   category?: number,
-  currency?: CurrencyCode,
-  transactionType?: TransactionType,
+  currency?: CurrencyCode | '',
+  transactionType?: TransactionType | '',
   transactionTimeAfter?: string,
   transactionTimeBefore?: string,
-  ordering?: string,
+  ordering?: TransactionOrdering,
   search?: string,
 }
 

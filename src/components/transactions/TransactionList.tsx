@@ -1,4 +1,4 @@
-import { Button, Stack } from '@mui/joy';
+import { Button, CircularProgress, Stack } from '@mui/joy';
 import { SxProps } from '@mui/joy/styles/types';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -8,36 +8,41 @@ import {
   useGetTransactionsQuery,
 } from '../../features/api/apiSlice';
 import { PAGE_SIZE } from '../../features/api/constants';
-import { TransactionRequestParams } from '../../features/api/types';
+import {
+  PaginatedTransactionRequest,
+  TransactionRequestParams,
+} from '../../features/api/types';
 import { TransactionWidget } from './TransactionWidget';
 
 export type TransactionListProps = {
   filters: Partial<TransactionRequestParams>,
-  reset?: boolean,
+  skip?: boolean,
+  loading?: boolean,
   sx?: SxProps
 }
 
 export const TransactionList = ({
   filters,
-  reset,
+  skip,
+  loading,
   sx,
 }: TransactionListProps) => {
-  const [page, setPage] = useState<number>(1);
-
   const [
     transactionDuplicateModalOpen,
     setTransactionDuplicateModalOpen,
   ] = useState<boolean>(false);
 
-  const getTransactionsRequestParams = {
-    page,
+  const [
+    requestParams, setRequestParams,
+  ] = useState<PaginatedTransactionRequest>({
+    page: 1,
     params: filters,
-  };
+  });
 
-  const resetCache = reset || transactionDuplicateModalOpen;
+  const skipUpdate = skip || transactionDuplicateModalOpen;
 
   const transactions = useGetTransactionsQuery(
-    resetCache ? skipToken : getTransactionsRequestParams
+    skipUpdate ? skipToken : requestParams,
   );
 
   const totalPages = useMemo(
@@ -45,45 +50,62 @@ export const TransactionList = ({
     [transactions.data?.count]
   );
 
-  const showLoadMoreButton = totalPages > page;
+  const transactionsList = transactions.data && transactionsSelector
+    .selectAll(transactions.data.results)
+    .map(
+      (transaction, index) =>
+        <TransactionWidget
+          key={index}
+          transaction={transaction}
+          isLoading={transactions.isFetching}
+          requestParams={requestParams}
+          onDuplicateModalOpen={setTransactionDuplicateModalOpen}
+        />
+    );
+
+  const showSpinner = !transactionsList || (
+    !transactionsList.length && transactions.isFetching
+  );
+
+  const showLoadMoreButton = totalPages > (requestParams.page ?? 1);
 
   useEffect(() => {
-    if (resetCache) {
-      setPage(1);
-    }
-  }, [resetCache]);
-
-  useEffect(() => {
-    setPage(1);
+    setRequestParams({
+      page: 1,
+      params: filters,
+    });
   }, [filters]);
 
   return (
-    <Stack spacing={2} padding={2} marginX="auto" sx={{
-      maxWidth: { sm: 'sm' },
-      ...sx,
-    }}>
+    <Stack
+      spacing={2}
+      padding={2}
+      marginX="auto"
+      maxWidth={{ sm: 'sm' }}
+      sx={sx}
+    >
       {
-        transactions.data && transactionsSelector
-          .selectAll(transactions.data.results)
-          .map(
-            (transaction, index) =>
-              <TransactionWidget
-                key={index}
-                transaction={transaction}
-                isLoading={transactions.isFetching}
-                requestParams={getTransactionsRequestParams}
-                onDuplicateModalOpen={setTransactionDuplicateModalOpen}
-              />
-          )
-      }
-      {
-        showLoadMoreButton && <Button
-          variant="outlined"
-          loading={transactions.isFetching}
-          onClick={() => setPage(page + 1)}
-        >
-          Load More
-        </Button>
+        loading || showSpinner ?
+          <CircularProgress
+            color="neutral"
+            sx={{ alignSelf: 'center' }}
+          />
+          :
+          <>
+            {transactionsList}
+            {
+              showLoadMoreButton && <Button
+                variant="outlined"
+                loading={transactions.isFetching}
+                onClick={() => setRequestParams({
+                  page: requestParams.page && requestParams.page + 1,
+                  params: requestParams.params,
+                })}
+              >
+                Load More
+              </Button>
+            }
+          </>
       }
     </Stack>
   );

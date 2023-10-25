@@ -1,9 +1,9 @@
-import { Box, IconButton, Sheet, Typography } from '@mui/joy';
+import { IconButton, Typography } from '@mui/joy';
 import { ChevronLeft, Trash } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { ConfirmationModal } from '../ConfirmationModal';
-import { TOP_BAR_SHEET_STYLES } from './constants';
+import { BaseTopbar } from './BaseTopbar';
 
 export type CategoryViewTopbarProps = {
   onGoBack: () => void,
@@ -22,19 +22,8 @@ export const CategoryViewTopbar = ({
   ] = useState<boolean>(false);
 
   return (
-    <Sheet
-      variant="outlined"
-      sx={TOP_BAR_SHEET_STYLES}
-    >
-      <Box
-        width="100%"
-        maxWidth="sm"
-        mx="auto"
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        gap={1}
-      >
+    <>
+      <BaseTopbar>
         <IconButton
           onClick={onGoBack}
         >
@@ -51,7 +40,7 @@ export const CategoryViewTopbar = ({
         >
           <Trash />
         </IconButton>
-      </Box>
+      </BaseTopbar>
       <ConfirmationModal
         open={confirmDeletionOpen}
         onCancel={() => setConfirmDeletionOpen(false)}
@@ -62,6 +51,6 @@ export const CategoryViewTopbar = ({
       >
         Are you sure you want to delete this category?
       </ConfirmationModal>
-    </Sheet>
+    </>
   );
 };

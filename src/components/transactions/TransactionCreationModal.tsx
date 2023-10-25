@@ -30,7 +30,8 @@ export const TransactionCreationModal = ({
       toast.success('Transaction added');
       onClose(false);
     }
-  }, [result.isSuccess, onClose]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result.isSuccess]);
 
   return (
     <TransactionModal

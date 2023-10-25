@@ -4,21 +4,14 @@ import {
   Box,
   Button,
   Divider,
-  Drawer,
   FormControl,
   FormLabel,
   Input,
   Option,
   Select,
   Stack,
-  Tab,
-  TabList,
-  TabPanel,
-  Tabs,
   Textarea,
-  useTheme,
 } from '@mui/joy';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -38,7 +31,7 @@ import {
   Transaction,
   TransactionCreateUpdateRequest,
 } from '../../features/api/types';
-import { CategorySelector } from '../categories/CategorySelector';
+import { CategorySelectorDrawer } from '../categories/CategorySelectorDrawer';
 
 
 export type TransactionFormProps = {
@@ -54,9 +47,6 @@ export const TransactionForm = ({
   isLoading,
   initialValue,
 }: TransactionFormProps) => {
-  const theme = useTheme();
-  const greaterThanMd = useMediaQuery(theme.breakpoints.up('md'));
-
   const [
     categorySelectorOpen, setCategorySelectorOpen,
   ] = useState<boolean>(false);
@@ -204,36 +194,15 @@ export const TransactionForm = ({
               >
                 {category?.name || 'Choose category'}
               </Button>
-              <Drawer
+              <CategorySelectorDrawer
                 open={categorySelectorOpen}
-                anchor={greaterThanMd ? 'left' : 'bottom'}
-                size={greaterThanMd ? 'sm' : 'lg'}
                 onClose={() => setCategorySelectorOpen(false)}
-              >
-                <Tabs defaultValue="OUT">
-                  <TabList tabFlex={1}>
-                    <Tab value="OUT">Outcome</Tab>
-                    <Tab value="IN">Income</Tab>
-                  </TabList>
-                  {
-                    ['OUT', 'IN'].map(value =>
-                      <TabPanel key={value} value={value}>
-                        <CategorySelector
-                          selected={category}
-                          onChange={value => {
-                            setCategory(value);
-                            field.onChange(value.id);
-                          }}
-                          filter={
-                            category =>
-                              !category.parentCategory
-                              && category.transactionType === value
-                          } />
-                      </TabPanel>
-                    )
-                  }
-                </Tabs>
-              </Drawer>
+                onChange={value => {
+                  setCategory(value);
+                  field.onChange(value.id);
+                }}
+                category={category}
+              />
             </>
           }
         />
