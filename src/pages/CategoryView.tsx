@@ -11,15 +11,15 @@ import { toast } from 'sonner';
 import { CategoryList } from '../components/categories/CategoryList';
 import { CategoryModal } from '../components/categories/CategoryModal';
 import {
-  CategoryUpdateForm,
-} from '../components/categories/CategoryUpdateForm';
-import {
   CATEGORY_UPDATE_FORM_ID,
   REORDER_FORM_ID,
 } from '../components/categories/constants';
 import {
+  CategoryUpdateForm,
+} from '../components/forms/CategoryUpdateForm';
+import {
   SubcategoryCreateForm,
-} from '../components/categories/SubcategoryCreateForm';
+} from '../components/forms/SubcategoryCreateForm';
 import {
   CategoryListToolbar,
 } from '../components/toolbars/CategoryListToolbar';

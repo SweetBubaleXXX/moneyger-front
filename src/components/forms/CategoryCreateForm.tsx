@@ -14,6 +14,7 @@ import { CategoryCreateSchema } from '../../features/api/schemas';
 import { CategoryCreateRequest } from '../../features/api/types';
 import { toastCategoryNameError } from '../../helpers/forms';
 import { CategoryFormColorController } from './CategoryFormColorController';
+import { CategoryFormIconController } from './CategoryFormIconController';
 import { CategoryFormNameController } from './CategoryFormNameController';
 
 export type CategoryCreateFormProps = {
@@ -65,6 +66,10 @@ export const CategoryCreateForm = ({
         <CategoryFormColorController
           control={control}
           error={!!formState.errors.color}
+        />
+        <CategoryFormIconController
+          control={control}
+          error={!!formState.errors.icon}
         />
         <Button type="submit" loading={loading}>Add</Button>
       </Stack>

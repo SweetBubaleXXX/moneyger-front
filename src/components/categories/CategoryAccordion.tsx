@@ -6,6 +6,7 @@ import {
 import React from 'react';
 
 import { Category } from '../../features/api/types';
+import { CategoryIcon } from './CategoryIcon';
 import { CategorySelector } from './CategorySelector';
 
 export type CategoryAccordionProps = {
@@ -29,6 +30,7 @@ export const CategoryAccordion = ({
           category.id === selected?.id ? 'primary' : 'neutral'
         }
       >
+        <CategoryIcon color={category.color}>{category.icon}</CategoryIcon>
         {category.name}
       </AccordionSummary>
       <AccordionDetails>

@@ -27,6 +27,7 @@ import {
   PaginatedTransactionRequest,
   Transaction,
 } from '../../features/api/types';
+import { CategoryIcon } from '../categories/CategoryIcon';
 import { ConfirmationModal } from '../ConfirmationModal';
 import { TransactionCreationModal } from './TransactionCreationModal';
 import { TransactionUpdateModal } from './TransactionUpdateModal';
@@ -90,11 +91,13 @@ export const TransactionWidget = ({
             direction="row"
             alignItems="center"
             justifyContent="stretch"
-            gap={0.5}
+            gap={0.7}
           >
             <Avatar>
               <Skeleton loading={loading}>
-                {category.data?.icon}
+                <CategoryIcon color={category.data?.color}>
+                  {category.data?.icon}
+                </CategoryIcon>
               </Skeleton>
             </Avatar>
             <Sheet sx={{ flexGrow: 1, overflow: 'hidden' }}>
