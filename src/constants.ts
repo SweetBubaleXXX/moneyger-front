@@ -1,12 +1,6 @@
-import { SxProps } from '@mui/joy/styles/types';
+export const TRANSACTION_TYPES = ['IN', 'OUT'] as const;
 
 export const CURRENCY_CODES = ['USD', 'EUR', 'RUB', 'BYN'] as const;
-
-export const OVERFLOW_ELLIPSIS: SxProps = {
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
-};
 
 export const DATE_INPUT_FORMAT = 'YYYY-MM-DD';
 

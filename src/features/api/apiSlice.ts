@@ -14,6 +14,8 @@ import { baseQueryWithReauth } from './queries';
 import {
   Account,
   Category,
+  CategoryCreateRequest,
+  CategoryUpdateRequest,
   JwtToken,
   LoginRequest,
   PaginatedCategoryRequest,
@@ -21,6 +23,7 @@ import {
   PaginatedTransactionRequest,
   RegistrationRequest,
   RegistrationResponse,
+  SubcategoryCreateRequest,
   Summary,
   Transaction,
   TransactionCreateUpdateRequest,
@@ -103,6 +106,61 @@ export const api = createApi({
       }),
       providesTags: ['Transaction'],
     }),
+    createCategory: builder.mutation<Category, CategoryCreateRequest>({
+      query: request => ({
+        url: API_PATHS.createCategory,
+        method: 'POST',
+        body: decamelizeKeys(request),
+      }),
+      invalidatesTags: ['Category'],
+    }),
+    createSubcategory: builder.mutation<
+      Category, SubcategoryCreateRequest & { id: number }
+    >({
+      query: request => ({
+        url: API_PATHS.getSubcategories(request.id),
+        method: 'POST',
+        body: decamelizeKeys(request),
+      }),
+      invalidatesTags: ['Category'],
+    }),
+    updateCategory: builder.mutation<
+      Category, CategoryUpdateRequest & { id: number }
+    >({
+      query: request => ({
+        url: API_PATHS.getCategoryById(request.id),
+        method: 'PATCH',
+        body: decamelizeKeys(request),
+      }),
+      invalidatesTags: ['Category'],
+    }),
+    updateDisplayOrder: builder.mutation<void, Category[]>({
+      queryFn: async (categories, api, extraOptions, baseQuery) => {
+        const requests = [];
+        for (const [index, category] of categories.entries()) {
+          const newDisplayOrder = index + 1;
+          if (category.displayOrder === newDisplayOrder) { continue; }
+          const query = baseQuery({
+            url: API_PATHS.getCategoryById(category.id),
+            method: 'PATCH',
+            body: decamelizeKeys({
+              displayOrder: newDisplayOrder,
+            }),
+          });
+          requests.push(query);
+        }
+        await Promise.all(requests);
+        return { data: void {} };
+      },
+      invalidatesTags: ['Category'],
+    }),
+    deleteCategory: builder.mutation<void, number>({
+      query: categoryId => ({
+        url: API_PATHS.getCategoryById(categoryId),
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Category'],
+    }),
     createTransaction: builder
       .mutation<Transaction, TransactionCreateUpdateRequest>({
         query: request => ({
@@ -177,6 +235,12 @@ export const selectCategoryById = createSelector(
     categoryId ? data?.find(category => category.id === categoryId) : undefined,
 );
 
+export const filterCategoriesSelector = createSelector(
+  (categories?: Category[]) => categories,
+  (_: any, filter?: (category: Category) => boolean) => filter || (() => true),
+  (data, filter) => data?.filter(filter)
+);
+
 export const {
   useGetAccountQuery,
   useGetAllCategoriesQuery,
@@ -184,6 +248,11 @@ export const {
   useGetCategoryByIdQuery,
   useGetTransactionsQuery,
   useGetTransactionsSummaryQuery,
+  useCreateCategoryMutation,
+  useCreateSubcategoryMutation,
+  useUpdateCategoryMutation,
+  useUpdateDisplayOrderMutation,
+  useDeleteCategoryMutation,
   useCreateTransactionMutation,
   useUpdateTransactionMutation,
   useDeleteTransactionMutation,

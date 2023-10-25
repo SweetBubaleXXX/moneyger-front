@@ -65,6 +65,18 @@ export type CategoryRequestParams = {
 export type PaginatedCategoryRequest =
   PaginatedParamsRequest<CategoryRequestParams>
 
+export type CategoryCreateRequest = Omit<
+  Category, 'id' | 'parentCategory' | 'displayOrder' | 'icon' | 'color'
+> & Partial<Pick<Category, 'icon' | 'color'>>
+
+export type SubcategoryCreateRequest = Omit<
+  CategoryCreateRequest, 'transactionType'
+>
+
+export type CategoryUpdateRequest = Omit<
+  CategoryCreateRequest, 'transactionType'
+> & Partial<Pick<Category, 'displayOrder'>>
+
 export type Transaction = {
   id: number,
   category: number,

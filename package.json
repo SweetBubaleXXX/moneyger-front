@@ -27,6 +27,7 @@
     "camelcase-keys": "^9.0.0",
     "decamelize-keys": "^2.0.1",
     "decimal.js": "^10.4.3",
+    "framer-motion": "^10.16.4",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.276.0",
     "moment": "^2.29.4",

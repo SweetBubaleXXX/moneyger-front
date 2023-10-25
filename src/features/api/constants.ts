@@ -5,11 +5,14 @@ export const API_PATHS = {
   refreshToken: 'accounts/auth/jwt/refresh/',
   registerAccount: 'accounts/auth/users/',
   getAccount: 'accounts/auth/users/me/',
-  getAllCategories: 'categories/?limit=99999',
+  getAllCategories: 'categories/?limit=99999&ordering=display_order',
+  createCategory: 'categories/',
   getTransactionsSummary: 'transactions/summary/',
   getCategories: (pageNumber: number = 1) =>
     `categories/?${getPaginationQuery(pageNumber)}`,
   getCategoryById: (categoryId: number) => `categories/${categoryId}/`,
+  getSubcategories: (categoryId: number) =>
+    `categories/${categoryId}/subcategories/`,
   getTransactions: (pageNumber: number = 1) =>
     `transactions/?${getPaginationQuery(pageNumber)}`,
   getTransactionById: (transactionId: number) =>

@@ -1,12 +1,7 @@
 import {
   Avatar,
-  Button,
   Card,
   CardContent,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
   Dropdown,
   IconButton,
   ListDivider,
@@ -14,18 +9,15 @@ import {
   Menu,
   MenuButton,
   MenuItem,
-  Modal,
-  ModalDialog,
   Sheet,
   Skeleton,
   Typography,
 } from '@mui/joy';
 import { Stack } from '@mui/system';
-import { AlertTriangle, Copy, MoreVertical, Pencil, Trash } from 'lucide-react';
+import { Copy, MoreVertical, Pencil, Trash } from 'lucide-react';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 
-import { OVERFLOW_ELLIPSIS } from '../../constants';
 import {
   selectCategoryById,
   useDeleteTransactionMutation,
@@ -35,6 +27,7 @@ import {
   PaginatedTransactionRequest,
   Transaction,
 } from '../../features/api/types';
+import { ConfirmationModal } from '../ConfirmationModal';
 import { TransactionCreationModal } from './TransactionCreationModal';
 import { TransactionUpdateModal } from './TransactionUpdateModal';
 
@@ -105,17 +98,17 @@ export const TransactionWidget = ({
               </Skeleton>
             </Avatar>
             <Sheet sx={{ flexGrow: 1, overflow: 'hidden' }}>
-              <Typography level="title-lg" sx={OVERFLOW_ELLIPSIS}>
+              <Typography level="title-lg" noWrap>
                 <Skeleton loading={loading}>
                   {category.data?.name}
                 </Skeleton>
               </Typography>
-              <Typography level="body-sm" sx={OVERFLOW_ELLIPSIS}>
+              <Typography level="body-sm" noWrap>
                 <Skeleton loading={loading}>
                   {transaction.comment}
                 </Skeleton>
               </Typography>
-              <Typography level="body-xs" sx={OVERFLOW_ELLIPSIS}>
+              <Typography level="body-xs" noWrap>
                 <Skeleton loading={loading}>
                   {moment(transaction.transactionTime).format('llll')}
                 </Skeleton>
@@ -175,41 +168,19 @@ export const TransactionWidget = ({
           Delete
         </MenuItem>
       </Menu>
-      <Modal
+      <ConfirmationModal
         open={confirmDeletionOpen}
-        onClose={() => setConfirmDeletionOpen(false)}
+        onCancel={() => setConfirmDeletionOpen(false)}
+        onConfirm={() => deleteTransaction({
+          id: transaction.id,
+          params: requestParams,
+        })}
+        confirmButtonText="Delete"
+        confirmButtonProps={{ color: 'danger' }}
+        loading={deletionResult.isLoading}
       >
-        <ModalDialog variant="outlined">
-          <DialogTitle>
-            <AlertTriangle />
-            Confirmation
-          </DialogTitle>
-          <Divider />
-          <DialogContent>
-            Are you sure you want to delete this transaction?
-          </DialogContent>
-          <DialogActions>
-            <Button
-              variant="solid"
-              color="danger"
-              loading={deletionResult.isLoading}
-              onClick={() => deleteTransaction({
-                id: transaction.id,
-                params: requestParams,
-              })}
-            >
-              Delete
-            </Button>
-            <Button
-              variant="plain"
-              color="neutral"
-              onClick={() => setConfirmDeletionOpen(false)}
-            >
-              Cancel
-            </Button>
-          </DialogActions>
-        </ModalDialog>
-      </Modal>
+        Are you sure you want to delete this transaction?
+      </ConfirmationModal>
     </Dropdown >
   );
 };
