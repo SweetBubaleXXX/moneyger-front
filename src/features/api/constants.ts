@@ -12,6 +12,7 @@ export const API_PATHS = {
   exportJson: 'export/json/',
   getAllCategories: 'categories/?limit=99999&ordering=display_order',
   createCategory: 'categories/',
+  getCategoriesStats: 'categories/stats/',
   getTransactionsSummary: 'transactions/summary/',
   getAccountById: (accountId: number) => `accounts/auth/users/${accountId}/`,
   getCategories: (pageNumber: number = 1) =>
@@ -25,6 +26,8 @@ export const API_PATHS = {
     `transactions/${transactionId}/`,
   createTransaction: (categoryId: number) =>
     `categories/${categoryId}/transactions/`,
+  getCategorySummary: (categoryId: number) =>
+    `categories/${categoryId}/summary/`,
 } as const;
 
 export const EXCLUDE_FROM_REAUTH: readonly string[] = [

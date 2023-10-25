@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { AccountActivation } from './AccountActivation';
 import { Categories } from './Categories';
+import { CategoryStatistics } from './CategoryStatistics';
 import { CategoryView } from './CategoryView';
 import { ROUTER_PATHS } from './constants';
 import { Home } from './Home';
@@ -24,6 +25,10 @@ export const Router = () => {
         <Route path={ROUTER_PATHS.categories} Component={Categories} />
         <Route path={ROUTER_PATHS.categoryById} Component={CategoryView} />
         <Route path={ROUTER_PATHS.transactions} Component={Transactions} />
+        <Route
+          path={ROUTER_PATHS.categoryStatsById}
+          Component={CategoryStatistics}
+        />
       </Routes>
     </BrowserRouter>
   );

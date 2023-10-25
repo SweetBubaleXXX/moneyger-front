@@ -5,7 +5,7 @@ import {
   Divider,
 } from '@mui/joy';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { CategoryList } from '../components/categories/CategoryList';
@@ -34,6 +34,7 @@ import {
   useUpdateCategoryMutation,
   useUpdateDisplayOrderMutation,
 } from '../features/api/apiSlice';
+import { useCategoryIdParam } from '../hooks/params';
 import {
   CATEGORY_BOTTOM_TOOLBAR_PROPS,
   CATEGORY_LIST_OFFSET_FOR_TOOLBAR,
@@ -46,8 +47,7 @@ export type CategoryViewParams = {
 
 export const CategoryView = () => {
   const navigate = useNavigate();
-  const params = useParams<CategoryViewParams>();
-  const categoryId = params.categoryId ? +params.categoryId : undefined;
+  const categoryId = useCategoryIdParam();
   const [reorder, setReorder] = useState<boolean>(false);
   const [editing, setEditing] = useState<boolean>(false);
 
