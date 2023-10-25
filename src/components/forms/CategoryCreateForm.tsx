@@ -7,12 +7,12 @@ import {
   Select,
   Stack,
 } from '@mui/joy';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { CategoryCreateSchema } from '../../features/api/schemas';
 import { CategoryCreateRequest } from '../../features/api/types';
-import { toastCategoryNameError } from '../../helpers/forms';
+import { useCategoryNameErrorSnackbar } from '../../hooks/snackbar';
 import { CategoryFormColorController } from './CategoryFormColorController';
 import { CategoryFormIconController } from './CategoryFormIconController';
 import { CategoryFormNameController } from './CategoryFormNameController';
@@ -34,10 +34,7 @@ export const CategoryCreateForm = ({
     { resolver: zodResolver(CategoryCreateSchema) }
   );
 
-  useEffect(
-    () => toastCategoryNameError(formState.errors.name),
-    [formState.errors.name]
-  );
+  useCategoryNameErrorSnackbar(formState.errors.name);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

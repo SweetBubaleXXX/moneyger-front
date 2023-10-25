@@ -3,12 +3,12 @@ import {
   Button,
   Stack,
 } from '@mui/joy';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import { BaseCategorySchema } from '../../features/api/schemas';
 import { SubcategoryCreateRequest } from '../../features/api/types';
-import { toastCategoryNameError } from '../../helpers/forms';
+import { useCategoryNameErrorSnackbar } from '../../hooks/snackbar';
 import { CATEGORY_UPDATE_FORM_ID } from '../categories/constants';
 import {
   CategoryFormColorController,
@@ -33,10 +33,7 @@ export const SubcategoryCreateForm = ({
     { resolver: zodResolver(BaseCategorySchema) }
   );
 
-  useEffect(
-    () => toastCategoryNameError(formState.errors.name),
-    [formState.errors.name]
-  );
+  useCategoryNameErrorSnackbar(formState.errors.name);
 
   return (
     <form

@@ -1,5 +1,5 @@
 import { ReactNode, useEffect } from 'react';
-import { FieldValues, FormState } from 'react-hook-form';
+import { FieldError, FieldValues, FormState } from 'react-hook-form';
 import { toast } from 'sonner';
 
 export const useFormErrorsSnackbar = (formState: FormState<FieldValues>) =>
@@ -10,6 +10,15 @@ export const useFormErrorsSnackbar = (formState: FormState<FieldValues>) =>
       }
     }
   }, [formState.errors]);
+
+export const useCategoryNameErrorSnackbar = (error?: FieldError) =>
+  useEffect(() => {
+    if (error) {
+      toast.error('Category Name', {
+        description: error.message,
+      });
+    }
+  }, [error]);
 
 export const useSuccessSnackbar = (
   message: ReactNode,
