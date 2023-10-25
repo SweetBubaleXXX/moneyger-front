@@ -9,6 +9,7 @@ module.exports = {
     'react-hooks',
     'simple-import-sort',
   ],
+  ignorePatterns: ['build/'],
   rules: {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
