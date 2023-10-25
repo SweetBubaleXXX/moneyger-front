@@ -8,6 +8,7 @@ export const API_PATHS = {
   setPassword: 'accounts/auth/users/set_password/',
   logout: 'accounts/auth/jwt/logout/',
   getAccount: 'accounts/auth/users/me/',
+  importJson: 'import/json/',
   exportCsv: 'export/csv/',
   exportJson: 'export/json/',
   getAllCategories: 'categories/?limit=99999&ordering=display_order',

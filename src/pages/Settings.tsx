@@ -10,8 +10,9 @@ import {
   ChangePasswordSetting,
 } from '../components/settings/ChangePasswordSetting';
 import { CurrencySetting } from '../components/settings/CurrencySetting';
-import { ExportCsvButton } from '../components/settings/ExportCsvButton';
-import { ExportJsonButton } from '../components/settings/ExportJsonButton';
+import { ExportCsvSetting } from '../components/settings/ExportCsvSetting';
+import { ExportJsonSetting } from '../components/settings/ExportJsonSetting';
+import { ImportJsonSetting } from '../components/settings/ImportJsonSetting';
 import { LogoutButton } from '../components/settings/LogoutButton';
 import { ThemeSetting } from '../components/settings/ThemeSetting';
 import { NavigationBar } from '../components/toolbars/NavigationBar';
@@ -38,9 +39,14 @@ export const Settings = () => {
           <CurrencySetting />
           <ListDivider inset="gutter" />
           <ChangePasswordSetting />
+          <ListDivider />
+          <ListSubheader>Data Management</ListSubheader>
+          <ExportCsvSetting />
+          <ListDivider inset="gutter" />
+          <ExportJsonSetting />
+          <ListDivider inset="gutter" />
+          <ImportJsonSetting />
         </List>
-        <ExportCsvButton />
-        <ExportJsonButton />
         <LogoutButton />
       </Stack>
       <NavigationBar />

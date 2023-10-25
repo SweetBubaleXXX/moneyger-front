@@ -25,6 +25,9 @@ import {
 } from '../features/api/apiSlice';
 import { TransactionType } from '../features/api/types';
 import {
+  usePromptForPresetCategoriesCreation,
+} from '../hooks/presetCategories';
+import {
   CATEGORY_BOTTOM_TOOLBAR_PROPS,
   CATEGORY_LIST_OFFSET_FOR_TOOLBAR,
   ROUTER_PATHS,
@@ -50,6 +53,8 @@ export const Categories = () => {
     updateDisplayOrder,
     displayOrderUpdateResult,
   ] = useUpdateDisplayOrderMutation();
+
+  usePromptForPresetCategoriesCreation();
 
   useEffect(() => {
     if (categoryCreationResult.isError) {

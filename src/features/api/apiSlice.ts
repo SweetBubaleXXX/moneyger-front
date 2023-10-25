@@ -241,6 +241,14 @@ export const api = createApi({
           }
         },
       }),
+    importJson: builder.mutation<void, object>({
+      query: request => ({
+        url: API_PATHS.importJson,
+        method: 'POST',
+        body: request,
+      }),
+      invalidatesTags: ['Category', 'Transaction'],
+    }),
     login: builder.mutation<JwtToken, LoginRequest>({
       query: credentials => ({
         url: API_PATHS.createToken,
@@ -311,6 +319,7 @@ export const {
   useUpdateTransactionMutation,
   useDeleteTransactionMutation,
   useActivateAccountMutation,
+  useImportJsonMutation,
   useLoginMutation,
   useRegisterMutation,
   useLogoutMutation,
