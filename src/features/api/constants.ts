@@ -3,9 +3,10 @@ import { getPaginationQuery } from '../../helpers/pagination';
 export const API_PATHS = {
   createToken: 'accounts/auth/jwt/create/',
   refreshToken: 'accounts/auth/jwt/refresh/',
-  logout: 'accounts/auth/jwt/logout/',
-  setPassword: 'accounts/auth/users/set_password/',
   registerAccount: 'accounts/auth/users/',
+  activateAccount: 'accounts/auth/users/activation/',
+  setPassword: 'accounts/auth/users/set_password/',
+  logout: 'accounts/auth/jwt/logout/',
   getAccount: 'accounts/auth/users/me/',
   exportCsv: 'export/csv/',
   exportJson: 'export/json/',
@@ -28,6 +29,7 @@ export const API_PATHS = {
 
 export const EXCLUDE_FROM_REAUTH: readonly string[] = [
   API_PATHS.createToken,
+  API_PATHS.activateAccount,
   API_PATHS.logout,
 ] as const;
 

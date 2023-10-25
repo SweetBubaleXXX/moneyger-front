@@ -7,6 +7,7 @@ export const ROUTER_PATHS = {
   settings: '/settings',
   categories: '/categories',
   categoryById: '/categories/:categoryId',
+  activateAccount: 'actions/activate/:uid/:token',
   getCategoryById: (categoryId: number) => `/categories/${categoryId}`,
 } as const;
 
