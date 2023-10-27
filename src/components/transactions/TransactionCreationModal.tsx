@@ -21,7 +21,11 @@ export const TransactionCreationModal = ({
 
   useErrorSnackbar('Failed to add transaction', result);
 
-  useSuccessSnackbar('Transaction added', result);
+  useSuccessSnackbar(
+    'Transaction added',
+    result,
+    () => onClose(false)
+  );
 
   return (
     <TransactionModal
