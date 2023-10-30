@@ -33,6 +33,10 @@ export const API_PATHS = {
     `categories/${categoryId}/summary/`,
 } as const;
 
+export const WS_PATHS = {
+  chat: 'ws/chat/',
+};
+
 export const EXCLUDE_FROM_REAUTH: readonly string[] = [
   API_PATHS.createToken,
   API_PATHS.activateAccount,
