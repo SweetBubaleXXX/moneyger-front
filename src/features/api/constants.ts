@@ -3,6 +3,7 @@ import { getPaginationQuery } from '../../helpers/pagination';
 export const BASE_URL = process.env.REACT_APP_API_URL || '/api/';
 
 export const API_PATHS = {
+  messages: 'chat/messages/',
   createToken: 'accounts/auth/jwt/create/',
   refreshToken: 'accounts/auth/jwt/refresh/',
   registerAccount: 'accounts/auth/users/',

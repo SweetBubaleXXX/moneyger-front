@@ -1,30 +1,34 @@
 import { createEntityAdapter, EntityState } from '@reduxjs/toolkit';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import camelcaseKeys from 'camelcase-keys';
 import urlJoin from 'url-join';
 
 import { RootState } from '../../store';
-import { BASE_URL, WS_PATHS } from './constants';
+import { API_PATHS, BASE_URL, WS_PATHS } from './constants';
+import { baseQueryWithReauth } from './queries';
 import { Message } from './types';
 
 const messagesAdapter = createEntityAdapter<Message>({
-  selectId: message => `${message.timestamp}_${message.user}`,
+  selectId: message => message.messageId,
   sortComparer: (a, b) => a.timestamp - b.timestamp,
 });
 
+export const messagesSelector = messagesAdapter.getSelectors();
+
 export const chatApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  reducerPath: 'chatApi',
+  baseQuery: baseQueryWithReauth,
   endpoints: builder => ({
     getMessages: builder.query<EntityState<Message>, void>({
-      query: () => WS_PATHS.chat,
+      query: () => API_PATHS.messages,
       transformResponse: (response: Message[]) => messagesAdapter.addMany(
         messagesAdapter.getInitialState(),
         camelcaseKeys(response),
       ),
-      async onCacheEntryAdded(
+      onCacheEntryAdded: async (
         arg,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved, getState }
-      ) {
+      ) => {
         let chatUrl: URL;
         if (BASE_URL.startsWith('http')) {
           chatUrl = new URL(WS_PATHS.chat, BASE_URL);
@@ -43,10 +47,11 @@ export const chatApi = createApi({
         try {
           await cacheDataLoaded;
           const listener = (event: MessageEvent) => {
-            const data = JSON.parse(event.data);
-            if (data.type !== 'chat.message') { return; }
+            const messageBody = JSON.parse(event.data);
+            const parsedMessage = camelcaseKeys(messageBody);
+            if (parsedMessage.type !== 'chat.message') { return; }
             updateCachedData((draft) => {
-              messagesAdapter.upsertOne(draft, data);
+              messagesAdapter.upsertOne(draft, parsedMessage);
             });
           };
           ws.addEventListener('message', listener);
@@ -57,3 +62,5 @@ export const chatApi = createApi({
     }),
   }),
 });
+
+export const { useGetMessagesQuery } = chatApi;

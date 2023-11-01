@@ -157,8 +157,9 @@ export type StatsRequestParams = Pick<
 >
 
 export type Message = {
+  messageId: string,
   user: string,
   isAdmin: boolean,
-  message: string,
+  messageText: string,
   timestamp: number,
 }

@@ -5,6 +5,7 @@ import { AccountActivation } from './AccountActivation';
 import { Categories } from './Categories';
 import { CategoryStatistics } from './CategoryStatistics';
 import { CategoryView } from './CategoryView';
+import { Chat } from './Chat';
 import { ROUTER_PATHS } from './constants';
 import { ErrorPage } from './ErrorPage';
 import { Home } from './Home';
@@ -29,6 +30,7 @@ export const Router = () => {
           path={ROUTER_PATHS.activateAccount}
           Component={AccountActivation}
         />
+        <Route path={ROUTER_PATHS.chat} Component={Chat} />
         <Route path={ROUTER_PATHS.settings} Component={Settings} />
         <Route path={ROUTER_PATHS.categories} Component={Categories} />
         <Route path={ROUTER_PATHS.categoryById} Component={CategoryView} />
