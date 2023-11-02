@@ -31,10 +31,11 @@ export const chatApi = createApi({
         arg,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved, getState }
       ) => {
-        const wsUrl = getChatWebsocketUrl(getState() as RootState);
-        const ws = getSocket(wsUrl);
+        let ws: WebSocket | undefined;
         try {
           await cacheDataLoaded;
+          const wsUrl = getChatWebsocketUrl(getState() as RootState);
+          ws = await getSocket(wsUrl);
           ws.onmessage = event => {
             const messageBody = JSON.parse(event.data);
             const parsedMessage = camelcaseKeys(messageBody);
@@ -45,13 +46,13 @@ export const chatApi = createApi({
           };
         } catch { }
         await cacheEntryRemoved;
-        ws.close();
+        ws?.close();
       },
     }),
     sendMessage: builder.mutation<void, OutgoingMessage>({
-      queryFn: (message, { getState }) => {
+      queryFn: async (message, { getState }) => {
         const wsUrl = getChatWebsocketUrl(getState() as RootState);
-        const ws = getSocket(wsUrl);
+        const ws = await getSocket(wsUrl);
         ws.send(JSON.stringify(message));
         return { data: undefined };
       },

@@ -7,15 +7,24 @@ import { RootState } from '../store';
 
 export const createGetSocket = () => {
   let ws: WebSocket | undefined;
-  return (url: string | URL) => {
+  // eslint-disable-next-line consistent-return
+  return (url: string | URL) => new Promise<WebSocket>(resolve => {
     if (!ws || !compareUrls(url.toString(), ws.url)) {
       ws = new WebSocket(url);
-      ws.onclose = () => {
-        ws = undefined;
-      };
     }
-    return ws;
-  };
+    if (ws.readyState === WebSocket.OPEN) {
+      return resolve(ws);
+    }
+    const onSocketReady = () => {
+      if (!ws) { return; }
+      ws.removeEventListener('open', onSocketReady);
+      resolve(ws);
+    };
+    ws.addEventListener('open', onSocketReady);
+    ws.onclose = () => {
+      ws = undefined;
+    };
+  });
 };
 
 export const getChatWebsocketUrl = (state: RootState) => {
