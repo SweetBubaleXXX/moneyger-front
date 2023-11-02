@@ -1,6 +1,7 @@
-import { Stack } from '@mui/joy';
+import { Box, Stack } from '@mui/joy';
 import React from 'react';
 
+import { ChatInput } from '../components/chat/ChatInput';
 import { MessageWidget } from '../components/chat/MessageWidget';
 import {
   messagesSelector,
@@ -11,21 +12,44 @@ export const Chat = () => {
   const messages = useGetMessagesQuery();
 
   return (
-    <>
-      <Stack>
-        <Stack>
+    <Stack
+      direction="column"
+      height="100vh"
+      width="100vw"
+      alignItems={{ sm: 'center' }}
+    >
+      <Box
+        display="flex"
+        flexDirection="column-reverse"
+        flex={1}
+        minWidth={theme => ({ sm: theme.breakpoints.values.sm })}
+        maxWidth="sm"
+        px={3}
+        py={2}
+        sx={{
+          overflowY: 'scroll',
+        }}
+      >
+        <Stack spacing={2} justifyContent="flex-end">
           {
             messages.data && messagesSelector
               .selectAll(messages.data)
               .map(
-                message =>
-                  <MessageWidget>
+                (message, index) =>
+                  <MessageWidget key={index}>
                     {message}
                   </MessageWidget>
               )
           }
         </Stack>
+      </Box>
+      <Stack
+        px={2}
+        pb={3}
+        minWidth={theme => ({ sm: theme.breakpoints.values.sm })}
+      >
+        <ChatInput />
       </Stack>
-    </>
+    </Stack>
   );
 };
