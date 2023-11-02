@@ -163,3 +163,7 @@ export type Message = {
   messageText: string,
   timestamp: number,
 }
+
+export type OutgoingMessage = {
+  message: string,
+}
