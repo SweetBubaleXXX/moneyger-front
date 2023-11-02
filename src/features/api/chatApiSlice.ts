@@ -2,11 +2,11 @@ import { createEntityAdapter, EntityState } from '@reduxjs/toolkit';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import camelcaseKeys from 'camelcase-keys';
 
-import { createGetSocket, getChatWebsocketUrl } from '../../helpers/chat';
 import { RootState } from '../../store';
 import { API_PATHS } from './constants';
 import { baseQueryWithReauth } from './queries';
 import { Message, OutgoingMessage } from './types';
+import { createGetSocket, getChatWebsocketUrl } from './websockets';
 
 const getSocket = createGetSocket();
 
