@@ -15,6 +15,12 @@ export const ChatInput = () => {
     setMessage('');
   };
 
+  const onKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
+      onSubmit();
+    }
+  };
+
   return (
     <Stack
       direction="row"
@@ -27,6 +33,7 @@ export const ChatInput = () => {
           onChange={e => setMessage(e.target.value)}
           placeholder="Write a message..."
           maxRows={3}
+          onKeyDown={onKeyDown}
         />
       </Stack>
       <IconButton
