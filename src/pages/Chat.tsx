@@ -17,8 +17,8 @@ export const Chat = () => {
       <ChatTopbar onReload={messages.refetch} />
       <Stack
         direction="column"
-        height="calc(100vh - 45px)"
-        width="100vw"
+        height="calc(100vh - 46px)"
+        width="100%"
         alignItems={{ sm: 'center' }}
       >
         <Box
