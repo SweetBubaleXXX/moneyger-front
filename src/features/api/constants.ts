@@ -45,3 +45,8 @@ export const EXCLUDE_FROM_REAUTH: readonly string[] = [
 ] as const;
 
 export const PAGE_SIZE = 100;
+
+export enum WebsocketCustomCode {
+  // eslint-disable-next-line no-unused-vars
+  UNAUTHORIZED = 4001,
+}

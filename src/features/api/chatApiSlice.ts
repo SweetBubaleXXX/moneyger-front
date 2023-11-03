@@ -3,7 +3,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import camelcaseKeys from 'camelcase-keys';
 
 import { RootState } from '../../store';
-import { API_PATHS } from './constants';
+import { API_PATHS, WebsocketCustomCode } from './constants';
 import { baseQueryWithReauth } from './queries';
 import { Message, OutgoingMessage } from './types';
 import { createGetSocket, getChatWebsocketUrl } from './websockets';
@@ -28,25 +28,27 @@ export const chatApi = createApi({
         camelcaseKeys(response),
       ),
       onCacheEntryAdded: async (
-        arg,
+        _,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved, getState }
       ) => {
-        let ws: WebSocket | undefined;
-        try {
-          await cacheDataLoaded;
-          const wsUrl = getChatWebsocketUrl(getState() as RootState);
-          ws = await getSocket(wsUrl);
-          ws.onmessage = event => {
-            const messageBody = JSON.parse(event.data);
-            const parsedMessage = camelcaseKeys(messageBody);
-            if (parsedMessage.type !== 'chat.message') { return; }
-            updateCachedData((draft) => {
-              messagesAdapter.upsertOne(draft, parsedMessage);
-            });
-          };
-        } catch { }
+        await cacheDataLoaded;
+        const wsUrl = getChatWebsocketUrl(getState() as RootState);
+        const ws = await getSocket(wsUrl);
+        ws.onmessage = event => {
+          const messageBody = JSON.parse(event.data);
+          const parsedMessage = camelcaseKeys(messageBody);
+          if (parsedMessage.type !== 'chat.message') { return; }
+          updateCachedData((draft) => {
+            messagesAdapter.upsertOne(draft, parsedMessage);
+          });
+        };
+        ws.addEventListener('close', event => {
+          if (event.code === WebsocketCustomCode.UNAUTHORIZED) {
+            console.error('Websocket connection closed (UNAUTHORIZED)');
+          }
+        });
         await cacheEntryRemoved;
-        ws?.close();
+        ws.close();
       },
     }),
     sendMessage: builder.mutation<void, OutgoingMessage>({
