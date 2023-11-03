@@ -7,6 +7,7 @@ export const ROUTER_PATHS = {
   forgotPassword: '/password-reset',
   activateAccount: '/actions/activate/:uid/:token',
   passwordReset: '/actions/password-reset/:uid/:token',
+  chat: '/chat',
   settings: '/settings',
   categories: '/categories',
   categoryById: '/categories/:categoryId',

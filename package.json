@@ -17,6 +17,7 @@
     "async-mutex": "^0.4.0",
     "camelcase-keys": "^9.0.0",
     "chroma-js": "^2.4.2",
+    "compare-urls": "^4.0.0",
     "decamelize-keys": "^2.0.1",
     "decimal.js": "^10.4.3",
     "framer-motion": "^10.16.4",

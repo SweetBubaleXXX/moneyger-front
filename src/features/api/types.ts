@@ -155,3 +155,15 @@ export type StatsRequestParams = Pick<
 > & Pick<
   TransactionRequestParams, 'transactionTimeBefore' | 'transactionTimeAfter'
 >
+
+export type Message = {
+  messageId: string,
+  user: string,
+  isAdmin: boolean,
+  messageText: string,
+  timestamp: number,
+}
+
+export type OutgoingMessage = {
+  message: string,
+}

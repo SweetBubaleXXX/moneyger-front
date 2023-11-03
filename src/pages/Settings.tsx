@@ -16,6 +16,7 @@ import { ExportCsvSetting } from '../components/settings/ExportCsvSetting';
 import { ExportJsonSetting } from '../components/settings/ExportJsonSetting';
 import { ImportJsonSetting } from '../components/settings/ImportJsonSetting';
 import { LogoutButton } from '../components/settings/LogoutButton';
+import { SupportChatButton } from '../components/settings/SupportChatButton';
 import { ThemeSetting } from '../components/settings/ThemeSetting';
 import { NavigationBar } from '../components/toolbars/NavigationBar';
 import { useGetAccountQuery } from '../features/api/apiSlice';
@@ -57,6 +58,7 @@ export const Settings = () => {
           <ListDivider inset="gutter" />
           <ImportJsonSetting />
         </List>
+        <SupportChatButton />
         <LogoutButton />
       </Stack>
       <NavigationBar />
