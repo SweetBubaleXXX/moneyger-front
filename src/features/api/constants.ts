@@ -3,6 +3,7 @@ import { getPaginationQuery } from '../../helpers/pagination';
 export const BASE_URL = process.env.REACT_APP_API_URL || '/api/';
 
 export const API_PATHS = {
+  messages: 'chat/messages/',
   createToken: 'accounts/auth/jwt/create/',
   refreshToken: 'accounts/auth/jwt/refresh/',
   registerAccount: 'accounts/auth/users/',
@@ -33,6 +34,10 @@ export const API_PATHS = {
     `categories/${categoryId}/summary/`,
 } as const;
 
+export const WS_PATHS = {
+  chat: 'ws/chat/',
+};
+
 export const EXCLUDE_FROM_REAUTH: readonly string[] = [
   API_PATHS.createToken,
   API_PATHS.activateAccount,
@@ -40,3 +45,8 @@ export const EXCLUDE_FROM_REAUTH: readonly string[] = [
 ] as const;
 
 export const PAGE_SIZE = 100;
+
+export enum WebsocketCustomCode {
+  // eslint-disable-next-line no-unused-vars
+  UNAUTHORIZED = 4001,
+}
