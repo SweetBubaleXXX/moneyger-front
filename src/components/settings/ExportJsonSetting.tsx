@@ -9,13 +9,13 @@ import { Mutex } from 'async-mutex';
 import { FileJson } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { API_PATHS } from '../../features/api/constants';
+import { API_PATHS } from '../../api/constants';
 import {
   JSON_EXPORT_FILENAME,
   MAX_RETRIES,
   POLLING_INTERVAL,
-} from '../../features/export/constants';
-import { fetchFile } from '../../features/export/fetchFile';
+} from '../../export/constants';
+import { fetchFile } from '../../export/fetchFile';
 
 export const ExportJsonSetting = () => {
   const [isPolling, setIsPolling] = useState<boolean>(false);

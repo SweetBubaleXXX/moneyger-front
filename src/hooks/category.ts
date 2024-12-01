@@ -2,8 +2,8 @@ import {
   filterCategoriesSelector,
   selectCategoryById,
   useGetCategoriesQuery,
-} from '../features/api/apiSlice';
-import { Category } from '../features/api/types';
+} from '../api/apiSlice';
+import { Category } from '../api/types';
 
 export const useCategories = (filter?: (category: Category) => boolean) =>
   useGetCategoriesQuery(undefined, {

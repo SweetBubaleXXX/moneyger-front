@@ -2,7 +2,7 @@ import { Button, ToggleButtonGroup } from '@mui/joy';
 import { SxProps } from '@mui/joy/styles/types';
 import React from 'react';
 
-import { TransactionType } from '../../features/api/types';
+import { TransactionType } from '../../api/types';
 
 export type TransactionTypeToggleProps = {
   value: TransactionType,

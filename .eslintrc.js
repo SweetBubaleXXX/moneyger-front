@@ -4,6 +4,9 @@ module.exports = {
     'plugin:react-hooks/recommended',
   ],
   parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: './tsconfig.json',
+  },
   plugins: [
     '@typescript-eslint',
     'react-hooks',
@@ -11,6 +14,12 @@ module.exports = {
   ],
   ignorePatterns: ['build/'],
   rules: {
+    'max-len': [
+      'warn',
+      {
+        code: 120,
+      },
+    ],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     'simple-import-sort/imports': 'warn',

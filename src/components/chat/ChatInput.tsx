@@ -2,7 +2,7 @@ import { IconButton, Stack, Textarea } from '@mui/joy';
 import { SendHorizontal } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { useSendMessageMutation } from '../../features/api/chatApiSlice';
+import { useSendMessageMutation } from '../../api/chatApiSlice';
 
 export const ChatInput = () => {
   const [sendMessage, result] = useSendMessageMutation();

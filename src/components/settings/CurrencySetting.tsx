@@ -10,8 +10,8 @@ import { CURRENCY_CODES } from '../../constants';
 import {
   useGetAccountQuery,
   useUpdateAccountMutation,
-} from '../../features/api/apiSlice';
-import { CurrencyCode } from '../../features/api/types';
+} from '../../api/apiSlice';
+import { CurrencyCode } from '../../api/types';
 import { useErrorSnackbar } from '../../hooks/snackbar';
 
 export const CurrencySetting = () => {

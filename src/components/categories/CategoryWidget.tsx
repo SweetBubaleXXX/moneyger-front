@@ -10,7 +10,7 @@ import { Reorder, useDragControls } from 'framer-motion';
 import { Grip } from 'lucide-react';
 import React from 'react';
 
-import { Category } from '../../features/api/types';
+import { Category } from '../../api/types';
 import { CategoryIcon } from './CategoryIcon';
 
 export type CategoryWidgetProps = {

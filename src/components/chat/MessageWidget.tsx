@@ -2,8 +2,8 @@ import { Card, CardContent, Chip, Stack, Tooltip, Typography } from '@mui/joy';
 import moment from 'moment';
 import React from 'react';
 
-import { useGetAccountQuery } from '../../features/api/apiSlice';
-import { Message } from '../../features/api/types';
+import { useGetAccountQuery } from '../../api/apiSlice';
+import { Message } from '../../api/types';
 
 export type MessageProps = {
   children: Message,

@@ -7,7 +7,7 @@ import {
 } from '@mui/joy';
 import React from 'react';
 
-import { ChangePasswordForm } from '../forms/ChangePasswordForm';
+import { ChangePasswordForm } from '../../forms/ChangePasswordForm';
 
 export type ChangePasswordModalProps = {
   open: boolean,

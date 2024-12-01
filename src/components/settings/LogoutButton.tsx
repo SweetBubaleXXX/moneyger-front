@@ -3,8 +3,8 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { api, useLogoutMutation } from '../../features/api/apiSlice';
-import { clearToken } from '../../features/auth/authSlice';
+import { api, useLogoutMutation } from '../../api/apiSlice';
+import { clearToken } from '../../api/authSlice';
 import { ROUTER_PATHS } from '../../pages/constants';
 
 export const LogoutButton = () => {

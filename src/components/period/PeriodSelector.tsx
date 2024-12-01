@@ -1,11 +1,4 @@
-import {
-  Button,
-  Divider,
-  Option,
-  Select,
-  Stack,
-  Typography,
-} from '@mui/joy';
+import { Button, Divider, Option, Select, Stack, Typography } from '@mui/joy';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import moment from 'moment';
 import React, { useState } from 'react';
@@ -14,9 +7,9 @@ import { DateRangeModal } from './DateRangeModal';
 import { Period, PeriodLabel } from './types';
 
 export type PeriodSelectorProps = {
-  value: Period,
-  onChange: (val: Period) => void,
-}
+  value: Period;
+  onChange: (val: Period) => void;
+};
 
 const createPeriodFromLabel = (label: Exclude<PeriodLabel, 'custom'>) => {
   return {
@@ -27,30 +20,19 @@ const createPeriodFromLabel = (label: Exclude<PeriodLabel, 'custom'>) => {
 
 export const DEFAULT_PERIOD_LABEL: PeriodLabel = 'month';
 
-export const DEFAULT_PERIOD: Period = createPeriodFromLabel(
-  DEFAULT_PERIOD_LABEL
-);
+export const DEFAULT_PERIOD: Period = createPeriodFromLabel(DEFAULT_PERIOD_LABEL);
 
-export const PeriodSelector = ({
-  value,
-  onChange,
-}: PeriodSelectorProps) => {
-  const [
-    selectedPeriod, setSelectedPeriod,
-  ] = useState<PeriodLabel>(DEFAULT_PERIOD_LABEL);
+export const PeriodSelector = ({ value, onChange }: PeriodSelectorProps) => {
+  const [selectedPeriod, setSelectedPeriod] = useState<PeriodLabel>(DEFAULT_PERIOD_LABEL);
 
-  const [
-    dateRangePickerOpen, setDateRangePickerOpen,
-  ] = useState<boolean>(false);
+  const [dateRangePickerOpen, setDateRangePickerOpen] = useState<boolean>(false);
 
   const handlePeriodChange = (_: any, newValue: PeriodLabel | null): void => {
     if (newValue) {
       setSelectedPeriod(newValue);
     }
     if (newValue !== 'custom') {
-      onChange(
-        createPeriodFromLabel(newValue || DEFAULT_PERIOD_LABEL)
-      );
+      onChange(createPeriodFromLabel(newValue || DEFAULT_PERIOD_LABEL));
     }
   };
 
@@ -61,24 +43,16 @@ export const PeriodSelector = ({
 
   return (
     <>
-      <Stack
-        direction="column"
-        p={2}
-        alignItems="center"
-        spacing={1}
-      >
+      <Stack direction="column" p={2} alignItems="center" spacing={1}>
         <Stack direction="row" spacing={2} justifyContent="space-between">
           <Button
             variant="plain"
             disabled={selectedPeriod === 'custom'}
-            onClick={
-              () => onChange(addToPeriod(value, selectedPeriod, -1))
-            }>
+            onClick={() => onChange(addToPeriod(value, selectedPeriod, -1))}
+          >
             <ChevronLeft />
           </Button>
-          <Select
-            defaultValue={DEFAULT_PERIOD_LABEL}
-            onChange={handlePeriodChange}>
+          <Select defaultValue={DEFAULT_PERIOD_LABEL} onChange={handlePeriodChange}>
             <Option value="day">Day</Option>
             <Option value="week">Week</Option>
             <Option value="month">Month</Option>
@@ -91,20 +65,14 @@ export const PeriodSelector = ({
           <Button
             variant="plain"
             disabled={!canIncrementPeriod(value, selectedPeriod)}
-            onClick={
-              () => onChange(addToPeriod(value, selectedPeriod, 1))
-            }>
+            onClick={() => onChange(addToPeriod(value, selectedPeriod, 1))}
+          >
             <ChevronRight />
           </Button>
         </Stack>
-        <Typography level="body-sm">
-          {renderPeriodHint(value, selectedPeriod)}
-        </Typography>
+        <Typography level="body-sm">{renderPeriodHint(value, selectedPeriod)}</Typography>
       </Stack>
-      <DateRangeModal
-        open={dateRangePickerOpen}
-        initialValue={value}
-        onClose={onModalClose} />
+      <DateRangeModal open={dateRangePickerOpen} initialValue={value} onClose={onModalClose} />
     </>
   );
 };
@@ -120,23 +88,15 @@ const renderPeriodHint = (period: Period, label: PeriodLabel) => {
     case 'custom':
     case 'week':
     default:
-      return [period.from, period.to]
-        .map(date => moment(date)
-          .format('ll')).join(' - ');
+      return [period.from, period.to].map((date) => moment(date).format('ll')).join(' - ');
   }
 };
 
 const canIncrementPeriod = (period: Period, label: PeriodLabel) => {
-  return label !== 'custom' && moment(period.from)
-    .add(1, label)
-    .isBefore(moment());
+  return label !== 'custom' && moment(period.from).add(1, label).isBefore(moment());
 };
 
-const addToPeriod = (
-  period: Period,
-  label: PeriodLabel,
-  value: number,
-) => {
+const addToPeriod = (period: Period, label: PeriodLabel, value: number) => {
   if (label === 'custom') {
     return period;
   }

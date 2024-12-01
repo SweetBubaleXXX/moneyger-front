@@ -16,38 +16,27 @@ import { Undo2 } from 'lucide-react';
 import moment from 'moment';
 import React, { useState } from 'react';
 
+import { Category, CurrencyCode, TransactionFilterRequest, TransactionType } from '../../api/types';
 import { CURRENCY_CODES } from '../../constants';
-import {
-  Category,
-  TransactionRequestParams,
-} from '../../features/api/types';
 import { CategoryIcon } from '../categories/CategoryIcon';
 import { CategorySelectorDrawer } from '../categories/CategorySelectorDrawer';
 import { DateRangeModal } from '../period/DateRangeModal';
 
-export type Filters = Omit<TransactionRequestParams, 'ordering' | 'search'>
+export type Filters = Omit<TransactionFilterRequest, 'ordering' | 'search'>;
 
-export type TranasctionFilterModalProps = {
-  open: boolean,
-  onClose: (filters: Filters) => void,
-  initialFilters?: Filters,
-}
+export type TransactionFilterModalProps = {
+  open: boolean;
+  onClose: (filters: Filters) => void;
+  initialFilters?: Filters;
+};
 
-export const TranasctionFilterModal = ({
-  open,
-  onClose,
-  initialFilters,
-}: TranasctionFilterModalProps) => {
+export const TranasctionFilterModal = ({ open, onClose, initialFilters }: TransactionFilterModalProps) => {
   const [category, setCategory] = useState<Category | undefined>();
-  const [filters, setFilters] = useState<Filters>(initialFilters ?? {});
+  const [filters, setFilters] = useState<Filters>(initialFilters ?? ({} as Filters));
 
-  const [
-    categorySelectorOpen, setCategorySelectorOpen,
-  ] = useState<boolean>(false);
+  const [categorySelectorOpen, setCategorySelectorOpen] = useState<boolean>(false);
 
-  const [
-    dateRangePickerOpen, setDateRangePickerOpen,
-  ] = useState<boolean>(false);
+  const [dateRangePickerOpen, setDateRangePickerOpen] = useState<boolean>(false);
 
   return (
     <Modal open={open} onClose={() => onClose(filters)}>
@@ -59,11 +48,7 @@ export const TranasctionFilterModal = ({
             <Button
               variant="soft"
               color="neutral"
-              startDecorator={
-                category && <CategoryIcon color={category.color}>
-                  {category.icon}
-                </CategoryIcon>
-              }
+              startDecorator={category && <CategoryIcon color={category.color}>{category.icon}</CategoryIcon>}
               onClick={() => setCategorySelectorOpen(true)}
             >
               {category?.name || 'Choose category'}
@@ -72,14 +57,13 @@ export const TranasctionFilterModal = ({
               <FormLabel>Transaction Type</FormLabel>
               <Select
                 disabled={!!category}
-                value={
-                  category ?
-                    category.transactionType : filters.transactionType ?? ''
+                value={category ? category.type : filters.transactionType ?? ''}
+                onChange={(_, value) =>
+                  setFilters({
+                    ...filters,
+                    transactionType: (value || undefined) as TransactionType | undefined,
+                  })
                 }
-                onChange={(_, value) => setFilters({
-                  ...filters,
-                  transactionType: value ?? undefined,
-                })}
               >
                 <Option value="">Any</Option>
                 <Divider />
@@ -91,36 +75,26 @@ export const TranasctionFilterModal = ({
               <FormLabel>Currency</FormLabel>
               <Select
                 value={filters.currency ?? ''}
-                onChange={(_, value) => setFilters({
-                  ...filters,
-                  currency: value ?? undefined,
-                })}
+                onChange={(_, value) =>
+                  setFilters({
+                    ...filters,
+                    currency: (value || undefined) as CurrencyCode | undefined,
+                  })
+                }
               >
                 <>
                   <Option value="">Any</Option>
                   <Divider />
-                  {
-                    CURRENCY_CODES.map(curCode =>
-                      <Option
-                        value={curCode}
-                        key={curCode}
-                      >
-                        {curCode}
-                      </Option>
-                    )
-                  }
+                  {CURRENCY_CODES.map((curCode) => (
+                    <Option value={curCode} key={curCode}>
+                      {curCode}
+                    </Option>
+                  ))}
                 </>
               </Select>
             </FormControl>
-            <Button
-              variant="soft"
-              color="neutral"
-              onClick={() => setDateRangePickerOpen(true)}
-            >
-              {
-                filters.transactionTimeBefore || filters.transactionTimeAfter ?
-                  'Adjust ' : 'Select '
-              }
+            <Button variant="soft" color="neutral" onClick={() => setDateRangePickerOpen(true)}>
+              {filters.dateGte || filters.dateLte ? 'Adjust ' : 'Select '}
               Period
             </Button>
             <Button
@@ -128,10 +102,9 @@ export const TranasctionFilterModal = ({
               color="danger"
               startDecorator={<Undo2 />}
               onClick={() => {
-                setFilters({});
+                setFilters({} as Filters);
                 setCategory(undefined);
-              }
-              }
+              }}
             >
               Reset
             </Button>
@@ -139,32 +112,33 @@ export const TranasctionFilterModal = ({
           <DateRangeModal
             open={dateRangePickerOpen}
             initialValue={{
-              from: moment(filters.transactionTimeAfter).toDate(),
-              to: moment(filters.transactionTimeBefore).toDate(),
+              from: moment(filters.dateGte).toDate(),
+              to: moment(filters.dateLte).toDate(),
             }}
-            onClose={period => {
+            onClose={(period) => {
               setDateRangePickerOpen(false);
               setFilters({
                 ...filters,
-                transactionTimeAfter: period.from.toISOString(),
-                transactionTimeBefore: period.to.toISOString(),
+                dateGte: period.from.toISOString(),
+                dateLte: period.to.toISOString(),
               });
-            }} />
+            }}
+          />
           <CategorySelectorDrawer
             open={categorySelectorOpen}
             onClose={() => setCategorySelectorOpen(false)}
-            onChange={value => {
+            onChange={(value) => {
               setCategory(value);
               setFilters({
                 ...filters,
-                category: value.id,
-                transactionType: value.transactionType,
+                rootCategoryId: value.rootId || value.id,
+                transactionType: value.type,
               });
             }}
             category={category}
           />
         </DialogContent>
       </ModalDialog>
-    </Modal >
+    </Modal>
   );
 };

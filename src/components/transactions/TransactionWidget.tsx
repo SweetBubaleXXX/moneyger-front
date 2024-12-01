@@ -19,25 +19,20 @@ import { CopyPlus, MoreVertical, Pencil, Trash } from 'lucide-react';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 
-import {
-  useDeleteTransactionMutation,
-} from '../../features/api/apiSlice';
-import {
-  PaginatedTransactionRequest,
-  Transaction,
-} from '../../features/api/types';
-import { useCategoryById } from '../../hooks/category';
+import { useDeleteTransactionMutation } from '../../api/apiSlice';
+import { Transaction, TransactionFilterRequest } from '../../api/types';
+import { formatCents } from '../../helpers/currency';
 import { CategoryIcon } from '../categories/CategoryIcon';
 import { ConfirmationModal } from '../ConfirmationModal';
 import { TransactionCreationModal } from './TransactionCreationModal';
 import { TransactionUpdateModal } from './TransactionUpdateModal';
 
 export type TransactionWidgetProps = {
-  transaction: Transaction,
-  isLoading?: boolean,
-  requestParams?: PaginatedTransactionRequest,
-  onDuplicateModalOpen?: (open: boolean) => void,
-}
+  transaction: Transaction;
+  isLoading?: boolean;
+  requestParams?: TransactionFilterRequest;
+  onDuplicateModalOpen?: (open: boolean) => void;
+};
 
 export const TransactionWidget = ({
   transaction,
@@ -45,25 +40,13 @@ export const TransactionWidget = ({
   requestParams,
   onDuplicateModalOpen,
 }: TransactionWidgetProps) => {
-  const [
-    confirmDeletionOpen, setConfirmDeletionOpen,
-  ] = useState<boolean>(false);
-
-  const [
-    transactionUpdateModalOpen,
-    setTransactionUpdateModalOpen,
-  ] = useState<boolean>(false);
-
-  const [
-    transactionDuplicateModalOpen,
-    setTransactionDuplicateModalOpen,
-  ] = useState<boolean>(false);
-
   const [deleteTransaction, deletionResult] = useDeleteTransactionMutation();
 
-  const category = useCategoryById(transaction.category);
+  const [confirmDeletionOpen, setConfirmDeletionOpen] = useState<boolean>(false);
 
-  const loading = isLoading || category.isLoading;
+  const [transactionUpdateModalOpen, setTransactionUpdateModalOpen] = useState<boolean>(false);
+
+  const [transactionDuplicateModalOpen, setTransactionDuplicateModalOpen] = useState<boolean>(false);
 
   const setDuplicateModalOpen = (open: boolean) => {
     setTransactionDuplicateModalOpen(open);
@@ -78,65 +61,37 @@ export const TransactionWidget = ({
 
   return (
     <Dropdown>
-      <Card
-        variant="outlined"
-        sx={{ '--Card-padding': '8px' }}>
+      <Card variant="outlined" sx={{ '--Card-padding': '8px' }}>
         <CardContent>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="stretch"
-            gap={0.7}
-          >
+          <Stack direction="row" alignItems="center" justifyContent="stretch" gap={0.7}>
             <Avatar>
-              <Skeleton loading={loading}>
-                <CategoryIcon color={category.data?.color}>
-                  {category.data?.icon}
-                </CategoryIcon>
+              <Skeleton loading={isLoading}>
+                <CategoryIcon color={transaction.category.color}>{transaction.category.icon}</CategoryIcon>
               </Skeleton>
             </Avatar>
             <Sheet sx={{ flexGrow: 1, overflow: 'hidden' }}>
               <Typography level="title-lg" noWrap>
-                <Skeleton loading={loading}>
-                  {category.data?.name}
-                </Skeleton>
+                <Skeleton loading={isLoading}>{transaction.category.name}</Skeleton>
               </Typography>
-              <Tooltip
-                title={transaction.comment}
-                variant="soft"
-                size="sm"
-                placement="bottom-start"
-                arrow
-              >
+              <Tooltip title={transaction.comment} variant="soft" size="sm" placement="bottom-start" arrow>
                 <Typography level="body-sm" noWrap>
-                  <Skeleton loading={loading}>
-                    {transaction.comment}
-                  </Skeleton>
+                  <Skeleton loading={isLoading}>{transaction.comment}</Skeleton>
                 </Typography>
               </Tooltip>
               <Typography level="body-xs" noWrap>
-                <Skeleton loading={loading}>
-                  {moment(transaction.transactionTime).format('llll')}
-                </Skeleton>
+                <Skeleton loading={isLoading}>{moment(transaction.timestamp).format('llll')}</Skeleton>
               </Typography>
             </Sheet>
             <Typography
               level="body-md"
               textAlign="right"
-              color={
-                transaction.transactionType === 'IN' ?
-                  'success' : 'danger'
-              }
+              color={transaction.category.type === 'IN' ? 'success' : 'danger'}
             >
-              <Skeleton loading={loading}>
-                {transaction.amount} {transaction.currency}
+              <Skeleton loading={isLoading}>
+                {formatCents(transaction.amountCents, transaction.currency)} {transaction.currency}
               </Skeleton>
             </Typography>
-            <MenuButton
-              slots={{ root: IconButton }}
-              slotProps={{ root: { variant: 'plain' } }}
-              disabled={loading}
-            >
+            <MenuButton slots={{ root: IconButton }} slotProps={{ root: { variant: 'plain' } }} disabled={isLoading}>
               <MoreVertical />
             </MenuButton>
           </Stack>
@@ -177,16 +132,18 @@ export const TransactionWidget = ({
       <ConfirmationModal
         open={confirmDeletionOpen}
         onCancel={() => setConfirmDeletionOpen(false)}
-        onConfirm={() => deleteTransaction({
-          id: transaction.id,
-          params: requestParams,
-        })}
+        onConfirm={() =>
+          deleteTransaction({
+            id: transaction.id,
+            params: requestParams,
+          })
+        }
         confirmButtonText="Delete"
         confirmButtonProps={{ color: 'danger' }}
         loading={deletionResult.isLoading}
       >
         Are you sure you want to delete this transaction?
       </ConfirmationModal>
-    </Dropdown >
+    </Dropdown>
   );
 };

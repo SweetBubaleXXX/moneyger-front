@@ -1,43 +1,29 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Stack,
-  Typography,
-} from '@mui/joy';
+import { Accordion, AccordionDetails, AccordionSummary, Stack, Typography } from '@mui/joy';
 import React from 'react';
 
-import { Category } from '../../features/api/types';
+import { Category } from '../../api/types';
 import { CategoryIcon } from './CategoryIcon';
 import { CategorySelector } from './CategorySelector';
 
 export type CategoryAccordionProps = {
-  category: Category,
-  selected?: Category,
-  onChange?: (category: Category) => void,
-}
+  category: Category;
+  selected?: Category;
+  onChange?: (category: Category) => void;
+};
 
-export const CategoryAccordion = ({
-  category,
-  selected,
-  onChange,
-}: CategoryAccordionProps) => {
+export const CategoryAccordion = ({ category, selected, onChange }: CategoryAccordionProps) => {
   return (
-    <Accordion
-      key={category.id}
-      onChange={() => onChange?.(category)}
-    >
-      <AccordionSummary
-        color={category.id === selected?.id ? 'primary' : 'neutral'}
-      >
+    <Accordion key={category.id} onChange={() => onChange?.(category)}>
+      <AccordionSummary color={category.id === selected?.id ? 'primary' : 'neutral'}>
         <Stack>
-          <CategoryIcon color={category.color}>
-            {category.icon}
-          </CategoryIcon>
+          <CategoryIcon color={category.color}>{category.icon}</CategoryIcon>
         </Stack>
-        <Typography noWrap sx={{
-          color: 'inherit',
-        }}>
+        <Typography
+          noWrap
+          sx={{
+            color: 'inherit',
+          }}
+        >
           {category.name}
         </Typography>
       </AccordionSummary>
@@ -45,9 +31,7 @@ export const CategoryAccordion = ({
         <CategorySelector
           selected={selected}
           onChange={(category) => onChange?.(category)}
-          filter={
-            subcategory => subcategory.parentCategory === category.id
-          }
+          filter={(subcategory) => subcategory.parentId === category.id}
         />
       </AccordionDetails>
     </Accordion>

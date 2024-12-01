@@ -14,8 +14,6 @@ export const ROUTER_PATHS = {
   transactions: '/transactions',
   categoryStatsById: `/categories/:categoryId/stats`,
   getCategoryById: (categoryId: number) => `/categories/${categoryId}`,
-  getCategoryStatsById: (categoryId: number) =>
-    `/categories/${categoryId}/stats`,
 } as const;
 
 export const CATEGORY_BOTTOM_TOOLBAR_PROPS: BoxProps = {

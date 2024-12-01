@@ -3,7 +3,7 @@ import {
 } from '@mui/joy';
 import React from 'react';
 
-import { Category } from '../../features/api/types';
+import { Category } from '../../api/types';
 import { useCategories } from '../../hooks/category';
 import { CategoryAccordion, CategoryAccordionProps } from './CategoryAccordion';
 

@@ -3,7 +3,7 @@ import { ChevronLeft } from 'lucide-react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Category } from '../../features/api/types';
+import { Category } from '../../api/types';
 import { CategoryIcon } from '../categories/CategoryIcon';
 import { BaseTopbar } from './BaseTopbar';
 

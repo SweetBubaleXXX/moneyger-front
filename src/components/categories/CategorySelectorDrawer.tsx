@@ -1,34 +1,19 @@
-import {
-  Box,
-  Button,
-  Drawer,
-  Stack,
-  Tab,
-  TabList,
-  TabPanel,
-  Tabs,
-  useTheme,
-} from '@mui/joy';
+import { Box, Button, Drawer, Stack, Tab, TabList, TabPanel, Tabs, useTheme } from '@mui/joy';
 import { useMediaQuery } from '@mui/material';
 import React from 'react';
 
+import { Category } from '../../api/types';
 import { TRANSACTION_TYPES } from '../../constants';
-import { Category } from '../../features/api/types';
 import { CategorySelector } from './CategorySelector';
 
 export type CategorySelectorDrawerProps = {
-  open: boolean,
-  onClose: () => void,
-  onChange: (category: Category) => void
-  category?: Category,
-}
+  open: boolean;
+  onClose: () => void;
+  onChange: (category: Category) => void;
+  category?: Category;
+};
 
-export const CategorySelectorDrawer = ({
-  open,
-  onClose,
-  onChange,
-  category,
-}: CategorySelectorDrawerProps) => {
+export const CategorySelectorDrawer = ({ open, onClose, onChange, category }: CategorySelectorDrawerProps) => {
   const theme = useTheme();
   const greaterThanMd = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -45,28 +30,18 @@ export const CategorySelectorDrawer = ({
             <Tab value="OUT">OUTCOME</Tab>
             <Tab value="IN">INCOME</Tab>
           </TabList>
-          {
-            TRANSACTION_TYPES.map(value =>
-              <TabPanel key={value} value={value}>
-                <CategorySelector
-                  selected={category}
-                  onChange={onChange}
-                  filter={
-                    category =>
-                      !category.parentCategory
-                      && category.transactionType === value
-                  } />
-              </TabPanel>
-            )
-          }
+          {TRANSACTION_TYPES.map((value) => (
+            <TabPanel key={value} value={value}>
+              <CategorySelector
+                selected={category}
+                onChange={onChange}
+                filter={(category) => !category.parentId && category.type === value}
+              />
+            </TabPanel>
+          ))}
         </Tabs>
         <Box padding={2}>
-          <Button
-            variant="outlined"
-            color="neutral"
-            fullWidth
-            onClick={onClose}
-          >
+          <Button variant="outlined" color="neutral" fullWidth onClick={onClose}>
             OK
           </Button>
         </Box>
