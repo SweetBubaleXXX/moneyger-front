@@ -20,7 +20,7 @@ export const PasswordReset = () => {
         <CardContent>
           <Stack gap={3}>
             <Typography level="title-lg" textAlign="center">
-              Password Reset
+              Сброс пароля
             </Typography>
             <ForgotPasswordForm />
           </Stack>

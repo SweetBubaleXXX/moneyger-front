@@ -46,7 +46,7 @@ export const MessageWidget = ({
           </Tooltip>
           {
             !fromSelf && children.isAdmin &&
-            <Chip size="sm" color="success">Admin</Chip>
+            <Chip size="sm" color="success">Админ</Chip>
           }
         </Stack>
         <Typography level="body-xs" fontWeight={400} noWrap>

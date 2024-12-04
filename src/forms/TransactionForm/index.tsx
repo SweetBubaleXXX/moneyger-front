@@ -93,7 +93,7 @@ export const TransactionForm = ({ onSubmit, submitButtonText, isLoading, initial
           defaultValue={initialValue?.amountCents ?? 0}
           render={({ field }) => (
             <Box>
-              <FormLabel>Amount</FormLabel>
+              <FormLabel>Сумма</FormLabel>
               <NumericFormatWrapper
                 size="lg"
                 allowNegative={false}
@@ -168,7 +168,7 @@ export const TransactionForm = ({ onSubmit, submitButtonText, isLoading, initial
                 {...field}
               >
                 <Typography fontSize="inherit" noWrap>
-                  {category?.name || 'Choose category'}
+                  {category?.name || 'Выбрать категорию'}
                 </Typography>
               </Button>
               <CategorySelectorDrawer
@@ -189,7 +189,7 @@ export const TransactionForm = ({ onSubmit, submitButtonText, isLoading, initial
           defaultValue={moment(initialValue?.timestamp).format(DATETIME_INPUT_FORMAT)}
           render={({ field }) => (
             <FormControl error={!!formState.errors.timestamp}>
-              <FormLabel>Transaction Time</FormLabel>
+              <FormLabel>Время транзакции</FormLabel>
               <Input
                 type="datetime-local"
                 slotProps={{
@@ -208,7 +208,7 @@ export const TransactionForm = ({ onSubmit, submitButtonText, isLoading, initial
           defaultValue={initialValue?.comment ?? ''}
           render={({ field }) => (
             <FormControl error={!!formState.errors.comment}>
-              <Textarea variant="plain" placeholder="Comment..." {...field} value={field.value} />
+              <Textarea variant="plain" placeholder="Комментарий..." {...field} value={field.value} />
             </FormControl>
           )}
         />

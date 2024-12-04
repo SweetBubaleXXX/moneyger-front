@@ -24,7 +24,7 @@ export const SubcategoryCreateForm = ({ onSubmit }: SubcategoryCreateFormProps) 
     <form id={CATEGORY_UPDATE_FORM_ID} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3} padding={2}>
         <CategoryFormNameController control={control} error={!!formState.errors.name} />
-        <Button type="submit">Add</Button>
+        <Button type="submit">Добавить</Button>
       </Stack>
     </form>
   );

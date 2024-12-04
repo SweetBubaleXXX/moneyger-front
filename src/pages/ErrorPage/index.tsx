@@ -14,7 +14,7 @@ export const ErrorPage = ({ children }: ErrorPageProps) => {
       p={2}
     >
       <Typography level="h2" textAlign="center">
-        {children || 'Something went wrong. Try to reload the page.'}
+        {children || 'Что-то пошло не так. Попробуйте перезагрузить страницу.'}
       </Typography>
     </Stack>
   );

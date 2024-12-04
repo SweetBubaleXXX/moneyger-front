@@ -18,7 +18,7 @@ export const CategoryFormColorController = ({
       defaultValue={defaultValue || DEFAULT_CATEGORY_COLOR}
       render={({ field }) =>
         <FormControl error={error}>
-          <FormLabel>Color</FormLabel>
+          <FormLabel>Цвет</FormLabel>
           <Input
             disabled={disabled}
             type="color"

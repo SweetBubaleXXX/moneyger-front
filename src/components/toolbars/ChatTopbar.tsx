@@ -22,7 +22,7 @@ export const ChatTopbar = ({
         <ChevronLeft />
       </IconButton>
       <Typography level="title-md">
-        Support Chat
+        Чат поддержки
       </Typography>
       <IconButton
         onClick={onReload}

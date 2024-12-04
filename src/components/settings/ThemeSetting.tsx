@@ -16,13 +16,13 @@ export const ThemeSetting = () => {
         value={mode}
         onChange={(_, value) => setMode(value)}
       >
-        <Option value="light">Light</Option>
-        <Option value="dark">Dark</Option>
-        <Option value="system">System</Option>
+        <Option value="light">Светлая</Option>
+        <Option value="dark">Темная</Option>
+        <Option value="system">Системная</Option>
       </Select>
     }>
       <ListItemContent>
-        Theme
+        Тема
       </ListItemContent>
     </ListItem>
   );

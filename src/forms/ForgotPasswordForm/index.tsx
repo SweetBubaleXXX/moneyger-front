@@ -18,9 +18,11 @@ export const ForgotPasswordForm = () => {
     resolver: zodResolver(ForgotPasswordSchema),
   });
 
-  useErrorSnackbar('Failed to send email', result);
+  useErrorSnackbar('Не удалось отправить письмщ', result);
 
-  useSuccessSnackbar('Check email for reset link', result, () => navigate(ROUTER_PATHS.login));
+  useSuccessSnackbar('Проверьте вашу почту на наличие ссылки для сброса пароля', result, () =>
+    navigate(ROUTER_PATHS.login),
+  );
 
   return (
     <form onSubmit={handleSubmit(resetPassword)}>
@@ -36,7 +38,7 @@ export const ForgotPasswordForm = () => {
               {...field}
               endDecorator={
                 <Button type="submit" loading={result.isLoading} disabled={!!formState.errors.email}>
-                  Send
+                  Отправить
                 </Button>
               }
               sx={{ '--Input-decoratorChildHeight': '33px' }}

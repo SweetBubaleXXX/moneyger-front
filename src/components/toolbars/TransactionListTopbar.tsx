@@ -53,7 +53,7 @@ export const TransactionListTopbar = ({ initialParams, onUpdateParams, onMount }
               </IconButton>
             )
           }
-          placeholder="Search"
+          placeholder="Поиск"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
           sx={{

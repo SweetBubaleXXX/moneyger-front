@@ -29,7 +29,7 @@ const HomeContent = () => {
       <CategoriesStatsWidget transactionType="OUT" periodSummary={periodSummary} isLoading={isLoadingSummary} />
       <CategoriesStatsWidget transactionType="IN" periodSummary={periodSummary} isLoading={isLoadingSummary} />
       <Box maxWidth={250} mx="auto" pt={2}>
-        <Divider>Transactions</Divider>
+        <Divider>Транзакции</Divider>
       </Box>
       <TransactionList
         filters={periodFilters}

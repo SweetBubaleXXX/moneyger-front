@@ -46,7 +46,7 @@ export const CategoriesStatsWidget = ({
       <Card size="sm">
         <CardContent>
           <List size="sm">
-            <ListSubheader>{title || (transactionType === 'IN' ? 'INCOME' : 'OUTCOME')}</ListSubheader>
+            <ListSubheader>{title || (transactionType === 'IN' ? 'ДОХОД' : 'РАСХОД')}</ListSubheader>
             {isLoading || !periodSummary ? (
               <Box mx="auto">
                 <CircularProgress />

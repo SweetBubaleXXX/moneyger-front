@@ -53,19 +53,19 @@ export const CategoryView = () => {
     }
   }, [categoryId, previousCategoryId]);
 
-  useErrorSnackbar('Failed to add subcategory', subcategoryCreationResult);
+  useErrorSnackbar('Не удалось добавить подкатегорию', subcategoryCreationResult);
 
-  useSuccessSnackbar('Subcategory added', subcategoryCreationResult, () => setSubcategoryCreationModalOpen(false));
+  useSuccessSnackbar('Подкатегория добавлена', subcategoryCreationResult, () => setSubcategoryCreationModalOpen(false));
 
-  useSuccessSnackbar('Category updated', updateResult, () => setEditing(false));
+  useSuccessSnackbar('Категория обновлена', updateResult, () => setEditing(false));
 
-  useErrorSnackbar('Failed to update category', updateResult);
+  useErrorSnackbar('Не удалось обновить категорию', updateResult);
 
-  useSuccessSnackbar('Saved', displayOrderUpdateResult);
+  useSuccessSnackbar('Сохранено', displayOrderUpdateResult);
 
-  useErrorSnackbar('Failed to delete category', deletionResult);
+  useErrorSnackbar('Не удалось удалить категорию', deletionResult);
 
-  useSuccessSnackbar('Category deleted', deletionResult, () => navigate(-1));
+  useSuccessSnackbar('Категория удалена', deletionResult, () => navigate(-1));
 
   const handleGoBack = useCallback(() => navigate(-1), [navigate]);
 
@@ -137,7 +137,7 @@ export const CategoryView = () => {
           my: 0.5,
         }}
       >
-        Subcategories
+        Подкатегории
       </Divider>
       <CategoryList
         filter={handleCategoryFilter}
@@ -173,7 +173,7 @@ export const CategoryView = () => {
         )}
       </Box>
       <NavigationBar />
-      <CategoryModal open={subcategoryCreationModalOpen} onClose={handleModalClose} title="Add Subcategory">
+      <CategoryModal open={subcategoryCreationModalOpen} onClose={handleModalClose} title="Добавить подкатегорию">
         <SubcategoryCreateForm onSubmit={handleCreateSubcategory} />
       </CategoryModal>
     </>

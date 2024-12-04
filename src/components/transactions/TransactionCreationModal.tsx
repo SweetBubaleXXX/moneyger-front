@@ -11,15 +11,15 @@ export type TransactionCreationModalProps = BaseTransactionModalProps & { initia
 export const TransactionCreationModal = ({ open, onClose, initialValue }: TransactionCreationModalProps) => {
   const [createTransaction, result] = useCreateTransactionMutation();
 
-  useErrorSnackbar('Failed to add transaction', result);
+  useErrorSnackbar('Не удалось добавить транзакцию', result);
 
-  useSuccessSnackbar('Transaction added', result, () => onClose(false));
+  useSuccessSnackbar('Транзакция добавлена', result, () => onClose(false));
 
   return (
-    <TransactionModal title="Add Transaction" open={open} onClose={onClose}>
+    <TransactionModal title="Добавить транзакцию" open={open} onClose={onClose}>
       <TransactionForm
         onSubmit={createTransaction}
-        submitButtonText="Add"
+        submitButtonText="Добавить"
         isLoading={result.isLoading}
         initialValue={initialValue}
       />

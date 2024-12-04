@@ -11,9 +11,9 @@ export const AccountActivation = () => {
   const [activateAccount, result] = useActivateAccountMutation();
   const navigate = useNavigate();
 
-  useErrorSnackbar('Failed to activate account', result);
+  useErrorSnackbar('Не удалось активировать аккаунт', result);
 
-  useSuccessSnackbar('Account activated', result, () => navigate(ROUTER_PATHS.login));
+  useSuccessSnackbar('Аккаунт активирован', result, () => navigate(ROUTER_PATHS.login));
 
   return (
     <Stack width="100vw" height="100vh" justifyContent="center" alignItems="center">
@@ -28,7 +28,7 @@ export const AccountActivation = () => {
           })
         }
       >
-        Activate Account
+        Активировать аккаунт
       </Button>
     </Stack>
   );

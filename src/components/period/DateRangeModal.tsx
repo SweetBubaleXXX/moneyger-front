@@ -65,10 +65,10 @@ export const DateRangeModal = ({
       sx={MODAL_STYLES}
     >
       <Sheet sx={MODAL_CONTENT_STYLES}>
-        <Typography level="h4">Custom date range</Typography>
+        <Typography level="h4">Период</Typography>
         <Stack direction="column" spacing={2} paddingY={1}>
           <FormControl>
-            <FormLabel>From</FormLabel>
+            <FormLabel>От</FormLabel>
             <DateInput
               disabled={allTime}
               value={period.from}
@@ -80,7 +80,7 @@ export const DateRangeModal = ({
             />
           </FormControl>
           <FormControl>
-            <FormLabel>To</FormLabel>
+            <FormLabel>До</FormLabel>
             <DateInput
               disabled={allTime}
               value={period.to}
@@ -96,7 +96,7 @@ export const DateRangeModal = ({
             <Checkbox
               checked={allTime}
               onChange={e => setAllTime(e.target.checked)}
-              label="All Time"
+              label="За все время"
               sx={{
                 p: 1,
               }}

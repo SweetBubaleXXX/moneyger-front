@@ -27,8 +27,8 @@ export const CategorySelectorDrawer = ({ open, onClose, onChange, category }: Ca
       <Stack justifyContent="space-between" height="100%">
         <Tabs defaultValue="OUT" sx={{ overflowX: 'hidden' }}>
           <TabList tabFlex={1}>
-            <Tab value="OUT">OUTCOME</Tab>
-            <Tab value="IN">INCOME</Tab>
+            <Tab value="OUT">РАСХОД</Tab>
+            <Tab value="IN">ДОХОД</Tab>
           </TabList>
           {TRANSACTION_TYPES.map((value) => (
             <TabPanel key={value} value={value}>

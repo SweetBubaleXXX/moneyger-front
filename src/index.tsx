@@ -1,11 +1,7 @@
 import './index.css';
 
 import { CssBaseline, GlobalStyles } from '@mui/joy';
-import {
-  CssVarsProvider,
-  extendTheme,
-  StyledEngineProvider,
-} from '@mui/joy/styles';
+import { CssVarsProvider, extendTheme, StyledEngineProvider } from '@mui/joy/styles';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -95,9 +91,7 @@ const theme = extendTheme({
   },
 });
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <ErrorBoundary fallback={<ErrorPage />}>
@@ -122,7 +116,7 @@ root.render(
         </StyledEngineProvider>
       </Provider>
     </ErrorBoundary>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -26,7 +26,7 @@ export const CurrencySetting = () => {
     });
   };
 
-  useErrorSnackbar('Failed to update account', result);
+  useErrorSnackbar('Не удалось обновить аккаунт', result);
 
   return (
     <ListItem endAction={
@@ -48,7 +48,7 @@ export const CurrencySetting = () => {
       </Select>
     }>
       <ListItemContent>
-        Default Currency
+        Валюта по умолчанию
       </ListItemContent>
     </ListItem>
   );

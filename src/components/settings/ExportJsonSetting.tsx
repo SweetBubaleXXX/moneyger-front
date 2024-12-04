@@ -59,7 +59,7 @@ export const ExportJsonSetting = () => {
           {isPolling ? <CircularProgress size="sm" /> : <FileJson />}
         </ListItemDecorator>
         <ListItemContent>
-          Export JSON
+          Экспорт JSON
         </ListItemContent>
       </ListItemButton>
     </ListItem>

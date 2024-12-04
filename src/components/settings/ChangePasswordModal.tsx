@@ -22,7 +22,7 @@ export const ChangePasswordModal = ({
     <Modal open={open} onClose={onClose}>
       <ModalDialog layout="center">
         <ModalClose />
-        <DialogTitle>Change Password</DialogTitle>
+        <DialogTitle>Смена пароля</DialogTitle>
         <DialogContent>
           <ChangePasswordForm onSuccess={onClose} />
         </DialogContent>

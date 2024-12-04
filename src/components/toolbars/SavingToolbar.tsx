@@ -30,7 +30,7 @@ export const SavingToolbar = ({
           onClick={onCancel}
           {...cancelButtonProps}
         >
-          Cancel
+          Отменить
         </Button>
       }
       <Button
@@ -40,7 +40,7 @@ export const SavingToolbar = ({
         onClick={() => onSave?.()}
         {...saveButtonProps}
       >
-        Save
+        Сохранить
       </Button >
     </BaseToolbar>
   );

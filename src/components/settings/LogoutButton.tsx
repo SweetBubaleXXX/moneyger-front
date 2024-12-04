@@ -25,7 +25,7 @@ export const LogoutButton = () => {
         });
       }}
     >
-      Logout
+      Выход
     </Button>
   );
 };

@@ -79,7 +79,7 @@ export const TransactionList = ({ filters, skip, loading, sx }: TransactionListP
                 })
               }
             >
-              Load More
+              Загрузить еще
             </Button>
           )}
         </>

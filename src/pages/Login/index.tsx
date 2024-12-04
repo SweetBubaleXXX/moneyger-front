@@ -15,8 +15,8 @@ export const Login = () => {
         <Card variant="outlined" sx={{ width: 300 }}>
           <Tabs>
             <TabList tabFlex={1}>
-              <Tab>Login</Tab>
-              <Tab>Registration</Tab>
+              <Tab>Вход</Tab>
+              <Tab>Регистрация</Tab>
             </TabList>
             <TabPanel value={0}>
               <LoginForm />

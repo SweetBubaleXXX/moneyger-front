@@ -42,7 +42,7 @@ export const TranasctionFilterModal = ({ open, onClose, initialFilters }: Transa
     <Modal open={open} onClose={() => onClose(filters)}>
       <ModalDialog layout="center">
         <ModalClose />
-        <DialogTitle>Filters</DialogTitle>
+        <DialogTitle>Фильтры</DialogTitle>
         <DialogContent>
           <Stack spacing={2} padding={3}>
             <Button
@@ -51,10 +51,10 @@ export const TranasctionFilterModal = ({ open, onClose, initialFilters }: Transa
               startDecorator={category && <CategoryIcon color={category.color}>{category.icon}</CategoryIcon>}
               onClick={() => setCategorySelectorOpen(true)}
             >
-              {category?.name || 'Choose category'}
+              {category?.name || 'Выбрать категорию'}
             </Button>
             <FormControl>
-              <FormLabel>Transaction Type</FormLabel>
+              <FormLabel>Тип транзакции</FormLabel>
               <Select
                 disabled={!!category}
                 value={category ? category.type : filters.transactionType ?? ''}
@@ -65,14 +65,14 @@ export const TranasctionFilterModal = ({ open, onClose, initialFilters }: Transa
                   })
                 }
               >
-                <Option value="">Any</Option>
+                <Option value="">Любой</Option>
                 <Divider />
-                <Option value="OUT">OUTCOME</Option>
-                <Option value="IN">INCOME</Option>
+                <Option value="OUT">РАСХОД</Option>
+                <Option value="IN">ДОХОД</Option>
               </Select>
             </FormControl>
             <FormControl>
-              <FormLabel>Currency</FormLabel>
+              <FormLabel>Валюта</FormLabel>
               <Select
                 value={filters.currency ?? ''}
                 onChange={(_, value) =>
@@ -83,7 +83,7 @@ export const TranasctionFilterModal = ({ open, onClose, initialFilters }: Transa
                 }
               >
                 <>
-                  <Option value="">Any</Option>
+                  <Option value="">Любая</Option>
                   <Divider />
                   {CURRENCY_CODES.map((curCode) => (
                     <Option value={curCode} key={curCode}>
@@ -94,8 +94,8 @@ export const TranasctionFilterModal = ({ open, onClose, initialFilters }: Transa
               </Select>
             </FormControl>
             <Button variant="soft" color="neutral" onClick={() => setDateRangePickerOpen(true)}>
-              {filters.dateGte || filters.dateLte ? 'Adjust ' : 'Select '}
-              Period
+              {filters.dateGte || filters.dateLte ? 'Изменить ' : 'Выбрать '}
+              период
             </Button>
             <Button
               variant="outlined"
@@ -106,7 +106,7 @@ export const TranasctionFilterModal = ({ open, onClose, initialFilters }: Transa
                 setCategory(undefined);
               }}
             >
-              Reset
+              Сброс
             </Button>
           </Stack>
           <DateRangeModal

@@ -17,7 +17,7 @@ export const PasswordField = ({
 }: PasswordFieldProps) => {
   return (
     <FormControl error={error}>
-      <FormLabel>{label ?? 'Password'}</FormLabel>
+      <FormLabel>{label ?? 'Пароль'}</FormLabel>
       <Input type="password" {...field} />
       {children}
     </FormControl>

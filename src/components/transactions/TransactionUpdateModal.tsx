@@ -14,12 +14,12 @@ export type TransactionUpdateModalProps = BaseTransactionModalProps & {
 export const TransactionUpdateModal = ({ open, onClose, initialValue, requestParams }: TransactionUpdateModalProps) => {
   const [updateTransaction, result] = useUpdateTransactionMutation();
 
-  useErrorSnackbar('Failed to update transaction', result);
+  useErrorSnackbar('Не удалось обновить транзакцию', result);
 
-  useSuccessSnackbar('Transaction updated', result, () => onClose(false));
+  useSuccessSnackbar('Транзакция обновлена', result, () => onClose(false));
 
   return (
-    <TransactionModal title="Edit Transaction" open={open} onClose={onClose}>
+    <TransactionModal title="Редактировать транзакцию" open={open} onClose={onClose}>
       <TransactionForm
         onSubmit={(request) =>
           updateTransaction({
@@ -28,7 +28,7 @@ export const TransactionUpdateModal = ({ open, onClose, initialValue, requestPar
             ...request,
           })
         }
-        submitButtonText="Save"
+        submitButtonText="Сохранить"
         isLoading={result.isLoading}
         initialValue={initialValue}
       />

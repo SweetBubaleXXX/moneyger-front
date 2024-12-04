@@ -19,13 +19,13 @@ export const CategoryListToolbar = ({
         startDecorator={<ArrowDownUp />}
         onClick={onReorder}
       >
-        Reorder
+        Изменить порядок
       </Button>
       <Button
         startDecorator={<ListPlus />}
         onClick={onAdd}
       >
-        Add
+        Добавить
       </Button>
     </BaseToolbar>
   );

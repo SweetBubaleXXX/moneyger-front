@@ -27,11 +27,11 @@ export const Categories = () => {
 
   const [updateDisplayOrder, displayOrderUpdateResult] = useUpdateDisplayOrderMutation();
 
-  useErrorSnackbar('Failed to add category', categoryCreationResult);
+  useErrorSnackbar('Не удалось добавить категорию', categoryCreationResult);
 
-  useSuccessSnackbar('Category added', categoryCreationResult, () => setCategoryCreationModalOpen(false));
+  useSuccessSnackbar('Категорию создана', categoryCreationResult, () => setCategoryCreationModalOpen(false));
 
-  useSuccessSnackbar('Saved', displayOrderUpdateResult);
+  useSuccessSnackbar('Сохранено', displayOrderUpdateResult);
 
   const categoryFilter = useCallback(
     (category: Category) => !category.rootId && category.type === transactionType,
@@ -85,7 +85,7 @@ export const Categories = () => {
         )}
       </Box>
       <NavigationBar />
-      <CategoryModal open={categoryCreationModalOpen} onClose={handleModalClose} title="Add Category">
+      <CategoryModal open={categoryCreationModalOpen} onClose={handleModalClose} title="Создать категорию">
         <CategoryCreateForm onSubmit={createCategory} loading={categoryCreationResult.isLoading} />
       </CategoryModal>
     </>

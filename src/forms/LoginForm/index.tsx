@@ -46,7 +46,7 @@ export const LoginForm = () => {
           defaultValue=""
           render={({ field }) => (
             <FormControl error={!!formState.errors.username}>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Имя пользователя</FormLabel>
               <Input slotProps={{ input: { autoCapitalize: 'none' } }} {...field} />
               <FormHelperText>{formState.errors.username?.message}</FormHelperText>
             </FormControl>
@@ -58,17 +58,17 @@ export const LoginForm = () => {
           defaultValue=""
           render={({ field }) => (
             <FormControl error={!!formState.errors.password}>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Пароль</FormLabel>
               <Input type="password" {...field} />
               <FormHelperText>{formState.errors.password?.message}</FormHelperText>
               <Link to={ROUTER_PATHS.forgotPassword} component={RouterLink} color="neutral" level="body-sm" mb={1.5}>
-                Forgot password?
+                Забыли пароль?
               </Link>
             </FormControl>
           )}
         />
         <Button type="submit" disabled={hasErrors(formState)} loading={isLoading}>
-          Login
+          Войти
         </Button>
       </Stack>
     </form>

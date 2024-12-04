@@ -113,20 +113,20 @@ export const TransactionWidget = ({
           <ListItemDecorator>
             <Pencil />
           </ListItemDecorator>
-          Edit
+          Редактировать
         </MenuItem>
         <MenuItem onClick={() => setDuplicateModalOpen(true)}>
           <ListItemDecorator>
             <CopyPlus />
           </ListItemDecorator>
-          Duplicate
+          Дублировать
         </MenuItem>
         <ListDivider />
         <MenuItem color="danger" onClick={() => setConfirmDeletionOpen(true)}>
           <ListItemDecorator sx={{ color: 'inherit' }}>
             <Trash />
           </ListItemDecorator>
-          Delete
+          Удалить
         </MenuItem>
       </Menu>
       <ConfirmationModal
@@ -142,7 +142,7 @@ export const TransactionWidget = ({
         confirmButtonProps={{ color: 'danger' }}
         loading={deletionResult.isLoading}
       >
-        Are you sure you want to delete this transaction?
+        Вы уверены, что хотите удалить эту транзакцию?
       </ConfirmationModal>
     </Dropdown>
   );

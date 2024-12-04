@@ -29,7 +29,7 @@ export const RegistrationForm = () => {
     }
   }, [isError, registrationError]);
 
-  useSuccessSnackbar('A verification link has been sent to your email address', { isSuccess }, resetForm);
+  useSuccessSnackbar('Ссылка для активации аккаунта отправлена на ваш почтовый ящик', { isSuccess }, resetForm);
 
   return (
     <form onSubmit={handleSubmit(register)}>
@@ -40,7 +40,7 @@ export const RegistrationForm = () => {
           defaultValue=""
           render={({ field }) => (
             <FormControl error={!!formState.errors.username}>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Имя пользователя</FormLabel>
               <Input slotProps={{ input: { autoCapitalize: 'none' } }} {...field} />
               <FormHelperText>{formState.errors.username?.message}</FormHelperText>
             </FormControl>
@@ -64,7 +64,7 @@ export const RegistrationForm = () => {
           defaultValue=""
           render={({ field }) => (
             <FormControl error={!!formState.errors.password}>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Пароль</FormLabel>
               <Input type="password" {...field} />
               <FormHelperText>{formState.errors.password?.message}</FormHelperText>
             </FormControl>
@@ -76,14 +76,14 @@ export const RegistrationForm = () => {
           defaultValue=""
           render={({ field }) => (
             <FormControl error={!!formState.errors.confirmPassword}>
-              <FormLabel>Confirm Password</FormLabel>
+              <FormLabel>Подтвердите пароль</FormLabel>
               <Input type="password" {...field} />
               <FormHelperText>{formState.errors.confirmPassword?.message}</FormHelperText>
             </FormControl>
           )}
         />
         <Button type="submit" disabled={hasErrors(formState)} loading={isLoading}>
-          Register
+          Зарегистрироваться
         </Button>
       </Stack>
     </form>

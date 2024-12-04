@@ -31,9 +31,9 @@ export const CategoryFormIconController = ({
       defaultValue={defaultValue ?? ''}
       render={({ field }) => (
         <FormControl error={error}>
-          <FormLabel>Icon</FormLabel>
+          <FormLabel>Иконка</FormLabel>
           <Button disabled={disabled} variant="outlined" color="neutral" onClick={() => setDrawerOpen(true)}>
-            {field.value ? <CategoryIcon>{field.value}</CategoryIcon> : 'Pick'}
+            {field.value ? <CategoryIcon>{field.value}</CategoryIcon> : 'Выбрать'}
           </Button>
           <CategoryIconSelector
             open={drawerOpen}

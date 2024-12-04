@@ -36,7 +36,7 @@ export const ChangePasswordForm = ({ onSuccess }: ChangePasswordFormProps) => {
     }
   }, [result.isError, result.error]);
 
-  useSuccessSnackbar('Password changed', result, onSuccess);
+  useSuccessSnackbar('Пароль изменен', result, onSuccess);
 
   return (
     <form onSubmit={handleSubmit(changePassword)}>
@@ -46,7 +46,7 @@ export const ChangePasswordForm = ({ onSuccess }: ChangePasswordFormProps) => {
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <PasswordField field={field} error={!!formState.errors.currentPassword} label="Current Password" />
+            <PasswordField field={field} error={!!formState.errors.currentPassword} label="Текущий пароль" />
           )}
         />
         <Controller
@@ -54,7 +54,7 @@ export const ChangePasswordForm = ({ onSuccess }: ChangePasswordFormProps) => {
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <PasswordField field={field} error={!!formState.errors.newPassword} label="New Password" />
+            <PasswordField field={field} error={!!formState.errors.newPassword} label="Новый пароль" />
           )}
         />
         <Controller
@@ -62,7 +62,7 @@ export const ChangePasswordForm = ({ onSuccess }: ChangePasswordFormProps) => {
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <PasswordField field={field} error={!!formState.errors.confirmPassword} label="Confirm Password" />
+            <PasswordField field={field} error={!!formState.errors.confirmPassword} label="Повторите пароль" />
           )}
         />
         <Button loading={result.isLoading} type="submit">

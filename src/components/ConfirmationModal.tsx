@@ -25,7 +25,7 @@ export const ConfirmationModal = ({
   open,
   onCancel,
   onConfirm,
-  confirmButtonText = 'Confirm',
+  confirmButtonText = 'Подтвердить',
   confirmButtonProps,
   loading,
   children,
@@ -38,7 +38,7 @@ export const ConfirmationModal = ({
       <ModalDialog variant="outlined">
         <DialogTitle>
           <AlertTriangle />
-          Confirmation
+          Подтверждение
         </DialogTitle>
         <Divider />
         <DialogContent>
@@ -58,7 +58,7 @@ export const ConfirmationModal = ({
             color="neutral"
             onClick={onCancel}
           >
-            Cancel
+            Отмена
           </Button>
         </DialogActions>
       </ModalDialog>

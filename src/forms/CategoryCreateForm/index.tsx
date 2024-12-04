@@ -32,10 +32,10 @@ export const CategoryCreateForm = ({ onSubmit, loading }: CategoryCreateFormProp
           defaultValue="OUT"
           render={({ field }) => (
             <FormControl error={!!formState.errors.type}>
-              <FormLabel>Type</FormLabel>
+              <FormLabel>Тип</FormLabel>
               <Select {...field} onChange={(_, value) => field.onChange(value)}>
-                <Option value="OUT">OUTCOME</Option>
-                <Option value="IN">INCOME</Option>
+                <Option value="OUT">РАСХОД</Option>
+                <Option value="IN">ДОХОД</Option>
               </Select>
             </FormControl>
           )}
@@ -43,7 +43,7 @@ export const CategoryCreateForm = ({ onSubmit, loading }: CategoryCreateFormProp
         <CategoryFormColorController control={control} error={!!formState.errors.color} />
         <CategoryFormIconController control={control} error={!!formState.errors.icon} />
         <Button type="submit" loading={loading}>
-          Add
+          Добавить
         </Button>
       </Stack>
     </form>

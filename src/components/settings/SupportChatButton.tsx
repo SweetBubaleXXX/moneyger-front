@@ -15,7 +15,7 @@ export const SupportChatButton = () => {
       startDecorator={<MessagesSquare />}
       onClick={() => navigate(ROUTER_PATHS.chat)}
     >
-      Support Chat
+      Чат поддержки
     </Button>
   );
 };

@@ -15,7 +15,7 @@ export const PasswordResetConfirm = () => {
         <CardContent>
           <Stack gap={1}>
             <Typography level="title-lg" textAlign="center">
-              Reset Password
+              Сбросить пароль
             </Typography>
             <ResetPasswordForm />
           </Stack>

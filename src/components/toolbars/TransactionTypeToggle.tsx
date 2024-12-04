@@ -33,8 +33,8 @@ export const TransactionTypeToggle = ({
         my: 2,
       }}
     >
-      <Button value="OUT" sx={BUTTON_STYLE}>OUTCOME</Button>
-      <Button value="IN" sx={BUTTON_STYLE}>INCOME</Button>
+      <Button value="OUT" sx={BUTTON_STYLE}>РАСХОД</Button>
+      <Button value="IN" sx={BUTTON_STYLE}>ДОХОД</Button>
     </ToggleButtonGroup>
   );
 };

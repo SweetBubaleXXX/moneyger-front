@@ -21,7 +21,7 @@ export const ExportCsvSetting = () => {
           <Sheet />
         </ListItemDecorator>
         <ListItemContent>
-          Export CSV
+          Экспорт CSV
         </ListItemContent>
       </ListItemButton>
     </ListItem>

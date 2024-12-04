@@ -30,7 +30,7 @@ export const CategoryViewTopbar = ({
           <ChevronLeft />
         </IconButton>
         <Typography level="title-md">
-          Edit Category
+          Редактировать категорию
         </Typography>
         <IconButton
           onClick={() => setConfirmDeletionOpen(true)}
@@ -45,11 +45,11 @@ export const CategoryViewTopbar = ({
         open={confirmDeletionOpen}
         onCancel={() => setConfirmDeletionOpen(false)}
         onConfirm={onDelete}
-        confirmButtonText="Delete"
+        confirmButtonText="Удалить"
         confirmButtonProps={{ color: 'danger' }}
         loading={isDeleting}
       >
-        Are you sure you want to delete this category?
+        Вы уверены, что хотите удалить эту категорию?
       </ConfirmationModal>
     </>
   );

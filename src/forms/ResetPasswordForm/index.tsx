@@ -31,9 +31,9 @@ export const ResetPasswordForm = () => {
 
   useFormErrorsSnackbar(formState);
 
-  useErrorSnackbar('Failed to change password', result);
+  useErrorSnackbar('Не удалось изменить пароль', result);
 
-  useSuccessSnackbar('Password changed', result, () => navigate(ROUTER_PATHS.login));
+  useSuccessSnackbar('Пароль изменен', result, () => navigate(ROUTER_PATHS.login));
 
   return (
     <form onSubmit={onSubmit}>
@@ -43,7 +43,7 @@ export const ResetPasswordForm = () => {
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <PasswordField field={field} error={!!formState.errors.newPassword} label="New Password" />
+            <PasswordField field={field} error={!!formState.errors.newPassword} label="Новый пароль" />
           )}
         />
         <Controller
@@ -51,11 +51,11 @@ export const ResetPasswordForm = () => {
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <PasswordField field={field} error={!!formState.errors.confirmPassword} label="Confirm Password" />
+            <PasswordField field={field} error={!!formState.errors.confirmPassword} label="Повторите пароль" />
           )}
         />
         <Button type="submit" loading={result.isLoading} disabled={!!hasErrors(formState)}>
-          Change
+          Подтвердить
         </Button>
       </Stack>
     </form>

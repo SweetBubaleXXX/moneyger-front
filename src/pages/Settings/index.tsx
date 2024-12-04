@@ -26,15 +26,15 @@ export const Settings = () => {
             borderRadius: 'md',
           }}
         >
-          <ListSubheader>Application</ListSubheader>
+          <ListSubheader>Системные</ListSubheader>
           <ThemeSetting />
           <ListDivider />
-          <ListSubheader>Account</ListSubheader>
+          <ListSubheader>Аккаунт</ListSubheader>
           <CurrencySetting />
           <ListDivider inset="gutter" />
           <ChangePasswordSetting />
           <ListDivider />
-          <ListSubheader>Data Management</ListSubheader>
+          <ListSubheader>Экспорт данных</ListSubheader>
           <ExportCsvSetting />
           <ListDivider inset="gutter" />
           <ExportJsonSetting />

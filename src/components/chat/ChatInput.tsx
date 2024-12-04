@@ -31,7 +31,7 @@ export const ChatInput = () => {
         <Textarea
           value={message}
           onChange={e => setMessage(e.target.value)}
-          placeholder="Write a message..."
+          placeholder="Написать..."
           maxRows={3}
           onKeyDown={onKeyDown}
         />

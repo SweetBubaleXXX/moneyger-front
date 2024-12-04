@@ -1,3 +1,5 @@
+import 'moment/locale/ru';
+
 import { Button, Divider, Option, Select, Stack, Typography } from '@mui/joy';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import moment from 'moment';
@@ -53,13 +55,13 @@ export const PeriodSelector = ({ value, onChange }: PeriodSelectorProps) => {
             <ChevronLeft />
           </Button>
           <Select defaultValue={DEFAULT_PERIOD_LABEL} onChange={handlePeriodChange}>
-            <Option value="day">Day</Option>
-            <Option value="week">Week</Option>
-            <Option value="month">Month</Option>
-            <Option value="year">Year</Option>
+            <Option value="day">День</Option>
+            <Option value="week">Неделя</Option>
+            <Option value="month">Месяц</Option>
+            <Option value="year">Год</Option>
             <Divider />
             <Option value="custom" onClick={() => setDateRangePickerOpen(true)}>
-              Custom
+              Другой
             </Option>
           </Select>
           <Button
@@ -80,15 +82,15 @@ export const PeriodSelector = ({ value, onChange }: PeriodSelectorProps) => {
 const renderPeriodHint = (period: Period, label: PeriodLabel) => {
   switch (label) {
     case 'day':
-      return moment(period.from).format('LL');
+      return moment(period.from).locale('ru').format('LL');
     case 'month':
-      return moment(period.from).format('MMMM YYYY');
+      return moment(period.from).locale('ru').format('MMMM YYYY');
     case 'year':
-      return moment(period.from).format('YYYY');
+      return moment(period.from).locale('ru').format('YYYY');
     case 'custom':
     case 'week':
     default:
-      return [period.from, period.to].map((date) => moment(date).format('ll')).join(' - ');
+      return [period.from, period.to].map((date) => moment(date).locale('ru').format('ll')).join(' - ');
   }
 };
 

@@ -14,7 +14,7 @@ export const ChangePasswordSetting = () => {
   return (
     <ListItem>
       <ListItemButton onClick={() => setModalOpen(true)}>
-        <ListItemContent>Change Password</ListItemContent>
+        <ListItemContent>Сменить пароль</ListItemContent>
         <ChevronRight />
       </ListItemButton>
       <ChangePasswordModal

@@ -18,7 +18,7 @@ export const CategoryFormNameController = ({
       render={({ field }) =>
         <Input
           disabled={disabled}
-          placeholder="Category Name"
+          placeholder="Название категории"
           error={!!error}
           {...field}
         />
