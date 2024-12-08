@@ -8,6 +8,7 @@ import { ExportCsvSetting } from '../../components/settings/ExportCsvSetting';
 import { ExportJsonSetting } from '../../components/settings/ExportJsonSetting';
 import { LogoutButton } from '../../components/settings/LogoutButton';
 import { SupportChatButton } from '../../components/settings/SupportChatButton';
+import { TagSetting } from '../../components/settings/TagSetting';
 import { ThemeSetting } from '../../components/settings/ThemeSetting';
 import { NavigationBar } from '../../components/toolbars/NavigationBar';
 
@@ -31,6 +32,8 @@ export const Settings = () => {
           <ListDivider />
           <ListSubheader>Account</ListSubheader>
           <CurrencySetting />
+          <ListDivider inset="gutter" />
+          <TagSetting />
           <ListDivider inset="gutter" />
           <ChangePasswordSetting />
           <ListDivider />

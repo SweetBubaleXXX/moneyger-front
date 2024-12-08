@@ -21,7 +21,7 @@ import { SubcategoryCreateForm } from '../../forms/SubcategoryCreateForm';
 import { useCategoryById } from '../../hooks/category';
 import { useCategoryIdParam } from '../../hooks/params';
 import { useErrorSnackbar, useSuccessSnackbar } from '../../hooks/snackbar';
-import { CATEGORY_BOTTOM_TOOLBAR_PROPS, CATEGORY_LIST_OFFSET_FOR_TOOLBAR, ROUTER_PATHS } from '../constants';
+import { BOTTOM_TOOLBAR_PROPS, LIST_OFFSET_FOR_TOOLBAR, ROUTER_PATHS } from '../constants';
 
 export type CategoryViewParams = {
   categoryId: string;
@@ -145,9 +145,9 @@ export const CategoryView = () => {
         reorder={reorder}
         onSubmitReorder={handleSubmitReorder}
         onItemClick={handleItemClick}
-        sx={CATEGORY_LIST_OFFSET_FOR_TOOLBAR}
+        sx={LIST_OFFSET_FOR_TOOLBAR}
       />
-      <Box {...CATEGORY_BOTTOM_TOOLBAR_PROPS}>
+      <Box {...BOTTOM_TOOLBAR_PROPS}>
         {reorder ? (
           <SavingToolbar
             onCancel={handleReorderCancel}

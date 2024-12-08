@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Box,
   Button,
+  Chip,
   Divider,
   FormControl,
   FormLabel,
@@ -18,7 +19,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 import { toast } from 'sonner';
 
-import { useGetAccountQuery } from '../../api/apiSlice';
+import { useGetAccountQuery, useGetTagsQuery } from '../../api/apiSlice';
 import { Category, CurrencyCode, Transaction, TransactionUpsertRequest } from '../../api/types';
 import { CategoryIcon } from '../../components/categories/CategoryIcon';
 import { CategorySelectorDrawer } from '../../components/categories/CategorySelectorDrawer';
@@ -43,6 +44,7 @@ export const TransactionForm = ({ onSubmit, submitButtonText, isLoading, initial
   const [categorySelectorOpen, setCategorySelectorOpen] = useState<boolean>(false);
 
   const account = useGetAccountQuery();
+  const tags = useGetTagsQuery();
 
   const initialCategory = useMemo(() => initialValue?.category, [initialValue?.category]);
 
@@ -199,6 +201,38 @@ export const TransactionForm = ({ onSubmit, submitButtonText, isLoading, initial
                 }}
                 {...field}
               />
+            </FormControl>
+          )}
+        />
+        <Controller
+          name="tags"
+          control={control}
+          disabled={!tags.data}
+          defaultValue={initialValue?.tags.map((tag) => tag.id) ?? []}
+          render={({ field }) => (
+            <FormControl>
+              <FormLabel>Tags</FormLabel>
+              <Select
+                multiple
+                defaultValue={field.value}
+                onChange={(_, value) => field.onChange(value)}
+                renderValue={(selected) => (
+                  <Box sx={{ display: 'flex', gap: '0.25rem' }} flexWrap="wrap">
+                    {selected.map((selectedOption) => (
+                      <Chip variant="soft" color="primary">
+                        {selectedOption.label}
+                      </Chip>
+                    ))}
+                  </Box>
+                )}
+                slotProps={{ listbox: { sx: { width: '100%' } } }}
+              >
+                {tags.data?.map((tag) => (
+                  <Option value={tag.id} key={tag.id}>
+                    {tag.name}
+                  </Option>
+                ))}
+              </Select>
             </FormControl>
           )}
         />

@@ -22,6 +22,8 @@ import {
   RegistrationResponse,
   SetPasswordRequest,
   SubcategoryCreateRequest,
+  Tag,
+  TagCreateRequest,
   Transaction,
   TransactionFilterRequest,
   TransactionMutationParams,
@@ -36,7 +38,7 @@ export const transactionsSelector = transactionsAdapter.getSelectors();
 
 export const api = createApi({
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Account', 'Category', 'Transaction'],
+  tagTypes: ['Account', 'Category', 'Transaction', 'Tag'],
   endpoints: (builder) => ({
     getAccount: builder.query<Account, void>({
       query: () => API_PATHS.account,
@@ -69,6 +71,11 @@ export const api = createApi({
         return currentArg?.page !== previousArg?.page;
       },
       providesTags: ['Account', 'Category', 'Transaction'],
+    }),
+    getTags: builder.query<Tag[], void>({
+      query: () => API_PATHS.tags,
+      providesTags: ['Account', 'Tag'],
+      transformResponse: (response: Tag[]) => camelcaseKeys(response),
     }),
     getSummary: builder.query<PeriodSummary, TransactionFilterRequest>({
       query: (request) => ({
@@ -140,7 +147,7 @@ export const api = createApi({
       query: (request) => ({
         url: API_PATHS.createTransaction(request.categoryId),
         method: 'POST',
-        body: decamelizeKeys({ ...request, comment: request.comment, tags: [] }),
+        body: decamelizeKeys({ ...request, comment: request.comment }),
       }),
       invalidatesTags: ['Transaction'],
     }),
@@ -193,6 +200,21 @@ export const api = createApi({
           deleteResult.undo();
         }
       },
+    }),
+    createTag: builder.mutation<void, TagCreateRequest>({
+      query: (request) => ({
+        url: API_PATHS.tags,
+        method: 'POST',
+        body: decamelizeKeys(request),
+      }),
+      invalidatesTags: ['Tag'],
+    }),
+    deleteTag: builder.mutation<void, number>({
+      query: (request) => ({
+        url: API_PATHS.tagById(request),
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Transaction', 'Tag'],
     }),
     login: builder.mutation<JwtToken, LoginRequest>({
       query: (credentials) => ({
@@ -262,6 +284,9 @@ export const {
   useGetAccountQuery,
   useGetCategoriesQuery,
   useGetTransactionsQuery,
+  useGetTagsQuery,
+  useCreateTagMutation,
+  useDeleteTagMutation,
   useUpdateAccountMutation,
   useCreateCategoryMutation,
   useCreateSubcategoryMutation,

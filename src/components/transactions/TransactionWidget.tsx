@@ -2,6 +2,7 @@ import {
   Avatar,
   Card,
   CardContent,
+  Chip,
   Dropdown,
   IconButton,
   ListDivider,
@@ -95,6 +96,15 @@ export const TransactionWidget = ({
               <MoreVertical />
             </MenuButton>
           </Stack>
+          {!!transaction.tags.length && (
+            <Stack direction="row" flexWrap="wrap" gap={0.5} py={1} ml={5.5}>
+              {transaction.tags.map((tag) => (
+                <Chip variant="soft" color="primary" key={tag.id}>
+                  {tag.name}
+                </Chip>
+              ))}
+            </Stack>
+          )}
         </CardContent>
       </Card>
       <TransactionUpdateModal

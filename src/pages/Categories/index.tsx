@@ -13,7 +13,7 @@ import { SavingToolbar } from '../../components/toolbars/SavingToolbar';
 import { TransactionTypeToggle } from '../../components/toolbars/TransactionTypeToggle';
 import { CategoryCreateForm } from '../../forms/CategoryCreateForm';
 import { useErrorSnackbar, useSuccessSnackbar } from '../../hooks/snackbar';
-import { CATEGORY_BOTTOM_TOOLBAR_PROPS, CATEGORY_LIST_OFFSET_FOR_TOOLBAR, ROUTER_PATHS } from '../constants';
+import { BOTTOM_TOOLBAR_PROPS, LIST_OFFSET_FOR_TOOLBAR, ROUTER_PATHS } from '../constants';
 
 export const Categories = () => {
   const navigate = useNavigate();
@@ -69,9 +69,9 @@ export const Categories = () => {
         reorder={reorder}
         onSubmitReorder={handleReorderSubmit}
         onItemClick={handleItemClick}
-        sx={CATEGORY_LIST_OFFSET_FOR_TOOLBAR}
+        sx={LIST_OFFSET_FOR_TOOLBAR}
       />
-      <Box {...CATEGORY_BOTTOM_TOOLBAR_PROPS}>
+      <Box {...BOTTOM_TOOLBAR_PROPS}>
         {reorder ? (
           <SavingToolbar
             onCancel={handleReorderCancel}
