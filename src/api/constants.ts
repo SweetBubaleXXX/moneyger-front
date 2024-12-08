@@ -18,6 +18,8 @@ export const API_PATHS = {
   categories: 'categories/',
   categoryOrder: 'categories/order/',
   stats: 'stats/',
+  tags: 'tags/',
+  tagById: (tagId: number) => `tags/${tagId}/`,
   accountById: (accountId: number) => `auth/users/${accountId}/`,
   categoryById: (categoryId: number) => `categories/${categoryId}/`,
   subcategories: (categoryId: number) => `categories/${categoryId}/subcategories/`,

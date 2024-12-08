@@ -12,6 +12,7 @@ import { Login } from './Login';
 import { PasswordReset } from './PasswordReset';
 import { PasswordResetConfirm } from './PasswordResetConfirm';
 import { Settings } from './Settings';
+import { Tags } from './Tags';
 import { Transactions } from './Transactions';
 
 export const Router = () => {
@@ -28,6 +29,7 @@ export const Router = () => {
         <Route path={ROUTER_PATHS.categories} Component={Categories} />
         <Route path={ROUTER_PATHS.categoryById} Component={CategoryView} />
         <Route path={ROUTER_PATHS.transactions} Component={Transactions} />
+        <Route path={ROUTER_PATHS.tags} Component={Tags} />
         <Route path="*" element={<ErrorPage>Page Not Found</ErrorPage>} />
       </Routes>
     </BrowserRouter>

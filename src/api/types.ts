@@ -105,6 +105,17 @@ export type CategoryUpdateRequest = {
   color?: string;
 };
 
+export type Tag = {
+  id: number;
+  ownerId: number;
+  name: string;
+  createdAt: string;
+};
+
+export type TagCreateRequest = {
+  name: string;
+};
+
 export type Transaction = {
   id: number;
   currency: CurrencyCode;
@@ -112,6 +123,7 @@ export type Transaction = {
   comment?: string;
   timestamp: string;
   category: Category;
+  tags: Tag[];
 };
 
 export type TransactionUpsertRequest = {

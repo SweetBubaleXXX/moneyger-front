@@ -1,5 +1,4 @@
 import { BoxProps } from '@mui/joy';
-import { SxProps } from '@mui/joy/styles/types';
 
 export const ROUTER_PATHS = {
   home: '/',
@@ -12,11 +11,12 @@ export const ROUTER_PATHS = {
   categories: '/categories',
   categoryById: '/categories/:categoryId',
   transactions: '/transactions',
+  tags: '/tags',
   categoryStatsById: `/categories/:categoryId/stats`,
   getCategoryById: (categoryId: number) => `/categories/${categoryId}`,
 } as const;
 
-export const CATEGORY_BOTTOM_TOOLBAR_PROPS: BoxProps = {
+export const BOTTOM_TOOLBAR_PROPS: BoxProps = {
   position: 'fixed',
   padding: 2,
   pb: 3,
@@ -25,6 +25,6 @@ export const CATEGORY_BOTTOM_TOOLBAR_PROPS: BoxProps = {
   right: 0,
 };
 
-export const CATEGORY_LIST_OFFSET_FOR_TOOLBAR: SxProps = {
+export const LIST_OFFSET_FOR_TOOLBAR = {
   mb: 13,
 };
