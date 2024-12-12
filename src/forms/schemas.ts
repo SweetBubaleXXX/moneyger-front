@@ -60,5 +60,5 @@ export const TransactionSchema = z.object({
   currency: z.enum(CURRENCY_CODES),
   timestamp: z.coerce.date().refine((value) => value < moment().toDate(), 'Enter valid date'),
   comment: z.string().max(255),
-  tags: z.number().array().nullable(),
+  tags: z.number().array().nullable().optional(),
 });

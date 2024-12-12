@@ -77,6 +77,7 @@ export const TransactionForm = ({ onSubmit, submitButtonText, isLoading, initial
       Comment: formState.errors.comment,
       Currency: formState.errors.currency,
       'Transaction Time': formState.errors.timestamp,
+      Tags: formState.errors.tags,
     })) {
       if (error) {
         toast.error(field, {

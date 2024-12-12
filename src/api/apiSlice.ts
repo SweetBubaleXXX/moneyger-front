@@ -147,7 +147,7 @@ export const api = createApi({
       query: (request) => ({
         url: API_PATHS.createTransaction(request.categoryId),
         method: 'POST',
-        body: decamelizeKeys({ ...request, comment: request.comment }),
+        body: decamelizeKeys({ ...request, tags: request.tags ?? [] }),
       }),
       invalidatesTags: ['Transaction'],
     }),
